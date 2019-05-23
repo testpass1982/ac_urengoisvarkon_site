@@ -76,5 +76,5 @@ secret.json
 # *.docx
 # *.png
 **/migrations/**
-media/*
+media/upload/*
 log/**
