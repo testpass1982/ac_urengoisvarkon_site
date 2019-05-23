@@ -50,6 +50,14 @@ def local_migrate():
     local('python3 manage.py makemigrations')
     local('python3 manage.py migrate')
 
+def app_migrate(app):
+        with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+            with prefix(env.activate):
+                run('pwd')
+                run('python3 manage.py makemigrations {}'.format(app))
+                run('python3 manage.py migrate {}'.format(app))
+                run('deactivate')
+                print(green('app {} migrated'.format(app)))
 # def activate_virtualenv():
 
 # def deactivate():
@@ -158,8 +166,10 @@ def deploy():
         copy_nginx_config()
     else:
         print(green('project folder exists, updating...'))
+        test()
         update()
         remote_migrate()
+        app_migrate('mainapp')
         sudo('systemctl restart {}.service'.format(env.project_name))
         sudo('nginx -s reload')
 
