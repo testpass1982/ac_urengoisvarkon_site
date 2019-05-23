@@ -4,11 +4,17 @@ from fabric.contrib.files import exists
 from fabric.colors import green, red
 import time
 import json
+import os
 
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
 # from fabric import Connection
 # https://micropyramid.com/blog/automate-django-deployments-with-fabfile/
+
+if os.name == 'nt':
+    p = 'python'
+else:
+    p = 'python3'
 
 try:
     with open("secret.json") as secret_file:
@@ -18,8 +24,10 @@ try:
 except FileNotFoundError:
     print('***ERROR: no secret file***')
 
-env.use_ssh_config = True
-env.hosts = ['server']
+#check if os is not windows
+if os.name != 'nt':
+    env.use_ssh_config = True
+    env.hosts = ['server']
 
 def test_connection():
     # get_secret()
@@ -42,20 +50,20 @@ def remote_migrate():
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         # run('cd {}{}'.format(env.path_to_projects, env.project_name))
         with prefix(env.activate):
-            run('python3 manage.py makemigrations --noinput')
-            run('python3 manage.py migrate --noinput')
+            run('{} manage.py makemigrations --noinput'.format(p))
+            run('{} manage.py migrate --noinput'.format(p))
             run('deactivate')
 
 def local_migrate():
-    local('python3 manage.py makemigrations')
-    local('python3 manage.py migrate')
+    local('{} manage.py makemigrations'.format(p))
+    local('{} manage.py migrate'.format(p))
 
 def app_migrate(app):
         with cd('{}{}'.format(env.path_to_projects, env.project_name)):
             with prefix(env.activate):
                 run('pwd')
-                run('python3 manage.py makemigrations {}'.format(app))
-                run('python3 manage.py migrate {}'.format(app))
+                run('{} manage.py makemigrations {}'.format(p, app))
+                run('{} manage.py migrate {}'.format(p, app))
                 run('deactivate')
                 print(green('app {} migrated'.format(app)))
 # def activate_virtualenv():
@@ -66,7 +74,7 @@ def create_superuser():
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         with prefix(env.activate):
             run('pwd')
-            run('python3 manage.py init_admin')
+            run('{} manage.py init_admin'.format(p))
             run('deactivate')
             print(green('superuser created'))
 
@@ -82,7 +90,7 @@ def test_remote_folder():
     execute(check_exists, '{}{}'.format(env.path_to_projects, env.project_name))
 
 def test():
-    local('python3 manage.py test')
+    local('{} manage.py test'.format(p))
 
 #as user
 def clone():
