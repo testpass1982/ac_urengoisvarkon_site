@@ -21,7 +21,7 @@ except FileNotFoundError:
 env.use_ssh_config = True
 env.hosts = ['server']
 
-def test():
+def test_connection():
     # get_secret()
     run('ls -la')
     run('uname -a')
@@ -37,9 +37,26 @@ def backup():
     print(green('pushing master...'))
     local('git push -u origin master')
 
-def migrate():
+@runs_once
+def remote_migrate():
+    run('python3 manage.py makemigrations --noinput')
+    run('python3 manage.py migrate --noinput')
+
+def local_migrate():
     local('python3 manage.py makemigrations')
     local('python3 manage.py migrate')
+
+def activate_virtualenv():
+    run('cd {}'.format(env.path_to_projects))
+    run('source /django2/bin/activate')
+
+def deactivate():
+    run('deactivate')
+
+def create_superuser():
+    run('python3 manage.py init_admin')
+    print(green('superuser created'))
+
 
 def check_exists(filename):
     if files.exists(filename):
@@ -52,10 +69,13 @@ def check_exists(filename):
 def test_remote_folder():
     execute(check_exists, '{}{}'.format(env.path_to_projects, env.project_name))
 
+def test():
+    local('python3 manage.py test')
+
 #as user
 def clone():
-    print(gree('CLONING...'))
-    run('git clone https://github.com/testpass1982/{}.git'.format(env.project_name))
+    print(green('CLONING...'))
+    run('git clone {}'.format(env.git_repo))
 
 #as user
 def update():
@@ -113,17 +133,33 @@ def copy_systemd_config():
         print(red('systemd {}.service already exists'.format(env.project_name)))
 
 def deploy():
-    local('git pull')
-    local("python3 manage.py test")
-    local('pip freeze > requirements.txt')
-    # local('git add -p && git commit')
-    # print(green("enter your comment:"))
-    # comment = input()
-    c_time = time.ctime()
-    local('git add .')
-    local('git commit -m "deploy on {}"'.format(c_time))
-    local('git push -u origin master')
-    #switch_debug("True", "False")
-    local('python3 manage.py collectstatic --noinput')
-    print(green('***Executing on {} as {}***'.format(unv.hosts, env.user)))
-    #switch_debug("False", "True")
+    if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
+        print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
+        test()
+        clone()
+        activate_virtualenv()
+        remote_migrate()
+        create_superuser()
+        deactivate()
+        #change debug mode
+        #change allowed hosts
+        #change static root
+        #collectstatic
+        copy_systemd_config()
+        copy_nginx_config()
+    else:
+        print(green('project folder exists'))
+    # local('git pull')
+    # local("python3 manage.py test")
+    # local('pip freeze > requirements.txt')
+    # # local('git add -p && git commit')
+    # # print(green("enter your comment:"))
+    # # comment = input()
+    # c_time = time.ctime()
+    # local('git add .')
+    # local('git commit -m "deploy on {}"'.format(c_time))
+    # local('git push -u origin master')
+    # #switch_debug("True", "False")
+    # local('python3 manage.py collectstatic --noinput')
+    # print(green('***Executing on {} as {}***'.format(unv.hosts, env.user)))
+    # #switch_debug("False", "True")
