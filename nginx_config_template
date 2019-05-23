@@ -2,7 +2,7 @@ server {
      listen 80;
      server_name DOMAIN_NAME;
      location = /favicon.ico { access_log off; log_not_found off; }
-     location /static/ {
+     location /static_root/ {
          root /home/USERNAME/PROJECT_NAME;
      }
      location /static/admin {

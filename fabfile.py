@@ -2,6 +2,7 @@ from fabric.api import *
 from fabric.contrib import files
 from fabric.contrib.files import exists
 from fabric.colors import green, red
+from fabric.contrib import project
 import time
 import json
 import os
@@ -156,6 +157,22 @@ def copy_systemd_config():
 
     else:
         print(red('systemd {}.service already exists'.format(env.project_name)))
+
+env.local_static_root = '/static_root/'
+env.remote_static_root = '{}/{}/static_root/'.format(env.path_to_projects, env.project_name)
+
+def deploy_static():
+    import zipfile
+    local('{} manage.py collectstatic --noinput'.format(p))
+    #test on linux with rsync
+    project.upload_project(
+        remote_dir = env.remote_static_root,
+        local_dir = env.local_static_root,
+        # delete=True
+    )
+    sudo('systemctl restart {}.service'.format(env.project_name))
+    sudo('nginx -s reload')
+
 
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
