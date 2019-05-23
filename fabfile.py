@@ -39,23 +39,28 @@ def backup():
 
 @runs_once
 def remote_migrate():
-    run('python3 manage.py makemigrations --noinput')
-    run('python3 manage.py migrate --noinput')
+    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        # run('cd {}{}'.format(env.path_to_projects, env.project_name))
+        with prefix(env.activate):
+            run('python3 manage.py makemigrations --noinput')
+            run('python3 manage.py migrate --noinput')
+            run('deactivate')
 
 def local_migrate():
     local('python3 manage.py makemigrations')
     local('python3 manage.py migrate')
 
-def activate_virtualenv():
-    run('cd {}'.format(env.path_to_projects))
-    run('source /django2/bin/activate')
+# def activate_virtualenv():
 
-def deactivate():
-    run('deactivate')
+# def deactivate():
 
 def create_superuser():
-    run('python3 manage.py init_admin')
-    print(green('superuser created'))
+    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        with prefix(env.activate):
+            run('pwd')
+            run('python3 manage.py init_admin')
+            run('deactivate')
+            print(green('superuser created'))
 
 
 def check_exists(filename):
@@ -137,10 +142,10 @@ def deploy():
         print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
         test()
         clone()
-        activate_virtualenv()
+        # activate_virtualenv()
         remote_migrate()
         create_superuser()
-        deactivate()
+        # deactivate()
         #change debug mode
         #change allowed hosts
         #change static root
@@ -149,6 +154,9 @@ def deploy():
         copy_nginx_config()
     else:
         print(green('project folder exists'))
+        update()
+        remote_migrate()
+
     # local('git pull')
     # local("python3 manage.py test")
     # local('pip freeze > requirements.txt')
