@@ -6,7 +6,7 @@ server {
          root /home/USERNAME/PROJECT_NAME;
      }
      location /static/admin {
-         root /home/USERNAME/django2/lib/python3.5/site-packages/django/contrib/
+         root /home/USERNAME/django2/lib/python3.5/site-packages/django/contrib/admin/;
      }
 
      location /media/ {
@@ -17,3 +17,5 @@ server {
          include proxy_params;
          proxy_pass http://unix:/home/USERNAME/PROJECT_NAME/PROJECT_NAME.sock;
      }
+
+}

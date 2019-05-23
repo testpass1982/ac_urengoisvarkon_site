@@ -62,7 +62,6 @@ def create_superuser():
             run('deactivate')
             print(green('superuser created'))
 
-
 def check_exists(filename):
     if files.exists(filename):
         print(green('YES {} exists!'.format(filename)))
@@ -84,8 +83,9 @@ def clone():
 
 #as user
 def update():
-    print(green('UPDATING...'))
-    run('git pull')
+    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        print(green('UPDATING...'))
+        run('git pull')
 
 #as user
 def make_configs():
@@ -98,7 +98,7 @@ def make_configs():
     local("sed 's/PROJECT_NAME/{}/g; \
                 s/USERNAME/{}/g' \
             systemd_config_template > {}.service".format(
-        env.project_name, env.domain_name, env.user, env.project_name))
+        env.project_name, env.user, env.project_name))
     print(green('***SYSTEMD CONFIG READY***'))
     print(green("""
 ************************
@@ -121,7 +121,7 @@ def copy_nginx_config():
         put('{}_nginx'.format(env.project_name), '/home/{}/'.format(env.user))
         sudo('mv /home/{}/{}_nginx /etc/nginx/sites-available/'.format(env.user, env.project_name))
         sudo('nginx -t')
-        sudo('ln -s /etc/nginx/sites-available/{} /etc/nginx/sites-enabled/'.format(env.project_name))
+        sudo('ln -s /etc/nginx/sites-available/{}_nginx /etc/nginx/sites-enabled/'.format(env.project_name))
         sudo('nginx -s reload')
     else:
         print(red('nginx configuration for project {} exists'.format(env.project_name)))
@@ -133,7 +133,11 @@ def copy_systemd_config():
         sudo('mv /home/{}/{}.service /etc/systemd/system/'.format(env.user, env.project_name))
         sudo('systemctl enable {}.service'.format(env.project_name))
         sudo('systemctl start {}.service'.format(env.project_name))
-        sudo('systemctl status {}.service'.format(env.project_name))
+        # sudo('systemctl status {}.service'.format(env.project_name))
+        # time.sleep(3)
+        # send('q')
+        # run('whoami')
+
     else:
         print(red('systemd {}.service already exists'.format(env.project_name)))
 
@@ -153,9 +157,11 @@ def deploy():
         copy_systemd_config()
         copy_nginx_config()
     else:
-        print(green('project folder exists'))
+        print(green('project folder exists, updating...'))
         update()
         remote_migrate()
+        sudo('systemctl restart {}.service'.format(env.project_name))
+        sudo('nginx -s reload')
 
     # local('git pull')
     # local("python3 manage.py test")
