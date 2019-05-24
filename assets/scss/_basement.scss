@@ -34,7 +34,7 @@ margin-top: -5px;
     font-size: 12px;
     text-transform: uppercase;
     font-weight: 500;
-    
+
 }
 
 .footer_number{
@@ -74,9 +74,9 @@ color: #fff;
     position: absolute;
     width: 35px;
     height: 35px;
-    left: 0;  
+    left: 0;
     margin-top: 5px;
-    background: url(/static/img/yellow_punkt.png) center 0 no-repeat;
+    background: url(/static_root/img/yellow_punkt.png) center 0 no-repeat;
 }
 
 .footer_info_link{
@@ -119,7 +119,7 @@ color: #fff;
         background-color: #ffffff25;
         transition: 0.2s;
     }
-   
+
 }
 
 .box_basement{
@@ -133,13 +133,13 @@ color: #fff;
 
 .basement_text_prava_kompany{
     font-size: 11px;
-    color: #6f7379;    
+    color: #6f7379;
     margin-bottom: 0px;
 }
 
 .political_konf a{
     font-size: 11px;
-    color: #6f7379;    
+    color: #6f7379;
     margin-bottom: 0px;
 }
 
@@ -152,7 +152,7 @@ color: #fff;
     a{
         color: #6f7379;
     }
-    
+
 }
 
 
@@ -160,25 +160,25 @@ color: #fff;
     text-align: right;
 a{
     font-size: 22px;
-    color: #fff;     
+    color: #fff;
 }
 }
 
 .basement_mail {
     text-align: right;
-    margin-bottom: 15px;  
+    margin-bottom: 15px;
 a{
     font-size: 16px;
     color: rgb(146, 146, 146);
     text-align: right;
-    
+
 }
 }
 
 .basement_number_text{
     font-size: 16px;
     color: rgb(167, 167, 167);
-    text-align: right;   
+    text-align: right;
 
 }
 
@@ -199,16 +199,16 @@ a{
     height: 50px;
     margin-left: -15px;
     margin-top: 5px;
-    background: url(/static/img/enter_system.png) center 0 no-repeat;
+    background: url(/static_root/img/enter_system.png) center 0 no-repeat;
   }
-  
+
   .enter_system_link{
     font-size: 14px;
     font-weight: 400;
     color: #fff;
     margin-left: 25px;
   }
-  
+
   .enter_system_edo a{
     text-decoration: none;
     color: #fff;
@@ -217,7 +217,7 @@ a{
      margin-bottom: 15px;
     }
   }
-  
+
   .enter_system_edo {
     text-align: right;
     @media screen and (max-width: 1200px) {

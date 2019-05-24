@@ -81,7 +81,7 @@
 
 .box_doc_file {
     padding: 15px 0px;
-    height: 60px; 
+    height: 60px;
 }
 
 .headline_doc_section{
@@ -110,19 +110,19 @@
     left: 0;
     margin-top: 5px;
     margin-left: 10px;
-    background: url(/static/img/icon_pdf-01.svg) center 0 no-repeat;
+    background: url(/static_root/img/icon_pdf-01.svg) center 0 no-repeat;
 }
 
 
 .doc_text_name {
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.6; 
+    line-height: 1.6;
     margin-left: 55px;
     margin-bottom: 0;
     padding: 10px 0px;
     @media screen and (max-width: 440px) {
-        padding: 5px 0px; 
+        padding: 5px 0px;
         }
 }
 
@@ -134,7 +134,7 @@
     left: 0;
     margin-top: 5px;
     margin-left: 10px;
-    background: url(/static/img/icon_word-01.svg) center 0 no-repeat;
+    background: url(/static_root/img/icon_word-01.svg) center 0 no-repeat;
 }
 
 .box_doc_button {

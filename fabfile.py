@@ -6,6 +6,19 @@ from fabric.contrib import project
 import time
 import json
 import os
+import zipfile
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+
+if __name__ == '__main__':
+    zipf = zipfile.ZipFile('Python.zip', 'w', zipfile.ZIP_DEFLATED)
+    zipdir('tmp/', zipf)
+    zipf.close()
 
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
@@ -24,6 +37,8 @@ try:
         # env.hosts = secret['hosts']
 except FileNotFoundError:
     print('***ERROR: no secret file***')
+
+PATH_TO_PROJECT = '{}/{}/'.format(env.path_to_projects, env.project_name)
 
 #check if os is not windows
 if os.name != 'nt':
@@ -162,20 +177,40 @@ def copy_configs():
     copy_nginx_config()
     copy_systemd_config()
 
-env.local_static_root = '/static_root/'
-env.remote_static_root = '{}/{}/static_root/'.format(env.path_to_projects, env.project_name)
+# env.local_static_root = '/static_root/'
+# env.remote_static_root = '{}{}/static_root/'.format(env.path_to_projects, env.project_name)
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+
 
 def deploy_static():
-    import zipfile
     local('{} manage.py collectstatic --noinput'.format(p))
-    #test on linux with rsync
-    project.upload_project(
-        remote_dir = env.remote_static_root,
-        local_dir = env.local_static_root,
-        # delete=True
-    )
+    zipf = zipfile.ZipFile('collected_static.zip', 'w', zipfile.ZIP_DEFLATED)
+    execute(zipdir, 'static_root/', zipf)
+    zipf.close()
+    put('collected_static.zip', '{}'.format(PATH_TO_PROJECT))
+    with cd(PATH_TO_PROJECT):
+        run('unzip collected_static.zip')
+        run('rm collected_static.zip')
+        sudo('nginx -s reload')
+    sudo('service gunicorn restart')
     sudo('systemctl restart {}.service'.format(env.project_name))
     sudo('nginx -s reload')
+    # zip_ref = zipfile.ZipFile('{}/{}/collected_static.zip'.format(env.path_to_projects, env.project_name))
+    # zip_ref.extractall('{}/{}/static_root/'.format(env.path_to_projects, env.project_name))
+
+    # remote_dir = env.remote_static_root
+    # local_dir = env.local_static_root
+
+def remote_test():
+    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        with prefix(env.activate):
+            run('{} manage.py test'.format(p))
 
 
 def deploy():
@@ -185,20 +220,28 @@ def deploy():
         clone()
         remote_migrate()
         create_superuser()
+        deploy_static()
+        #change secret key
         #change debug mode
         #change allowed hosts
-        #change static root
-        #collectstatic
         copy_systemd_config()
         copy_nginx_config()
+        local('{} functional_tests.py {}'.format(p, env.domain_name))
     else:
         print(green('project folder exists, updating...'))
         test()
         update()
         remote_migrate()
         app_migrate('mainapp')
+        remote_test()
+        deploy_static()
+        #change  secret_key
+        #change debug mode
+        #change allowed hosts
         sudo('systemctl restart {}.service'.format(env.project_name))
+        sudo('systemctl show {}.service --no-page'.format(env.project_name))
         sudo('nginx -s reload')
+        local('{} functional_tests.py {}'.format(p, env.domain_name))
 
     # local('git pull')
     # local("python3 manage.py test")

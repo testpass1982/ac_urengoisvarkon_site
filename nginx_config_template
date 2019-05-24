@@ -5,7 +5,7 @@ server {
      location /static_root/ {
          root /home/USERNAME/PROJECT_NAME;
      }
-     location /static/admin {
+     location /static_root/admin {
          root /home/USERNAME/django2/lib/python3.5/site-packages/django/contrib/admin/;
      }
 
