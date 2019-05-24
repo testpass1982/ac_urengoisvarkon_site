@@ -1,7 +1,7 @@
 from fabric.api import *
 from fabric.contrib import files
 from fabric.contrib.files import exists
-from fabric.colors import green, red
+from fabric.colors import green, red, blue
 from fabric.contrib import project
 import time
 import json
@@ -234,6 +234,8 @@ def clean():
                 sudo('systemctl stop {}.service'.format(env.project_name))
                 sudo('rm /etc/systemd/system/{}.service'.format(env.project_name))
                 sudo('nginx -s reload')
+                local('rm {}_nginx'.format(env.project_name))
+                local('rm {}.service'.format(env.project_name))
                 print(green('***PROJECT_CLEANED***'))
             except Exception as e:
                 print(red('ERROR: ', e))
@@ -244,38 +246,59 @@ def clean():
 
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
-        print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
-        test()
-        clone()
-        rename_template_folder()
-        remote_migrate()
-        create_superuser()
-        app_migrate('mainapp')
-        fill_db_with_demo_data()
-        make_configs()
-        copy_systemd_config()
-        copy_nginx_config()
-        deploy_static()
-        remote_test()
-        #change secret key
-        #change debug mode
-        #change allowed hosts
-        local('{} functional_tests.py {}'.format(p, env.domain_name))
+        print(green('***Project folder {}{} does not exist***'.format(env.path_to_projects, env.project_name)))
+        confirm = prompt('*-*-* Start new deployment? (y/n): *-*-*')
+        if confirm == 'y':
+            print(blue("""
+************************
+STARTING in 5 seconds...
+************************
+            """))
+            for i in range(5):
+                time.sleep(1)
+                print(blue('...{}...'.format(i+1)))
+            test()
+            clone()
+            rename_template_folder()
+            remote_migrate()
+            create_superuser()
+            app_migrate('mainapp')
+            fill_db_with_demo_data()
+            make_configs()
+            copy_systemd_config()
+            copy_nginx_config()
+            deploy_static()
+            remote_test()
+            #change secret key
+            #change debug mode
+            #change allowed hosts
+            local('{} functional_tests.py {}'.format(p, env.domain_name))
+            print(blue("""
+            *********************
+            DEPLOYMENT COMPLETE...
+            *********************
+            """))
+        else:
+            print(green('***NEW DEPLOYMENT CANCELLED***'))
     else:
-        print(green('project folder exists, updating...'))
-        test()
-        update()
-        remote_migrate()
-        app_migrate('mainapp')
-        remote_test()
-        deploy_static()
-        #change  secret_key
-        #change debug mode
-        #change allowed hosts
-        sudo('systemctl restart {}.service'.format(env.project_name))
-        sudo('systemctl show {}.service --no-page'.format(env.project_name))
-        sudo('nginx -s reload')
-        local('{} functional_tests.py {}'.format(p, env.domain_name))
+        print(green('...Project folder exists...'))
+        confirm = prompt("Update? your answer y/n:")
+        if confirm == 'y':
+            test()
+            update()
+            remote_migrate()
+            app_migrate('mainapp')
+            remote_test()
+            deploy_static()
+            #change  secret_key
+            #change debug mode
+            #change allowed hosts
+            sudo('systemctl restart {}.service'.format(env.project_name))
+            sudo('systemctl show {}.service --no-page'.format(env.project_name))
+            sudo('nginx -s reload')
+            local('{} functional_tests.py {}'.format(p, env.domain_name))
+        else:
+            print(green('***UPDATE CANCELLED***'))
 
     # local('git add .')
     # local('git commit -m "deploy on {}"'.format(c_time))
