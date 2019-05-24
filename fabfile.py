@@ -211,9 +211,14 @@ def fill_db_with_demo_data():
         with prefix(env.activate):
             run('{} manage.py fill_db'.format(p))
 
+def change_project_name():
+    print(green('checking project name before renaming'))
+    local('pwd')
+
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
         print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
+        change_project_name()
         test()
         clone()
         remote_migrate()
