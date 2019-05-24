@@ -67,6 +67,7 @@ local_settings.py
 db.sqlite3
 static_root/
 secret.json
+collected_static.zip
 *.service
 *_nginx
 # *.jpg
