@@ -9,17 +9,6 @@ import os
 import zipfile
 
 
-def zipdir(path, ziph):
-    # ziph is zipfile handle
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            ziph.write(os.path.join(root, file))
-
-if __name__ == '__main__':
-    zipf = zipfile.ZipFile('Python.zip', 'w', zipfile.ZIP_DEFLATED)
-    zipdir('tmp/', zipf)
-    zipf.close()
-
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
 # from fabric import Connection
@@ -117,6 +106,8 @@ def clone():
 def update():
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         print(green('UPDATING...'))
+        run('git add .')
+        run('git commit -m "server commit {}"'.format(time.ctime()))
         run('git pull')
 
 #as user
@@ -187,7 +178,6 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file))
 
-
 def deploy_static():
     local('{} manage.py collectstatic --noinput'.format(p))
     zipf = zipfile.ZipFile('collected_static.zip', 'w', zipfile.ZIP_DEFLATED)
@@ -198,7 +188,7 @@ def deploy_static():
         run('unzip collected_static.zip')
         run('rm collected_static.zip')
         sudo('nginx -s reload')
-    sudo('service gunicorn restart')
+    # sudo('service gunicorn restart')
     sudo('systemctl restart {}.service'.format(env.project_name))
     sudo('nginx -s reload')
     # zip_ref = zipfile.ZipFile('{}/{}/collected_static.zip'.format(env.path_to_projects, env.project_name))
@@ -216,6 +206,11 @@ def commit():
     local('git add .')
     local('git commit -m "commit {}"'.format(time.ctime()))
 
+def fill_db_with_demo_data():
+    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        with prefix(env.activate):
+            run('{} manage.py fill_db'.format(p))
+
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
         print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
@@ -223,6 +218,7 @@ def deploy():
         clone()
         remote_migrate()
         create_superuser()
+        fill_db_with_demo_data()
         copy_systemd_config()
         copy_nginx_config()
         deploy_static()
