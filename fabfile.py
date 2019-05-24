@@ -124,11 +124,11 @@ def make_configs():
     """))
 
 #as sudo
-def copy_systemd_config():
-    run('cp {}.service /etc/systemd/system/{}.service'.format(env.project_name))
-    run('cd /etc/systemd/system/')
-    run('systemctl enable {}.service'.format(env.project_name))
-    run('systemctl start {}.service'.format(env.project_name))
+# def copy_systemd_config():
+#     run('cp {}.service /etc/systemd/system/{}.service'.format(env.project_name))
+#     run('cd /etc/systemd/system/')
+#     run('systemctl enable {}.service'.format(env.project_name))
+#     run('systemctl start {}.service'.format(env.project_name))
 
 #as sudo
 def copy_nginx_config():
@@ -158,6 +158,10 @@ def copy_systemd_config():
     else:
         print(red('systemd {}.service already exists'.format(env.project_name)))
 
+def copy_configs():
+    copy_nginx_config()
+    copy_systemd_config()
+
 env.local_static_root = '/static_root/'
 env.remote_static_root = '{}/{}/static_root/'.format(env.path_to_projects, env.project_name)
 
@@ -179,10 +183,8 @@ def deploy():
         print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
         test()
         clone()
-        # activate_virtualenv()
         remote_migrate()
         create_superuser()
-        # deactivate()
         #change debug mode
         #change allowed hosts
         #change static root
