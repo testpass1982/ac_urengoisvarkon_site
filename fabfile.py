@@ -11,7 +11,6 @@ import zipfile
 
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
-# from fabric import Connection
 # https://micropyramid.com/blog/automate-django-deployments-with-fabfile/
 
 if os.name == 'nt':
@@ -58,10 +57,24 @@ def remote_migrate():
             run('{} manage.py makemigrations --noinput'.format(p))
             run('{} manage.py migrate --noinput'.format(p))
             run('deactivate')
+    print(green(
+"""
+***************************
+**REMOTE MIGRATE COMPLETE**
+***************************
+"""
+    ))
 
 def local_migrate():
     local('{} manage.py makemigrations'.format(p))
     local('{} manage.py migrate'.format(p))
+    print(green(
+"""
+**********************
+**MIGRATION COMPLETE**
+**********************
+"""
+    ))
 
 def app_migrate(app):
         with cd('{}{}'.format(env.path_to_projects, env.project_name)):
@@ -70,7 +83,12 @@ def app_migrate(app):
                 run('{} manage.py makemigrations {}'.format(p, app))
                 run('{} manage.py migrate {}'.format(p, app))
                 run('deactivate')
-                print(green('app {} migrated'.format(app)))
+                print(green(
+"""
+****************************
+***Django App {} migrated***
+****************************
+""".format(app)))
 # def activate_virtualenv():
 
 # def deactivate():
@@ -82,7 +100,11 @@ def create_superuser():
             run('pwd')
             run('{} manage.py init_admin'.format(p))
             run('deactivate')
-            print(green('superuser created'))
+            print(green("""
+*******************
+*Superuser created*
+*******************
+"""))
 
 def check_exists(filename):
     if files.exists(filename):
@@ -97,11 +119,25 @@ def test_remote_folder():
 
 def test():
     local('{} manage.py test'.format(p))
+    print(green(
+"""
+********************
+**Testing complete**
+********************
+"""
+    ))
 
 #as user
 def clone():
     print(green('CLONING...'))
     run('git clone {}'.format(env.git_repo))
+    print(green(
+"""
+********************
+**CLONING COMPLETE**
+********************
+"""
+    ))
 
 #as user
 def update():
@@ -110,6 +146,13 @@ def update():
         run('git add .')
         run('git commit -m "server commit {}"'.format(time.ctime()))
         run('git pull')
+    print(green(
+"""
+********************
+**UPDATE COMPLETE***
+********************
+"""
+    ))
 
 #as user
 def make_configs():
@@ -126,7 +169,7 @@ def make_configs():
     print(green('***SYSTEMD CONFIG READY***'))
     print(green("""
 ************************
-****CONFIGS COMPLETE****
+****CONFIGS CREATED*****
 ************************
     """))
 
@@ -163,6 +206,13 @@ def copy_systemd_config():
 def copy_configs():
     copy_nginx_config()
     copy_systemd_config()
+    print(green(
+"""
+*************************************
+**SYSTEMD AND NGINX CONFIG UPLOADED**
+*************************************
+"""
+    ))
 
 # env.local_static_root = '/static_root/'
 # env.remote_static_root = '{}{}/static_root/'.format(env.path_to_projects, env.project_name)
@@ -173,6 +223,13 @@ def zipdir(path, ziph):
     for root, dirs, files in os.walk(path):
         for file in files:
             ziph.write(os.path.join(root, file))
+    print(green(
+"""
+********************
+***FOLDER ZIPPED****
+********************
+"""
+    ))
 
 def deploy_static():
     local('{} manage.py collectstatic --noinput'.format(p))
@@ -188,6 +245,11 @@ def deploy_static():
     # sudo('service gunicorn restart')
     sudo('systemctl restart {}.service'.format(env.project_name))
     sudo('nginx -s reload')
+    print(green("""
+***********************
+*Static files uploaded*
+***********************
+    """))
     # zip_ref = zipfile.ZipFile('{}/{}/collected_static.zip'.format(env.path_to_projects, env.project_name))
     # zip_ref.extractall('{}/{}/static_root/'.format(env.path_to_projects, env.project_name))
 
@@ -198,15 +260,36 @@ def remote_test():
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         with prefix(env.activate):
             run('{} manage.py test'.format(p))
+    print(green(
+"""
+************************
+**REMOTE TEST COMPLETE**
+************************
+"""
+    ))
 
 def commit():
     local('git add .')
     local('git commit -m "commit {}"'.format(time.ctime()))
+    print(green(
+"""
+********************
+**COMMIT COMPLETE***
+********************
+"""
+    ))
 
 def fill_db_with_demo_data():
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         with prefix(env.activate):
             run('{} manage.py fill_db'.format(p))
+    print(green(
+"""
+**********************
+**DEMO DATA COMPLETE**
+**********************
+"""
+    ))
 
 # def change_project_name():
 #     print(green('checking project name before renaming'))
@@ -218,6 +301,13 @@ def rename_template_folder():
         env.path_to_projects,
         env.project_name
         ))
+    print(green(
+"""
+****************************
+**PROJECT FOLDER RENAMED****
+****************************
+"""
+    ))
 
 
 def clean():
@@ -300,8 +390,6 @@ STARTING in 5 seconds...
         else:
             print(green('***UPDATE CANCELLED***'))
 
-    # local('git add .')
-    # local('git commit -m "deploy on {}"'.format(c_time))
     # local('git push -u origin master')
     # #switch_debug("True", "False")
     # local('python3 manage.py collectstatic --noinput')
