@@ -212,6 +212,9 @@ def remote_test():
         with prefix(env.activate):
             run('{} manage.py test'.format(p))
 
+def commit():
+    local('git add .')
+    local('git commit -m "commit {}"'.format(time.ctime()))
 
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
@@ -220,12 +223,13 @@ def deploy():
         clone()
         remote_migrate()
         create_superuser()
+        copy_systemd_config()
+        copy_nginx_config()
         deploy_static()
+        remote_test()
         #change secret key
         #change debug mode
         #change allowed hosts
-        copy_systemd_config()
-        copy_nginx_config()
         local('{} functional_tests.py {}'.format(p, env.domain_name))
     else:
         print(green('project folder exists, updating...'))
@@ -243,13 +247,6 @@ def deploy():
         sudo('nginx -s reload')
         local('{} functional_tests.py {}'.format(p, env.domain_name))
 
-    # local('git pull')
-    # local("python3 manage.py test")
-    # local('pip freeze > requirements.txt')
-    # # local('git add -p && git commit')
-    # # print(green("enter your comment:"))
-    # # comment = input()
-    # c_time = time.ctime()
     # local('git add .')
     # local('git commit -m "deploy on {}"'.format(c_time))
     # local('git push -u origin master')
