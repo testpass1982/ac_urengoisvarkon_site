@@ -76,6 +76,7 @@ def app_migrate(app):
 # def deactivate():
 
 def create_superuser():
+    put('secret.json', '{}{}/'.format(env.path_to_projects, env.project_name))
     with cd('{}{}'.format(env.path_to_projects, env.project_name)):
         with prefix(env.activate):
             run('pwd')
@@ -156,11 +157,6 @@ def copy_systemd_config():
         sudo('mv /home/{}/{}.service /etc/systemd/system/'.format(env.user, env.project_name))
         sudo('systemctl enable {}.service'.format(env.project_name))
         sudo('systemctl start {}.service'.format(env.project_name))
-        # sudo('systemctl status {}.service'.format(env.project_name))
-        # time.sleep(3)
-        # send('q')
-        # run('whoami')
-
     else:
         print(red('systemd {}.service already exists'.format(env.project_name)))
 
@@ -184,6 +180,7 @@ def deploy_static():
     execute(zipdir, 'static_root/', zipf)
     zipf.close()
     put('collected_static.zip', '{}'.format(PATH_TO_PROJECT))
+    local('rm collected_static.zip')
     with cd(PATH_TO_PROJECT):
         run('unzip collected_static.zip')
         run('rm collected_static.zip')
@@ -211,19 +208,51 @@ def fill_db_with_demo_data():
         with prefix(env.activate):
             run('{} manage.py fill_db'.format(p))
 
-def change_project_name():
-    print(green('checking project name before renaming'))
-    local('pwd')
+# def change_project_name():
+#     print(green('checking project name before renaming'))
+#     local('pwd')
+
+def rename_template_folder():
+    run('mv {}/ac_template_site/ {}{}'.format(
+        env.path_to_projects,
+        env.path_to_projects,
+        env.project_name
+        ))
+
+
+def clean():
+    are_you_sure = prompt(red('ARE YOU SURE YOU WANT TO CLEAN? y/n:'))
+    if are_you_sure == 'y':
+        if exists(PATH_TO_PROJECT) and \
+        exists('/etc/nginx/sites-available/{}_nginx'.format(env.project_name)) and \
+        exists('/etc/nginx/sites-enabled/{}_nginx'.format(env.project_name)) and \
+        exists('/etc/systemd/system/{}.service'.format(env.project_name)):
+            try:
+                sudo('rm -rf {}/'.format(env.project_name))
+                sudo('rm /etc/nginx/sites-available/{}_nginx'.format(env.project_name))
+                sudo('rm /etc/nginx/sites-enabled/{}_nginx'.format(env.project_name))
+                sudo('systemctl stop {}.service'.format(env.project_name))
+                sudo('rm /etc/systemd/system/{}.service'.format(env.project_name))
+                sudo('nginx -s reload')
+                print(green('***PROJECT_CLEANED***'))
+            except Exception as e:
+                print(red('ERROR: ', e))
+        else:
+            print(green('***PROJECT DOES NOT EXIST***'))
+    else:
+        print(green('***CLEANING CANCELED***'))
 
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
         print(red('project folder {}{} does not exist'.format(env.path_to_projects, env.project_name)))
-        change_project_name()
         test()
         clone()
+        rename_template_folder()
         remote_migrate()
         create_superuser()
+        app_migrate('mainapp')
         fill_db_with_demo_data()
+        make_configs()
         copy_systemd_config()
         copy_nginx_config()
         deploy_static()
