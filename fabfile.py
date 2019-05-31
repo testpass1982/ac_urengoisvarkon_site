@@ -334,21 +334,31 @@ def clean():
     else:
         print(green('***CLEANING CANCELED***'))
 
+def wait(seconds):
+    for i in range(seconds):
+        left_seconds = seconds - i
+        print(blue('...waiting {} seconds ...'.format(left_seconds)))
+        time.sleep(1)
+
+
 def deploy():
     if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
         print(green('***Project folder {}{} does not exist***'.format(env.path_to_projects, env.project_name)))
-        confirm = prompt('*-*-* Start new deployment? (y/n): *-*-*')
+        confirm = prompt(green('Start new deployment? ---> (y/n): '))
         if confirm == 'y':
             print(blue("""
 ************************
 STARTING in 5 seconds...
 ************************
             """))
-            for i in range(5):
-                time.sleep(1)
-                print(blue('...{}...'.format(i+1)))
+            # for i in range(5):
+            #     time.sleep(1)
+            #     print(blue('...{}...'.format(i+1)))
+            wait(5)
             test()
+            wait(3)
             clone()
+            wait(3)
             rename_template_folder()
             remote_migrate()
             create_superuser()

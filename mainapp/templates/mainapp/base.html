@@ -25,7 +25,11 @@
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+  {% if site.top_addr_line %}
+      <link rel="stylesheet" href="{% sass_src 'scss/variations/_top_addr_line_{{ site.top_addr_line.variant }}.scss' %}">
+  {% endif %}
   {% endblock %}
+
 
 
 
@@ -40,6 +44,11 @@
   <!-- End Include Modal -->
 
   {% include 'mainapp/includes/admin_panel.html'%}
+
+  {% if site.top_addr_line %}
+    {% include 'mainapp/includes/_top_addr_line_{{ site.top_addr_line.variant }}' %}
+  {% endif %}
+
   <!-- Include bg-menu-info -->
   {% if request.resolver_match.url_name == 'index' %}
   {% include 'mainapp/includes/menu-bg-info.html' %}

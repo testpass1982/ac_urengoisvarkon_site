@@ -432,3 +432,20 @@ class CenterPhotos(models.Model):
 
     def __str__(self):
         return self.title
+
+class SiteConfiguration(models.Model):
+
+    TOP_ADDR_LINE_CHOICES = (
+        ('1', 'address_uptime_registry'),
+        ('2', 'address_uptime'),
+        ('3', 'org_name_address_phones')
+    )
+
+    top_addr_line = models.CharField(max_length=1, choices=TOP_ADDR_LINE_CHOICES, blank=True, default=None)
+
+    class Meta:
+        verbose_name = 'Конфигурация сайта'
+        verbose_name_plural = 'Конфигурации сайта'
+
+    def __str__(self):
+        return self.title

@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
-from .models import Profstandard, DocumentCategory
+from .models import Profstandard, DocumentCategory, SiteConfiguration
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
@@ -155,6 +155,7 @@ admin.site.register(Attestat)
 admin.site.register(Profile)
 admin.site.register(Profstandard)
 admin.site.register(DocumentCategory)
+admin.site.register(SiteConfiguration)
 # admin.site.register(CenterPhotos)
 # admin.site.register(WeldOrg)
 # admin.site.register(Welder)
