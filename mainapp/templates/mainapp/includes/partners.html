@@ -12,22 +12,14 @@
                 </div>
         <div class="row align-items-center">
             <div class="owl-carousel owl-theme">
+
+                {% for partner in partners %}
                 <div class="img-item img-fluid">
-                    <img src="{% static '/img/irk.png' %}" alt="">
+                        <img src="{{ partner.logo.url }}" alt="{{ partner.title }}">
                 </div>
-                <div class="img-item img-fluid">
-                    <img src="{% static '/img/sayan.png' %}" alt="">
-                </div>
-                <div class="img-item img-fluid">
-                        <img src="{% static '/img/ppgxo.png' %}" alt="">
-                    </div>
-                <div class="img-item img-fluid">
-                    <img src="{% static '/img/alrosa.png' %}" alt="">
-                </div>                                    
-                <div class="img-item img-fluid">
-                    <img src="{% static '/img/zabtek.png' %}" alt="">
-                </div>                                    
-            </div> 
+                {% endfor %}
+
+            </div>
 
         </div>
     </div>

@@ -13,8 +13,7 @@
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
-
+  {% endblock %}
 
 
   <link rel="stylesheet" href="{% static 'css/bootstrap-grid.css' %}">
@@ -25,13 +24,6 @@
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
-  {% if site.top_addr_line %}
-      <link rel="stylesheet" href="{% sass_src 'scss/variations/_top_addr_line_{{ site.top_addr_line.variant }}.scss' %}">
-  {% endif %}
-  {% endblock %}
-
-
-
 
   <!-- HEADER -->
 </head>
@@ -45,9 +37,6 @@
 
   {% include 'mainapp/includes/admin_panel.html'%}
 
-  {% if site.top_addr_line %}
-    {% include 'mainapp/includes/_top_addr_line_{{ site.top_addr_line.variant }}' %}
-  {% endif %}
 
   <!-- Include bg-menu-info -->
   {% if request.resolver_match.url_name == 'index' %}

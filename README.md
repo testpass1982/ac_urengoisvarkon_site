@@ -2,3 +2,4 @@
 
 
 # ac_site_template
+Djano lightweight scaffolding web-site with self-deployment fabric script

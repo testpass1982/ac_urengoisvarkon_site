@@ -46,10 +46,12 @@ def index(request):
             raise ValidationError('form not valid')
 
     from .models import CenterPhotos
+    from .models import Partner
 
     content = {
         'title': title,
-        'center_photos': CenterPhotos.objects.all().order_by('number')
+        'center_photos': CenterPhotos.objects.all().order_by('number'),
+        'partners': Partner.objects.all().order_by('number')
 
         # 'docs': docs,
         # 'articles': main_page_articles,

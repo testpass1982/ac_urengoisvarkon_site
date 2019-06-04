@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
 from .models import Profstandard, DocumentCategory, SiteConfiguration
+from .models import Partner, Component
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
@@ -143,6 +144,8 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
 
+admin.site.register(Partner)
+admin.site.register(Component)
 admin.site.register(Tag)
 admin.site.register(Category)
 # admin.site.register(Contact)

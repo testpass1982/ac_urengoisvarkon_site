@@ -433,19 +433,81 @@ class CenterPhotos(models.Model):
     def __str__(self):
         return self.title
 
+
+
 class SiteConfiguration(models.Model):
 
-    TOP_ADDR_LINE_CHOICES = (
-        ('1', 'address_uptime_registry'),
-        ('2', 'address_uptime'),
-        ('3', 'org_name_address_phones')
+    """class for configuration of site"""
+    SITE_TYPES = (
+        ('1', 'site_type1'),
+        ('2', 'site_type2'),
+        ('3', 'site_type3'),
     )
 
-    top_addr_line = models.CharField(max_length=1, choices=TOP_ADDR_LINE_CHOICES, blank=True, default=None)
+    site_type = models.CharField(
+        u'Тип сайта', max_length=1,
+        choices=SITE_TYPES, blank=True, default=None
+    )
+
+    color_set = models.CharField(
+        u'Цветовая схема (через запятую)',
+        max_length=50, null=True,
+        blank=True,
+        default=None
+    )
 
     class Meta:
         verbose_name = 'Конфигурация сайта'
         verbose_name_plural = 'Конфигурации сайта'
+
+    def __str__(self):
+        return self.title
+
+class Component(models.Model):
+    COMPONENT_TYPE_CHOICES = (
+        ('top_addr_line', 'Верхняя линия с адресом'),
+        ('main_menu', 'Главное меню сайта'),
+        ('secondary_menu', 'Второстепенное меню'),
+        ('main_banner', 'Главный баннер'),
+        ('pict_gallery', 'Галерея фотографий'),
+        ('text_block', 'Текстовы блок'),
+        ('contact_block', 'Блок с контактами'),
+        ('advertising_block', 'Блок с рекламой'),
+        ('partners_block', 'Блок с партнерами'),
+        ('footer', 'Футер')
+    )
+    title = models.CharField(u'Название компонента', max_length=60)
+    code = models.CharField(u'Шифр компонента (латиницей)', max_length=60)
+    component_type = models.CharField(
+        u'Тип компонента(назначение)',
+        max_length=30,
+        choices=COMPONENT_TYPE_CHOICES,
+        default='не определено'
+    )
+    css = models.FileField(u'Файл стилей компонента', upload_to="components/")
+    html = models.FileField(u'Файл разметки компонента', upload_to="components/")
+    js = models.FileField(u'Файл скриптов', null=True, blank=True, default=None, upload_to="components/")
+    published = models.BooleanField(u'Опубликовать компонет', default=False)
+    number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
+    configuration = models.ForeignKey(SiteConfiguration, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Компонент сайта'
+        verbose_name_plural = 'Компоненты сайта'
+
+    def __str__(self):
+        return self.title
+
+
+
+class Partner(models.Model):
+    title = models.CharField(u'Название партнера', max_length=60)
+    logo = models.ImageField(u'Логотип партнера', upload_to="upload/")
+    number = models.SmallIntegerField(u'Порядок вывода на сайт')
+
+    class Meta:
+        verbose_name = 'Партнер'
+        verbose_name_plural = 'Партнеры'
 
     def __str__(self):
         return self.title
