@@ -79,6 +79,19 @@ get_tag_list.allowtags = True
 get_tag_list.short_description = 'Список тэгов'
 
 
+from .models import Component
+
+
+class ComponentInline(admin.StackedInline):
+    model = Component
+    extra = 0
+    # fields = ['title', 'code', 'number']
+    # list_display = ['title']
+
+@admin.register(SiteConfiguration)
+class SiteConfigurationAdmin(admin.ModelAdmin):
+    inlines = [ComponentInline]
+
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ['title', 'url_code', get_tag_list, 'publish_on_main_page']
@@ -158,7 +171,7 @@ admin.site.register(Attestat)
 admin.site.register(Profile)
 admin.site.register(Profstandard)
 admin.site.register(DocumentCategory)
-admin.site.register(SiteConfiguration)
+# admin.site.register(SiteConfiguration)
 # admin.site.register(CenterPhotos)
 # admin.site.register(WeldOrg)
 # admin.site.register(Welder)

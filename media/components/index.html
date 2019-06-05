@@ -1,0 +1,30 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content  %}
+
+{% comment %} {{ request.resolver_match.url_name }} {% endcomment %}
+
+<!-- Include Modal -->
+{% include 'mainapp/includes/modal-window.html' %}
+{% comment %} <div w3-include-html="includes/modal-window.html"></div> {% endcomment %}
+<!-- End Include Modal -->
+
+<!-- Include Modal -->
+{% include 'mainapp/includes/info_box.html' %}
+{% comment %} <div w3-include-html="includes/info_box.html"></div> {% endcomment %}
+<!-- End Include Modal -->
+
+
+<!-- Include Modal -->
+{% include 'mainapp/includes/service_and_center.html' %}
+{% comment %} <div w3-include-html="includes/service_and_center.html"></div> {% endcomment %}
+<!-- End Include Modal -->
+
+
+<!-- Include Modal -->
+{% include 'mainapp/includes/partners.html' %}
+{% comment %} <div w3-include-html="includes/partners.html"></div> {% endcomment %}
+<!-- End Include Modal -->
+
+{% endblock  %}

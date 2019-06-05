@@ -15,6 +15,7 @@ def my_callback(sender, **kwargs):
 
 @receiver(pre_save, sender=Component)
 def make_template(sender, **kwargs):
+    print('------------->ME TOO')
     # find template files in components folder
     # place component.css file in static folder
     # place component.html in template folder

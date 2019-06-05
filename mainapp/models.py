@@ -443,7 +443,7 @@ class SiteConfiguration(models.Model):
         ('2', 'site_type2'),
         ('3', 'site_type3'),
     )
-
+    title = models.CharField(u'Название конфигурации', default='Конфигурация 1', max_length=30)
     site_type = models.CharField(
         u'Тип сайта', max_length=1,
         choices=SITE_TYPES, blank=True, default=None
