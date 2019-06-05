@@ -24,6 +24,11 @@
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+  {% if components %}
+    {% for component, value in components.items %}
+      <link rel="stylesheet" href="{{ value.css.url }}">
+    {% endfor %}
+  {% endif %}
 
   <!-- HEADER -->
 </head>
@@ -35,15 +40,18 @@
   {% comment %} <div w3-include-html="includes/modal-window.html"></div> {% endcomment %}
   <!-- End Include Modal -->
 
-  {% include 'mainapp/includes/admin_panel.html'%}
+  {% include 'mainapp/includes/admin_panel.html' %}
 
+  {% if site.top_addr_line %}
+    {{ site.top_addr_line.html.url }}
+  {% endif %}
 
   <!-- Include bg-menu-info -->
   {% if request.resolver_match.url_name == 'index' %}
-  {% include 'mainapp/includes/menu-bg-info.html' %}
+    {% include 'mainapp/includes/menu-bg-info.html' %}
   {% else %}
-  {% include 'mainapp/includes/bg-inner-page.html' %}
-{% endif %}
+    {% include 'mainapp/includes/bg-inner-page.html' %}
+  {% endif %}
   {% comment %} <div w3-include-html="includes/menu-bg-info.html"></div> {% endcomment %}
   <!-- End Include bg-menu-info -->
 

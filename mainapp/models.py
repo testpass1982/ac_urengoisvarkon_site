@@ -478,6 +478,7 @@ class Component(models.Model):
     )
     title = models.CharField(u'Название компонента', max_length=60)
     code = models.CharField(u'Шифр компонента (латиницей)', max_length=60)
+
     component_type = models.CharField(
         u'Тип компонента(назначение)',
         max_length=30,

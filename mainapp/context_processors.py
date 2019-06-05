@@ -1,7 +1,18 @@
 from .models import Document
-from .models import Profile, Service, Post
+from .models import Profile, Service, Post, SiteConfiguration, Component
 from .forms import ProfileImportForm
 import random
+from django.template import Context, Template
+from django.shortcuts import render, get_object_or_404
+
+class SiteComponent:
+    def __init__(self, html, contxt, css_file):
+        self.template = Template(html)
+        self.context = Context(contxt)
+        self.css = css_file
+
+    def render(self):
+        return self.template.render(self.context)
 
 def random_documents(request):
     all_documents = Document.objects.all()
@@ -27,3 +38,15 @@ def services(request):
 def profile_import(request):
     profile_import_form = ProfileImportForm()
     return {'profile_import_form': profile_import_form}
+
+def site_configuration(request):
+    site = SiteConfiguration.objects.first()
+    return {'site': site}
+
+def site_components(request):
+    site_components = Component.objects.all().order_by('number')
+    components = {}
+    for c in site_components:
+        component = SiteComponent(c.html, c.contxt)
+        components.update({c.code: component})
+    return {'components': components}
