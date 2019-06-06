@@ -154,16 +154,7 @@ class Document(models.Model):
     url_code = models.CharField(u'Код ссылки', max_length=30, blank=True, default='НЕ УКАЗАН')
     uploaded_at = models.DateTimeField(
         verbose_name='Загружен', default=timezone.now)
-    tags = models.ManyToManyField(Tag, verbose_name='Тэги', blank=True, help_text="""
-                        Для отображения документов в разделе ССР3ГАЦ используйте тег 'ССР3ГАЦ'<br>
-                        Для отображения документов в разделе ССР3ЦСП используйте тег 'ССР3ЦСП'<br>
-                        Для отображения документов в разделе АЦСМ46 используйте тег 'АЦСМ46'<br>
-                        Для отображения документов в разделе АЦСО82 используйте тег 'АЦСО82'<br>
-                        Для отображения документов в разделе 'АЦСТ90' используйте тег 'АЦСТ90'<br>
-                        Для отображения документов в разделе ЦОК012 используйте тег 'ЦОК012'<br>
-                        Для отображения документов в на странице ЦОК используйте тег 'НПА СПКС'<br>
-                        Для отображения документов в на странице ЦОК используйте тег 'Образцы документов СПКС'<br>
-                           """)
+    tags = models.ManyToManyField(Tag, verbose_name='Тэги', blank=True)
     created_date = models.DateTimeField(
         default=timezone.now, verbose_name='Дата создания')
     post = models.ForeignKey(Post, verbose_name='Страница',
@@ -485,9 +476,12 @@ class Component(models.Model):
         choices=COMPONENT_TYPE_CHOICES,
         default='не определено'
     )
-    css = models.FileField(u'Файл стилей компонента', upload_to="components/")
-    html = models.FileField(u'Файл разметки компонента', upload_to="components/")
+    html = models.FileField(u'Файл разметки компонента', null=True, blank=True, default=None, upload_to="components/")
+    css = models.FileField(u'Файл стилей компонента', null=True, blank=True, default=None, upload_to="components/")
     js = models.FileField(u'Файл скриптов', null=True, blank=True, default=None, upload_to="components/")
+    html_path = models.CharField(u'Путь к файлу разметки', blank=True, null=True, max_length=300, default='')
+    scss_path = models.CharField(u'Путь к файлу стилей', blank=True, null=True, max_length=300, default='')
+    js_path = models.CharField(u'Путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     published = models.BooleanField(u'Опубликовать компонет', default=False)
     number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
     configuration = models.ForeignKey(SiteConfiguration, on_delete=models.CASCADE)
@@ -498,7 +492,6 @@ class Component(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 class Partner(models.Model):
