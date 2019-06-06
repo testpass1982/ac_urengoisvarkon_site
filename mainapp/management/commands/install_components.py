@@ -10,6 +10,7 @@ COMPONENT_FOLDER_NAME = 'component__'
 COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mainapp', 'components')
 SCSS_FOLDER = os.path.join(settings.BASE_DIR, 'assets', 'scss', 'components')
 JS_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'js', 'components')
+IMAGES_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'images', 'components')
 
 class Command(BaseCommand):
     def __init__(self):
@@ -37,6 +38,11 @@ class Command(BaseCommand):
                             self.json_file = os.path.join(COMPONENTS_FOLDER, folder, afile)
                             with open(self.json_file, 'r') as json_file:
                                 self.parameters = json.load(json_file)
+                        if afile == 'images':
+                            images_folder = os.path.join(COMPONENT_FOLDER_NAME, folder, afile)
+                            for f in os.listdir(images_folder):
+                                self.move_file_to_folder(f, IMAGES_FOLDER)
+
                     print(self.json_file)
                     print(self.html_file)
                     print(self.scss_file)
@@ -53,17 +59,17 @@ class Command(BaseCommand):
     def move_file_to_folder(self, afile, folder):
         try:
             print('moving a file {}'.format(afile))
-            file_name = os.path.basename(afile)
             shutil.move(afile, folder)
             print('-------->file moved to {}'.format(folder))
-            self.scss_file = os.path.join(folder, file_name)
         except:
-            print('ERROR MOVING FILE')
+            print('NO FILE in {}'.format(folder))
 
     def update_parameters(self):
+        scss_file_path = os.path.join(SCSS_FOLDER, os.path.basename(self.scss_file))
+        js_file_path = os.path.join(JS_FOLDER, os.path.basename(self.js_file))
         self.parameters.update({'html_path': self.html_file})
-        self.parameters.update({'scss_path': self.scss_file})
-        self.parameters.update({'js_path': self.js_file})
+        self.parameters.update({'scss_path': scss_file_path})
+        self.parameters.update({'js_path': js_file_path})
         self.parameters.update({'title': self.component_title})
         print('***parameters updated: ', self.parameters)
 
