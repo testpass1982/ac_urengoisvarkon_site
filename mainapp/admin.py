@@ -155,10 +155,19 @@ class ContactAdmin(admin.ModelAdmin):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'number']
 
+from django.db import models
+from django.forms import TextInput
+@admin.register(Component)
+class ComponentAdmin(admin.ModelAdmin):
+    list_display= ['title', 'id', 'number']
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'100'})},
+        # models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},
+    }
 
 
 admin.site.register(Partner)
-admin.site.register(Component)
+# admin.site.register(Component)
 admin.site.register(Tag)
 admin.site.register(Category)
 # admin.site.register(Contact)

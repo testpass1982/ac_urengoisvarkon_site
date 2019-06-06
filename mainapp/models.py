@@ -484,7 +484,7 @@ class Component(models.Model):
     js_path = models.CharField(u'Путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     published = models.BooleanField(u'Опубликовать компонет', default=False)
     number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
-    configuration = models.ForeignKey(SiteConfiguration, on_delete=models.CASCADE)
+    configuration = models.ForeignKey(SiteConfiguration, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Компонент сайта'
