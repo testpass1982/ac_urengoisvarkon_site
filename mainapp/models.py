@@ -480,11 +480,15 @@ class Component(models.Model):
     css = models.FileField(u'Файл стилей компонента', null=True, blank=True, default=None, upload_to="components/")
     js = models.FileField(u'Файл скриптов', null=True, blank=True, default=None, upload_to="components/")
     html_path = models.CharField(u'Путь к файлу разметки', blank=True, null=True, max_length=300, default='')
+    relative_html_path = models.CharField(u'Относительный путь к файлу разметки', blank=True, null=True, max_length=300, default='')
     scss_path = models.CharField(u'Путь к файлу стилей', blank=True, null=True, max_length=300, default='')
+    relative_scss_path = models.CharField(u'Относительный путь к файлу стилей', blank=True, null=True, max_length=300, default='')
     js_path = models.CharField(u'Путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
+    relative_js_path = models.CharField(u'Относительный путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     published = models.BooleanField(u'Опубликовать компонет', default=False)
     number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
     configuration = models.ForeignKey(SiteConfiguration, null=True, on_delete=models.SET_NULL)
+
 
     class Meta:
         verbose_name = 'Компонент сайта'

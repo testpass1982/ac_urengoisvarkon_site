@@ -11,6 +11,10 @@ COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mai
 SCSS_FOLDER = os.path.join(settings.BASE_DIR, 'assets', 'scss', 'components')
 JS_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'js')
 IMAGES_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'img')
+SCSS_RELATIVE_FOLDER = 'scss/components/'
+JS_RELATIVE_FOLDER = 'js/'
+TEMPLATE_RELATIVE_FOLDER = 'mainapp/components/'
+IMAGES_RELATIVE_FOLDER = 'img/'
 
 class Command(BaseCommand):
     def __init__(self):
@@ -51,12 +55,10 @@ class Command(BaseCommand):
                     print(self.scss_file)
                     print(self.js_file)
                     print(self.parameters)
-                    # import pdb; pdb.set_trace()
                     self.move_file_to_folder(self.scss_file, SCSS_FOLDER)
                     self.move_file_to_folder(self.js_file, JS_FOLDER)
                     self.component_title = folder.split('__')[1]
                     self.update_parameters()
-                    # import pdb; pdb.set_trace()
                     self.create_component_object(self.parameters)
                     self.create_lock_file()
 
@@ -71,16 +73,22 @@ class Command(BaseCommand):
     def update_parameters(self):
         scss_file_path = os.path.join(SCSS_FOLDER, os.path.basename(self.scss_file))
         js_file_path = os.path.join(JS_FOLDER, os.path.basename(self.js_file))
-        self.parameters.update({'title': self.component_title})
-        self.parameters.update({'code': self.template_folder_name})
-        self.parameters.update({'html_path': self.html_file})
-        self.parameters.update({'scss_path': scss_file_path})
-        self.parameters.update({'js_path': js_file_path})
-        # import pdb; pdb.set_trace()
+        html_file_name = os.path.basename(self.html_file)
+        scss_file_name = os.path.basename(self.scss_file)
+        js_file_name = os.path.basename(self.js_file)
+        self.parameters.update({
+            'title': self.component_title,
+            'code': self.template_folder_name,
+            'html_path': self.html_file,
+            'scss_path': scss_file_path,
+            'js_path': js_file_path,
+            'relative_html_path': TEMPLATE_RELATIVE_FOLDER+html_file_name,
+            'relative_scss_path': SCSS_RELATIVE_FOLDER+scss_file_name,
+            'relative_js_path': JS_RELATIVE_FOLDER+js_file_name,
+        })
         print('***parameters updated: ', self.parameters)
 
     def create_component_object(self, options):
-        # import pdb; pdb.set_trace()
         component = Component.objects.create(**options)
         print('*** COMPONENT CREATED: ', component.title, component.pk)
 
