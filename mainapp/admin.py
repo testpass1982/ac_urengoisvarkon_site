@@ -85,12 +85,45 @@ from .models import Component
 class ComponentInline(admin.StackedInline):
     model = Component
     extra = 0
+    verbose_name = 'компонент'
+    verbose_name_plural = 'Создать связанный компонент'
     # fields = ['title', 'code', 'number']
     # list_display = ['title']
 
+from django import forms
+
+
+class ComponentModelForm(forms.ModelForm):
+    CHOICES = [(comp.id, comp.code) for comp in Component.objects.all().order_by('number')]
+    class Meta:
+        model = Component
+        exclude = (
+            # 'code',
+            # 'component_type',
+            'html',
+            'css',
+            'js',
+            'html_path',
+            'relative_html_path',
+            'scss_path',
+            'relative_scss_path',
+            'js_path',
+            'relative_js_path',
+        )
+
+    pk = forms.ChoiceField(choices=CHOICES)
+
+class ChooseExistingComponentInline(admin.TabularInline):
+    model = Component
+    form = ComponentModelForm
+    extra = 0
+    verbose_name = 'компонент'
+    verbose_name_plural =  'Выбрать существующие компоненты'
+
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
-    inlines = [ComponentInline]
+    inlines = [ComponentInline, ChooseExistingComponentInline]
+    # import pdb; pdb.set_trace()
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
