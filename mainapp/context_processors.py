@@ -11,8 +11,9 @@ class SiteComponent:
         self.context = Context(contxt)
         self.css = css_file
 
-    def render(self):
-        return self.template.render(self.context)
+    #render self templet with self context
+    # def render(self):
+    #     return self.template.render(self.context)
 
 def random_documents(request):
     all_documents = Document.objects.all()

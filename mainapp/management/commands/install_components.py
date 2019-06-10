@@ -24,9 +24,11 @@ class Command(BaseCommand):
         self.html_file = ''
         self.scss_file = ''
         self.js_file = ''
+        self.component_title = ''
         #self.parameters
     def handle(self, *args, **options):
         for folder in os.listdir(COMPONENTS_FOLDER):
+            self.component_title = folder.split('__')[1]
             if folder.startswith(COMPONENT_FOLDER_NAME):
                 print('FOUND COMPONENT FOLDER', folder)
                 self.template_folder_name = folder
@@ -47,17 +49,17 @@ class Command(BaseCommand):
                                 self.parameters = json.load(json_file)
                         if afile.startswith('img'):
                             for f in os.listdir(os.path.join(COMPONENTS_FOLDER, folder, afile)):
-                                image_file_path = os.path.join(COMPONENTS_FOLDER, folder, afile, f)
-                                self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
+                                try:
+                                    print('FILE:', f)
+                                    image_file_path = os.path.join(COMPONENTS_FOLDER, folder, afile, f)
+                                    self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
+                                except Exception as e:
+                                    print('SOMETHING GO WRONG ', e)
 
-                    print(self.json_file)
-                    print(self.html_file)
-                    print(self.scss_file)
-                    print(self.js_file)
-                    print(self.parameters)
+                    #find files by filetypes and move them to django static folders
+                    #every file will be renamed to 'name_of_component___filename'
                     self.move_file_to_folder(self.scss_file, SCSS_FOLDER)
                     self.move_file_to_folder(self.js_file, JS_FOLDER)
-                    self.component_title = folder.split('__')[1]
                     self.update_parameters()
                     self.create_component_object(self.parameters)
                     self.create_lock_file()
@@ -65,10 +67,14 @@ class Command(BaseCommand):
     def move_file_to_folder(self, afile, folder):
         try:
             print('moving a file {}'.format(afile))
-            shutil.move(afile, folder)
+            #rename a file adding a component name
+            old_name = os.path.basename(afile)
+            new_name = self.component_title+'__'+old_name
+            shutil.move(afile, folder+'/'+new_name)
+            # import pdb; pdb.set_trace()
             print('-------->file moved to {}'.format(folder))
-        except:
-            print('NO FILE')
+        except Exception as e:
+            print(e, 'ERROR MOVING A PICT FILE')
 
     def update_parameters(self):
         scss_file_path = os.path.join(SCSS_FOLDER, os.path.basename(self.scss_file))
