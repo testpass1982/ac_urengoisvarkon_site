@@ -5,6 +5,7 @@ from django.conf import settings
 import json
 import os
 import shutil
+import time
 
 COMPONENT_FOLDER_NAME = 'component__'
 COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mainapp', 'components')
@@ -26,7 +27,15 @@ class Command(BaseCommand):
         self.js_file = ''
         self.component_title = ''
         #self.parameters
+
+    def add_arguments(self, parser):
+        parser.add_argument('-u', '--undo', action='store_true', help="use it for uninstall all components")
+
     def handle(self, *args, **options):
+        if options['undo']:
+            print('UNINSTALLING')
+            time.sleep(2)
+            return
         for folder in os.listdir(COMPONENTS_FOLDER):
             self.component_title = folder.split('__')[1]
             if folder.startswith(COMPONENT_FOLDER_NAME):
@@ -103,6 +112,8 @@ class Command(BaseCommand):
 
     def create_lock_file(self):
         with open(os.path.join(COMPONENTS_FOLDER, self.template_folder_name, 'installed.lock'), 'w') as f:
-            data = "component installed {}".format(self.component_title)
-            f.write(data)
+            data = {
+                'installed_component': "{}".format(self.component_title),
+            }
+            f.write(str(data))
             print('done creating lock file')

@@ -40,7 +40,7 @@ urlpatterns = [
         mainapp.details_news,
         name='detailview'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # path('test_component/<slug:pk>'),
+    path('test_component/<slug:pk>', mainapp.test_component, name='test_component'),
 ]
 
 if settings.DEBUG:

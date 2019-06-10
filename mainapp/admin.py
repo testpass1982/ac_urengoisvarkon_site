@@ -118,11 +118,11 @@ class ChooseExistingComponentInline(admin.TabularInline):
     form = ComponentModelForm
     extra = 0
     verbose_name = 'компонент'
-    verbose_name_plural =  'Выбрать существующие компоненты'
+    verbose_name_plural = 'Выбрать существующие компоненты'
 
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
-    inlines = [ComponentInline, ChooseExistingComponentInline]
+    inlines = [ComponentInline]
     # import pdb; pdb.set_trace()
 
 @admin.register(Document)
@@ -192,7 +192,7 @@ from django.db import models
 from django.forms import TextInput
 @admin.register(Component)
 class ComponentAdmin(admin.ModelAdmin):
-    list_display= ['title', 'id', 'number']
+    list_display = ['title', 'id', 'number']
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
         # models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},

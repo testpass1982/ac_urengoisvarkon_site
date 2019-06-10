@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, PostPhoto, Tag, Category, Document, Article, Message, Contact
 from .models import Registry, Menu, Profile, Service
-from .models import Staff
+from .models import Staff, Component
 from .forms import PostForm, ArticleForm, DocumentForm, ProfileImportForm
 from .forms import SendMessageForm, SubscribeForm, AskQuestionForm, SearchRegistryForm
 from .adapters import MessageModelAdapter
@@ -201,3 +201,28 @@ def import_profile(request):
         else:
             content.update({'errors': 'Файл для загрузки не выбран'})
         return render(request, 'mainapp/includes/profile_load.html', content)
+
+def test_component(request, pk):
+    # from .context_processors import SiteComponent
+    from django.template import Context, Template
+
+    c = get_object_or_404(Component, pk=pk)
+    with open(c.html_path, 'r') as html_file:
+        template_string = html_file.read()
+    comp_context = {'component_name': c.title}
+
+    class SiteComponent:
+        def __init__(self, template, context):
+            self.template = Template(template)
+            self.context = Context(context)
+        def render(self):
+            return self.template.render(self.context)
+
+    component = SiteComponent(template_string, comp_context)
+
+    content = {
+        'component': component,
+    }
+    # import pdb; pdb.set_trace()
+
+    return render(request, 'mainapp/component_template.html', content)
