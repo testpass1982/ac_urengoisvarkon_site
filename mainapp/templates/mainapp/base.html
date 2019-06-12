@@ -84,6 +84,11 @@
   <script src="{% static 'js/jquery.counterup.js' %}"></script>
   <script src="{% static 'owlcarousel/owl.carousel.min.js' %}"></script>
 
+   {% if site.components %}
+      {% for component in site.components %}
+      <script src="{% static component.relative_js_path %}"></script>
+      {% endfor %}
+    {% endif %}
 
 </body>
 
