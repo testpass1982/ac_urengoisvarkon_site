@@ -26,6 +26,11 @@
   <link rel="stylesheet" href="{% sass_src 'scss/style.scss' %}">
     {% endblock %}
 
+  {% block compontents_css %}
+    {% for component in site.components %}
+      <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
+    {% endfor %}
+  {% endblock %}
 
   <!-- HEADER -->
 </head>
@@ -58,6 +63,12 @@
     <script src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
     <script src="{% static 'js/docs.js' %}"></script>
+
+    {% if site.components %}
+      {% for component in site.components %}
+      <script src="{% static component.relative_js_path %}"></script>
+      {% endfor %}
+    {% endif %}
 
 
 

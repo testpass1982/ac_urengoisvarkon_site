@@ -16,6 +16,7 @@
   {% endblock %}
 
 
+
   <link rel="stylesheet" href="{% static 'css/bootstrap-grid.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% sass_src 'scss/style.scss' %}">
@@ -24,11 +25,12 @@
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
-  {% if components %}
-    {% for component, value in components.items %}
-      <link rel="stylesheet" href="{{ value.css.url }}">
+
+  {% block compontents_css %}
+    {% for component in site.components %}
+      <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
     {% endfor %}
-  {% endif %}
+  {% endblock %}
 
   <!-- HEADER -->
 </head>

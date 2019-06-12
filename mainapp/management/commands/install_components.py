@@ -7,15 +7,15 @@ import os
 import shutil
 import time
 
-COMPONENT_FOLDER_NAME = 'component__'
+COMPONENT_FOLDER_NAME_PATTERN = 'c__'
 COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mainapp', 'components')
 SCSS_FOLDER = os.path.join(settings.BASE_DIR, 'assets', 'scss', 'components')
 JS_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'js')
 IMAGES_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'img')
-SCSS_RELATIVE_FOLDER = 'scss/components/'
-JS_RELATIVE_FOLDER = 'js/'
-TEMPLATE_RELATIVE_FOLDER = 'mainapp/components/'
-IMAGES_RELATIVE_FOLDER = 'img/'
+SCSS_RELATIVE_FOLDER = 'scss/components'
+JS_RELATIVE_FOLDER = 'js'
+TEMPLATE_RELATIVE_FOLDER = 'mainapp/components'
+IMAGES_RELATIVE_FOLDER = 'img'
 
 class Command(BaseCommand):
     def __init__(self):
@@ -36,58 +36,72 @@ class Command(BaseCommand):
             print('UNINSTALLING')
             time.sleep(2)
             return
-        for folder in os.listdir(COMPONENTS_FOLDER):
-            self.component_title = folder.split('__')[1]
-            if folder.startswith(COMPONENT_FOLDER_NAME):
-                print('FOUND COMPONENT FOLDER', folder)
-                self.template_folder_name = folder
-                if 'installed.lock' in os.listdir(os.path.join(COMPONENTS_FOLDER, folder)):
-                    print('it is already installed')
-                    continue
-                else:
-                    for afile in os.listdir(os.path.join(COMPONENTS_FOLDER, folder)):
-                        if afile.endswith('html'):
-                            self.html_file = os.path.join(COMPONENTS_FOLDER, folder, afile)
-                        if afile.endswith('scss'):
-                            self.scss_file = os.path.join(COMPONENTS_FOLDER, folder, afile)
-                        if afile.endswith('js'):
-                            self.js_file = os.path.join(COMPONENTS_FOLDER, folder, afile)
-                        if afile.endswith('json'):
-                            self.json_file = os.path.join(COMPONENTS_FOLDER, folder, afile)
-                            with open(self.json_file, 'r') as json_file:
-                                self.parameters = json.load(json_file)
-                        if afile.startswith('img'):
-                            for f in os.listdir(os.path.join(COMPONENTS_FOLDER, folder, afile)):
-                                try:
-                                    print('FILE:', f)
-                                    image_file_path = os.path.join(COMPONENTS_FOLDER, folder, afile, f)
-                                    self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
-                                except Exception as e:
-                                    print('SOMETHING GO WRONG ', e)
+        for component_folder in os.listdir(COMPONENTS_FOLDER):
+            self.component_title = component_folder
+            # if component_folder.startswith(COMPONENT_FOLDER_NAME_PATTERN):
+                # print('FOUND COMPONENT FOLDER', component_folder)
+            self.template_folder_name = component_folder
+            if 'installed.lock' in os.listdir(os.path.join(
+                    COMPONENTS_FOLDER, component_folder)):
+                print('it is already installed')
+                continue
+            else:
+                folder_list = os.listdir(os.path.join(COMPONENTS_FOLDER, component_folder))
+                folder_path = os.path.join(COMPONENTS_FOLDER, component_folder)
+                for afile in folder_list:
+                    if afile.endswith('html'):
+                        #this file will always place here, it will not be moved to another folder
+                        self.html_file = os.path.join(folder_path, afile)
+                    if afile.endswith('scss'):
+                        self.move_file_to_folder(
+                            #from:
+                            os.path.join(folder_path, afile),
+                            #to:
+                            os.path.join(SCSS_FOLDER, self.component_title)
+                            )
+                        self.scss_file = os.path.join(SCSS_FOLDER, self.component_title, afile)
+                        # import pdb; pdb.set_trace()
+                    if afile.endswith('js'):
+                        js_file = os.path.join(folder_path, afile)
+                        self.move_file_to_folder(
+                            os.path.join(folder_path, afile),
+                            os.path.join(JS_FOLDER, self.component_title)
+                            )
+                        self.js_file = os.path.join(JS_FOLDER, self.component_title, afile)
+                    if afile.endswith('json'):
+                        json_file = os.path.join(folder_path, afile)
+                        with open(json_file, 'r') as json_file:
+                            self.parameters = json.load(json_file)
+                    if afile.startswith('img'):
+                        for f in os.listdir(os.path.join(folder_path, afile)):
+                            try:
+                                print('FILE:', f)
+                                image_file_path = os.path.join(folder_path, afile, f)
+                                self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
+                            except Exception as e:
+                                print('SOMETHING GO WRONG ', e)
 
                     #find files by filetypes and move them to django static folders
                     #every file will be renamed to 'name_of_component___filename'
-                    self.move_file_to_folder(self.scss_file, SCSS_FOLDER)
-                    self.move_file_to_folder(self.js_file, JS_FOLDER)
-                    self.update_parameters()
-                    self.create_component_object(self.parameters)
-                    self.create_lock_file()
+            self.update_parameters()
+            self.create_component_object(self.parameters)
+            self.create_lock_file()
 
     def move_file_to_folder(self, afile, folder):
         try:
             print('moving a file {}'.format(afile))
             #rename a file adding a component name
-            old_name = os.path.basename(afile)
-            new_name = self.component_title+'__'+old_name
-            shutil.move(afile, folder+'/'+new_name)
+            # old_name = os.path.basename(afile)
+            # new_name = self.component_title+'__'+old_name
+            if not os.path.exists(folder):
+                os.mkdir(folder)
+            shutil.move(afile, folder)
             # import pdb; pdb.set_trace()
             print('-------->file moved to {}'.format(folder))
         except Exception as e:
             print(e, 'ERROR MOVING A PICT FILE')
 
     def update_parameters(self):
-        scss_file_path = os.path.join(SCSS_FOLDER, os.path.basename(self.scss_file))
-        js_file_path = os.path.join(JS_FOLDER, os.path.basename(self.js_file))
         html_file_name = os.path.basename(self.html_file)
         scss_file_name = os.path.basename(self.scss_file)
         js_file_name = os.path.basename(self.js_file)
@@ -95,11 +109,14 @@ class Command(BaseCommand):
             'title': self.component_title,
             'code': self.template_folder_name,
             'html_path': self.html_file,
-            'scss_path': scss_file_path,
-            'js_path': js_file_path,
-            'relative_html_path': TEMPLATE_RELATIVE_FOLDER+html_file_name,
-            'relative_scss_path': SCSS_RELATIVE_FOLDER+scss_file_name,
-            'relative_js_path': JS_RELATIVE_FOLDER+js_file_name,
+            'scss_path': self.scss_file,
+            'js_path': self.js_file,
+            'relative_html_path': '{}/{}/{}'.format(
+                TEMPLATE_RELATIVE_FOLDER, self.component_title, html_file_name),
+            'relative_scss_path': '{}/{}/{}'.format(
+                SCSS_RELATIVE_FOLDER, self.component_title, scss_file_name),
+            'relative_js_path': '{}/{}/{}'.format(
+                JS_RELATIVE_FOLDER, self.component_title, js_file_name)
         })
         print('***parameters updated: ', self.parameters)
 

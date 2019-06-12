@@ -190,9 +190,10 @@ class ServiceAdmin(admin.ModelAdmin):
 
 from django.db import models
 from django.forms import TextInput
+
 @admin.register(Component)
 class ComponentAdmin(admin.ModelAdmin):
-    list_display = ['title', 'id', 'number']
+    list_display = ['title', 'id', 'number', 'configuration']
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
         # models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},

@@ -487,7 +487,7 @@ class Component(models.Model):
     relative_js_path = models.CharField(u'Относительный путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     published = models.BooleanField(u'Опубликовать компонет', default=False)
     number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
-    configuration = models.ForeignKey(SiteConfiguration, null=True, on_delete=models.SET_NULL)
+    configuration = models.ForeignKey(SiteConfiguration, blank=True, null=True, on_delete=models.SET_NULL)
 
 
     class Meta:

@@ -17,5 +17,6 @@ server {
          include proxy_params;
          proxy_pass http://unix:/home/USERNAME/PROJECT_NAME/ac_site.sock;
      }
+    client_max_body_size 7mb;
 
 }

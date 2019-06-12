@@ -41,3 +41,19 @@ def doc_title(url_code):
         title = 'Загрузите документ с кодом {}'.format(url_code)
     return title
 
+
+from django.utils.safestring import mark_safe
+
+@register.simple_tag
+def chunk(code, parameter=None):
+    try:
+        chunk = Chunk.objects.get(code=code)
+        if parameter is not None:
+            attribute = parameter.split('_')[1]
+            # import pdb; pdb.set_trace()
+            object_attributes = [attr for attr in dir(chunk)]
+            if attribute in object_attributes:
+                return mark_safe(getattr(chunk, attribute))
+    except Chunk.DoesNotExist:
+        chunk = 'Создайте в админке вставку с кодом {}'.format(code)
+    return chunk.html

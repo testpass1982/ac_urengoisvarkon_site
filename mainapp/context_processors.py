@@ -15,14 +15,24 @@ class SiteComponent:
     # def render(self):
     #     return self.template.render(self.context)
 
+from .models import Document
+
 def random_documents(request):
     all_documents = Document.objects.all()
-    if len(all_documents) > 2:
+    if len(all_documents) > 3:
         all_document_pks = [doc.pk for doc in all_documents]
-        documents = [Document.objects.get(pk=random.choice(all_document_pks)) for i in range(0, 3)]
+        documents = []
+        for i in range(0, 5):
+            try:
+                random_document = Document.objects.get(pk=random.choice(all_document_pks))
+                # import pdb; pdb.set_trace()
+                if random_document not in documents:
+                    documents.append(random_document)
+            except Exception as e:
+                return {'random_documents': [e]}
         return {'random_documents': documents}
     else:
-        return {'random_documents': ['Нет документов в базе данных']}
+        return {'random_documents': ['Добавьте больше документов в базу данных']}
 
 def basement_news(request):
     basement_news = Post.objects.filter(publish_on_main_page=True).order_by('-published_date')[:3]
@@ -42,7 +52,13 @@ def profile_import(request):
 
 def site_configuration(request):
     site = SiteConfiguration.objects.first()
-    return {'site': site}
+    components = Component.objects.filter(configuration=site)
+    # import pdb; pdb.set_trace()
+    return {
+            'site': {
+                'components': components
+                }
+            }
 
 def site_components(request):
     site_components = Component.objects.all().order_by('number')

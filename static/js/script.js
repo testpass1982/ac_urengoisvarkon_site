@@ -1,7 +1,6 @@
 // Кнопка поиска
 
 $(document).ready(function() {
-  console.log('123');
 
   $('[data-fancybox="gallery"]').fancybox({
     // Options will go here
@@ -35,23 +34,23 @@ $(document).ready(function() {
   })
 
   //owl-carousel initiazilation
-  $('.owl-carousel').owlCarousel({
-    stagePadding: 50,
-    loop: true,
-    margin: 10,
-    nav: true,
-    responsive: {
-      320: {
-        items: 1
-      },
-      600: {
-        items: 3
-      },
-      1000: {
-        items: 5
-      }
-    }
-  })
+  // $('.owl-carousel').owlCarousel({
+  //   stagePadding: 50,
+  //   loop: true,
+  //   margin: 10,
+  //   nav: true,
+  //   responsive: {
+  //     320: {
+  //       items: 1
+  //     },
+  //     600: {
+  //       items: 3
+  //     },
+  //     1000: {
+  //       items: 5
+  //     }
+  //   }
+  // })
 
   // Просмотр+скачать
   $().fancybox({
