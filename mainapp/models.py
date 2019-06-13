@@ -439,13 +439,13 @@ class SiteConfiguration(models.Model):
         u'Тип сайта', max_length=1,
         choices=SITE_TYPES, blank=True, default=None
     )
-
     color_set = models.CharField(
         u'Цветовая схема (через запятую)',
         max_length=50, null=True,
         blank=True,
         default=None
     )
+    activated = models.BooleanField(u'Активировать', default=False)
 
     class Meta:
         verbose_name = 'Конфигурация сайта'

@@ -7,7 +7,7 @@ import os
 import shutil
 import time
 
-COMPONENT_FOLDER_NAME_PATTERN = 'c__'
+
 COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mainapp', 'components')
 SCSS_FOLDER = os.path.join(settings.BASE_DIR, 'assets', 'scss', 'components')
 JS_FOLDER = os.path.join(settings.BASE_DIR, 'static', 'js')
@@ -36,56 +36,56 @@ class Command(BaseCommand):
             print('UNINSTALLING')
             time.sleep(2)
             return
-        for component_folder in os.listdir(COMPONENTS_FOLDER):
-            self.component_title = component_folder
-            # if component_folder.startswith(COMPONENT_FOLDER_NAME_PATTERN):
+        else:
+            components_root_folder = COMPONENTS_FOLDER
+            for component_folder in os.listdir(components_root_folder):
+                self.component_title = component_folder
+                # if component_folder.startswith(COMPONENT_FOLDER_NAME_PATTERN):
                 # print('FOUND COMPONENT FOLDER', component_folder)
-            self.template_folder_name = component_folder
-            if 'installed.lock' in os.listdir(os.path.join(
-                    COMPONENTS_FOLDER, component_folder)):
-                print('it is already installed')
-                continue
-            else:
-                folder_list = os.listdir(os.path.join(COMPONENTS_FOLDER, component_folder))
-                folder_path = os.path.join(COMPONENTS_FOLDER, component_folder)
-                for afile in folder_list:
-                    if afile.endswith('html'):
-                        #this file will always place here, it will not be moved to another folder
-                        self.html_file = os.path.join(folder_path, afile)
-                    if afile.endswith('scss'):
-                        self.move_file_to_folder(
-                            #from:
-                            os.path.join(folder_path, afile),
-                            #to:
-                            os.path.join(SCSS_FOLDER, self.component_title)
-                            )
-                        self.scss_file = os.path.join(SCSS_FOLDER, self.component_title, afile)
-                        # import pdb; pdb.set_trace()
-                    if afile.endswith('js'):
-                        js_file = os.path.join(folder_path, afile)
-                        self.move_file_to_folder(
-                            os.path.join(folder_path, afile),
-                            os.path.join(JS_FOLDER, self.component_title)
-                            )
-                        self.js_file = os.path.join(JS_FOLDER, self.component_title, afile)
-                    if afile.endswith('json'):
-                        json_file = os.path.join(folder_path, afile)
-                        with open(json_file, 'r') as json_file:
-                            self.parameters = json.load(json_file)
-                    if afile.startswith('img'):
-                        for f in os.listdir(os.path.join(folder_path, afile)):
-                            try:
-                                print('FILE:', f)
-                                image_file_path = os.path.join(folder_path, afile, f)
-                                self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
-                            except Exception as e:
-                                print('SOMETHING GO WRONG ', e)
-
-                    #find files by filetypes and move them to django static folders
-                    #every file will be renamed to 'name_of_component___filename'
-            self.update_parameters()
-            self.create_component_object(self.parameters)
-            self.create_lock_file()
+                self.template_folder_name = component_folder
+                if 'installed.lock' in os.listdir(os.path.join(
+                        components_root_folder, component_folder)):
+                    print('it is already installed')
+                    continue
+                else:
+                    folder_list = os.listdir(os.path.join(components_root_folder, component_folder))
+                    folder_path = os.path.join(components_root_folder, component_folder)
+                    for afile in folder_list:
+                        if afile.endswith('html'):
+                            #this file will always place here, it will not be moved to another folder
+                            self.html_file = os.path.join(folder_path, afile)
+                        if afile.endswith('scss'):
+                            self.move_file_to_folder(
+                                #from:
+                                os.path.join(folder_path, afile),
+                                #to:
+                                os.path.join(SCSS_FOLDER, self.component_title)
+                                )
+                            self.scss_file = os.path.join(SCSS_FOLDER, self.component_title, afile)
+                        if afile.endswith('js'):
+                            js_file = os.path.join(folder_path, afile)
+                            self.move_file_to_folder(
+                                os.path.join(folder_path, afile),
+                                os.path.join(JS_FOLDER, self.component_title)
+                                )
+                            self.js_file = os.path.join(JS_FOLDER, self.component_title, afile)
+                        if afile.endswith('json'):
+                            json_file = os.path.join(folder_path, afile)
+                            with open(json_file, 'r') as json_file:
+                                self.parameters = json.load(json_file)
+                        if afile.startswith('img'):
+                            for f in os.listdir(os.path.join(folder_path, afile)):
+                                try:
+                                    print('FILE:', f)
+                                    image_file_path = os.path.join(folder_path, afile, f)
+                                    self.move_file_to_folder(image_file_path, IMAGES_FOLDER)
+                                except Exception as e:
+                                    print('SOMETHING GO WRONG ', e)
+                            #remove img folder
+                            os.rmdir(os.path.join(components_root_folder, component_folder, 'img'))
+                self.update_parameters()
+                self.create_component_object(self.parameters)
+                self.create_lock_file()
 
     def move_file_to_folder(self, afile, folder):
         try:

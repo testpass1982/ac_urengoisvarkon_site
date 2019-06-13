@@ -124,6 +124,7 @@ class ChooseExistingComponentInline(admin.TabularInline):
 class SiteConfigurationAdmin(admin.ModelAdmin):
     inlines = [ComponentInline]
     # import pdb; pdb.set_trace()
+    list_display = ['title', 'site_type', 'activated']
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):

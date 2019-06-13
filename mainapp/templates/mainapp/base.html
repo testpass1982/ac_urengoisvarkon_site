@@ -26,11 +26,15 @@
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
 
+  <!-- components scss files -->
   {% block compontents_css %}
-    {% for component in site.components %}
-      <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
-    {% endfor %}
+    {% if site.components|length >= 1 %}
+      {% for component in site.components %}
+        <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
+      {% endfor %}
+    {% endif %}
   {% endblock %}
+  <!-- components scss files -->
 
   <!-- HEADER -->
 </head>
@@ -84,11 +88,13 @@
   <script src="{% static 'js/jquery.counterup.js' %}"></script>
   <script src="{% static 'owlcarousel/owl.carousel.min.js' %}"></script>
 
-   {% if site.components %}
+  <!--components js files -->
+   {% if site.components|length >= 1 %}
       {% for component in site.components %}
       <script src="{% static component.relative_js_path %}"></script>
       {% endfor %}
     {% endif %}
+  <!--components js files -->
 
 </body>
 
