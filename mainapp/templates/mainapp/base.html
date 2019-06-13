@@ -29,8 +29,8 @@
   <!-- components scss files -->
   {% block compontents_css %}
     {% if site.components|length >= 1 %}
-      {% for component in site.components %}
-        <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
+      {% for c in site.components %}
+        <link rel="stylesheet" href="{% sass_src c.component.relative_scss_path %}">
       {% endfor %}
     {% endif %}
   {% endblock %}
@@ -41,6 +41,7 @@
 
 <body>
 
+
   <!-- Include Modal -->
   {% include 'mainapp/includes/modal-window.html' %}
   {% comment %} <div w3-include-html="includes/modal-window.html"></div> {% endcomment %}
@@ -48,9 +49,11 @@
 
   {% include 'mainapp/includes/admin_panel.html' %}
 
-  {% if site.top_addr_line %}
-    {{ site.top_addr_line.html.url }}
-  {% endif %}
+  {% for site_comp in site.components %}
+    {% if site_comp.component.component_type == 'top_addr_line' %}
+      {% include site_comp %}
+    {% endif %}
+  {% endfor %}
 
   <!-- Include bg-menu-info -->
   {% if request.resolver_match.url_name == 'index' %}
@@ -62,9 +65,11 @@
   <!-- End Include bg-menu-info -->
 
 
+
+
   {% block content %}
 
-  {% endblock %}
+  {% endblock content %}
 
   <!-- Include Modal -->
   {% include 'mainapp/includes/basement.html' %}
@@ -90,8 +95,8 @@
 
   <!--components js files -->
    {% if site.components|length >= 1 %}
-      {% for component in site.components %}
-      <script src="{% static component.relative_js_path %}"></script>
+      {% for c in site.components %}
+      <script src="{% static c.component.relative_js_path %}"></script>
       {% endfor %}
     {% endif %}
   <!--components js files -->

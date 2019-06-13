@@ -1,7 +1,15 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
 
+
+{% comment %} {% if site.components|length >= 1 %} {% endcomment %}
+    {% comment %} {% for comp in site.components %} {% endcomment %}
+    {% comment %} {% endfor %} {% endcomment %}
+{% comment %} {% endif %} {% endcomment %}
+
+
 {% block content  %}
+
 
 {% comment %} {{ request.resolver_match.url_name }} {% endcomment %}
 

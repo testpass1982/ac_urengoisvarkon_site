@@ -5,6 +5,8 @@ import random
 from django.template import Context, Template
 from django.shortcuts import render, get_object_or_404
 from .models import Document
+from django.utils.termcolors import colorize
+from .classes import SiteComponent
 
 
 def random_documents(request):
@@ -51,11 +53,13 @@ def site_configuration(request):
     # import pdb; pdb.set_trace()
     try:
         site = SiteConfiguration.objects.filter(activated=True)
-        components = Component.objects.filter(configuration=site[0].pk).order_by('number')
+        bd_components = Component.objects.filter(configuration=site[0].pk).order_by('number')
+        site_components = [SiteComponent(component) for component in bd_components]
         return {
                 'site': {
-                    'components': components
+                    'components': site_components,
                     }
                 }
-    except Exception:
-        return {'site': {'components': []}}
+    except Exception as e:
+        print (colorize('###---> SITE CONFIGURATION ERROR: {}'.format(e), bg='red'))
+        return {'site': {'components': None}}

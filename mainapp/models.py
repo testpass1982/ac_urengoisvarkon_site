@@ -486,6 +486,7 @@ class Component(models.Model):
     js_path = models.CharField(u'Путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     relative_js_path = models.CharField(u'Относительный путь к файлу скрипта', blank=True, null=True, max_length=300, default='')
     published = models.BooleanField(u'Опубликовать компонет', default=False)
+    main_page = models.BooleanField(u'Компонент главной страницы', default=False)
     number = models.SmallIntegerField(u'Порядок вывода на сайт', default=500)
     configuration = models.ForeignKey(SiteConfiguration, blank=True, null=True, on_delete=models.SET_NULL)
 

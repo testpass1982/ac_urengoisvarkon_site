@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import time
+from django.utils.termcolors import colorize
 
 
 COMPONENTS_FOLDER = os.path.join(settings.BASE_DIR, 'mainapp', 'templates', 'mainapp', 'components')
@@ -45,7 +46,8 @@ class Command(BaseCommand):
                 self.template_folder_name = component_folder
                 if 'installed.lock' in os.listdir(os.path.join(
                         components_root_folder, component_folder)):
-                    print('it is already installed')
+                    lock_file = os.path.join(components_root_folder, component_folder, 'installed.lock')
+                    self.check_installed_lock(lock_file)
                     continue
                 else:
                     folder_list = os.listdir(os.path.join(components_root_folder, component_folder))
@@ -122,15 +124,29 @@ class Command(BaseCommand):
 
     def create_component_object(self, options):
         component = Component.objects.create(**options)
-        print('*** COMPONENT CREATED: ', component.title, component.pk)
+        print(colorize('*** COMPONENT CREATED: {}, pk: {}'.format(
+            component.title, component.pk), bg='yellow', fg='blue'))
 
     def add_link_to_base_html(self, afile):
         pass
 
     def create_lock_file(self):
         with open(os.path.join(COMPONENTS_FOLDER, self.template_folder_name, 'installed.lock'), 'w') as f:
-            data = {
-                'installed_component': "{}".format(self.component_title),
-            }
-            f.write(str(data))
+            data = self.parameters
+            f.write(str(json.dumps(data)))
             print('done creating lock file')
+
+    def check_installed_lock(self, file):
+        print('FILE', file)
+        with open(file, 'r') as f:
+            lock_data = f.read()
+            lock_json = json.loads(lock_data)
+        components = Component.objects.all()
+        if len(components) == 0:
+            print(colorize('NO APPLICATION COMPONENTS INSTALLED', bg='red'))
+            self.create_component_object(lock_json)
+        else:
+            for c in components:
+                if c.title == lock_json['title']:
+                    print(colorize('Component {} installed'.format(lock_json['title']), bg='blue'))
+                    continue

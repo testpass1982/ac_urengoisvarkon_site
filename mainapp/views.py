@@ -17,6 +17,8 @@ from .registry_import import Importer, data_url
 from django.conf import settings
 from django.template.loader import render_to_string
 from .classes import SiteComponent
+from .models import CenterPhotos
+from .models import Partner
 
 
 
@@ -50,14 +52,19 @@ def index(request):
         else:
             raise ValidationError('form not valid')
 
-    from .models import CenterPhotos
-    from .models import Partner
+    # c = get_object_or_404(Component, pk=39)
+    # page_component = SiteComponent(c)
+    # can include component - give it a content
+    # can component.render - give a context directly to component
 
     content = {
         'title': title,
         'center_photos': CenterPhotos.objects.all().order_by('number'),
-        'partners': Partner.objects.all().order_by('number')
-
+        'partners': Partner.objects.all().order_by('number'),
+        'component_name': 'VASYA',
+        # 'component_name': page_component.component.title
+        # 'comp': page_component
+        # 'component': page_component
         # 'docs': docs,
         # 'articles': main_page_articles,
         # 'send_message_form': SendMessageForm(),
@@ -208,16 +215,13 @@ def import_profile(request):
         return render(request, 'mainapp/includes/profile_load.html', content)
 
 def test_component(request, pk):
-
     c = get_object_or_404(Component, pk=pk)
-
     component_context = { 'name': 'VASYA', 'given_context': 'context_of_component' }
     page_component = SiteComponent(c, component_context)
-
+    # can include component - give it a content
+    # can component.render - give a context directly to component
     content = {
-        'component': page_component,
-        'name': 'with page context {}'.format(c.title),
-        'given_context': 'GIVEN CONTEXT'
+        'component': page_component
     }
 
     return render(request, 'mainapp/component_template.html', content)

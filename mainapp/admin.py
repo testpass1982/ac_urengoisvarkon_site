@@ -93,29 +93,29 @@ class ComponentInline(admin.StackedInline):
 from django import forms
 
 
-class ComponentModelForm(forms.ModelForm):
-    CHOICES = [(comp.id, comp.code) for comp in Component.objects.all().order_by('number')]
-    class Meta:
-        model = Component
-        exclude = (
-            # 'code',
-            # 'component_type',
-            'html',
-            'css',
-            'js',
-            'html_path',
-            'relative_html_path',
-            'scss_path',
-            'relative_scss_path',
-            'js_path',
-            'relative_js_path',
-        )
+# class ComponentModelForm(forms.ModelForm):
+#     CHOICES = [(comp.id, comp.code) for comp in Component.objects.all().order_by('number')]
+#     class Meta:
+#         model = Component
+#         exclude = (
+#             # 'code',
+#             # 'component_type',
+#             'html',
+#             'css',
+#             'js',
+#             'html_path',
+#             'relative_html_path',
+#             'scss_path',
+#             'relative_scss_path',
+#             'js_path',
+#             'relative_js_path',
+#         )
 
-    pk = forms.ChoiceField(choices=CHOICES)
+#     pk = forms.ChoiceField(choices=CHOICES)
 
 class ChooseExistingComponentInline(admin.TabularInline):
     model = Component
-    form = ComponentModelForm
+    # form = ComponentModelForm
     extra = 0
     verbose_name = 'компонент'
     verbose_name_plural = 'Выбрать существующие компоненты'

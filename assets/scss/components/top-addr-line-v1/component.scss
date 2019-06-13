@@ -1,4 +1,32 @@
+//colors
+$primary: red;
+$primaryLight: yellow;
+$primaryDark: blue;
+$secondary: cyan;
+$secondaryLight: lightblue;
+$secondaryDark: darkblue;
+$neutral: orange;
+$neutralDarker: gray;
+$neutralDark: darkgray;
+$neutralLight: green;
+$neutralLighter: lightgreen;
+$neutralLightest: white;
+//end_colors
+
+//gradients
+//end_gradients
+
+//dimensions
+//end_dimensions
+
+//transitions
+//end_transitions
+
 .centered {
     text-align: center;
     color: blue;
+}
+
+.primary_colored {
+    color: $primary;
 }

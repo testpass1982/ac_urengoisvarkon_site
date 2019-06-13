@@ -12,8 +12,8 @@ class SiteComponent:
         self.template = Template(self.get_template_string())
 
     def get_template_string(self):
-        print('CWD: ', os.getcwd())
-        print('BASE_DIR: ', settings.BASE_DIR)
+        # print('CWD: ', os.getcwd())
+        # print('BASE_DIR: ', settings.BASE_DIR)
         with open(self.component.html_path) as f:
             html_string = f.read()
         return html_string

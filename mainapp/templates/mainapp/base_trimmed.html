@@ -26,11 +26,15 @@
   <link rel="stylesheet" href="{% sass_src 'scss/style.scss' %}">
     {% endblock %}
 
+  <!-- components scss files -->
   {% block compontents_css %}
-    {% for component in site.components %}
-      <link rel="stylesheet" href="{% sass_src component.relative_scss_path %}">
-    {% endfor %}
+    {% if site.components|length >= 1 %}
+      {% for c in site.components %}
+        <link rel="stylesheet" href="{% sass_src c.component.relative_scss_path %}">
+      {% endfor %}
+    {% endif %}
   {% endblock %}
+  <!-- components scss files -->
 
   <!-- HEADER -->
 </head>
@@ -38,14 +42,13 @@
 <body>
 
 
-
-{% block content  %}
-
-{% endblock  %}
-
 {% block components %}
 
 {% endblock components %}
+
+{% block content  %}
+
+{% endblock content %}
 
   <!-- End Include footer -->
   {% comment %} <div w3-include-html="includes/footer.html"></div> {% endcomment %}
@@ -64,11 +67,13 @@
     <script src="{% static 'js/script.js' %}"></script>
     <script src="{% static 'js/docs.js' %}"></script>
 
-    {% if site.components %}
-      {% for component in site.components %}
-      <script src="{% static component.relative_js_path %}"></script>
+  <!--components js files -->
+   {% if site.components|length >= 1 %}
+      {% for c in site.components %}
+      <script src="{% static c.component.relative_js_path %}"></script>
       {% endfor %}
     {% endif %}
+  <!--components js files -->
 
 
 
