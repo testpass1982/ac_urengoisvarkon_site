@@ -1,0 +1,128 @@
+.main_menu__background {
+  padding: 20px 0px 20px 30px;
+  background-color: black; }
+  @media screen and (max-width: 992px) {
+    .main_menu__background {
+      padding: 5px 0px;
+      margin-bottom: 0px;
+      border-bottom: 1px solid #cfcfcf; } }
+
+.nav-link {
+  display: block; }
+  .nav-link:hover {
+    text-decoration: underline;
+    margin-top: -2px; }
+
+.navbar {
+  font-size: 16px;
+  color: #39567e; }
+
+.navbar-dark .navbar-nav .navbar-dark .navbar-nav {
+  color: #39567e; }
+
+.navbar-dark .navbar-toggler {
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+  outline: none; }
+
+.navbar-dark .navbar-toggler-icon {
+  background: url(/static_root/img/burger.svg) no-repeat;
+  background-size: cover;
+  margin-left: 10px; }
+
+@media screen and (max-width: 992px) {
+  .menu__navbar ul {
+    margin-left: 25px; } }
+
+.navbar-nav {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none; }
+
+.navbar-nav .nav-link {
+  padding-right: 0;
+  padding-left: 0; }
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px; }
+
+.header_phone_mob {
+  margin-right: 20px;
+  margin-left: 25px;
+  display: none; }
+  @media screen and (max-width: 991px) {
+    .header_phone_mob {
+      display: block;
+      margin-top: 13px; } }
+
+.header_phone a {
+  text-decoration: none; }
+
+.text_phone {
+  color: #fff;
+  margin-right: 15px;
+  font-size: 26px; }
+  @media screen and (max-width: 1600px) {
+    .text_phone {
+      margin-right: 0px;
+      font-size: 20px; } }
+  @media screen and (max-width: 1200px) {
+    .text_phone {
+      margin-right: 0px;
+      font-size: 18px; } }
+
+.text_phone_mob {
+  color: #03274b;
+  margin-right: 15px;
+  font-size: 26px; }
+  @media screen and (max-width: 992px) {
+    .text_phone_mob {
+      margin-right: 0px;
+      font-size: 20px;
+      font-weight: 500; } }
+
+.text_phone_consultant {
+  font-size: 12px;
+  color: #fff;
+  margin-top: -18px; }
+
+.text_phone_consultant_mob {
+  font-size: 12px;
+  color: #03274b;
+  margin-top: -18px; }
+  @media screen and (max-width: 992px) {
+    .text_phone_consultant_mob {
+      margin-bottom: 0px;
+      font-size: 10px; } }
+
+@media screen and (max-width: 992px) {
+  .feedback_button_header {
+    margin-top: 15px;
+    margin-bottom: 0px; } }
+
+.feedback_button_header a {
+  text-decoration: none;
+  color: #fff; }
+
+.feedback_header {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #ffe13a;
+  padding: 8px 50px;
+  border-radius: 45px;
+  color: #fff; }
+  @media screen and (max-width: 1600px) {
+    .feedback_header {
+      font-size: 12px;
+      padding: 8px 35px; } }
+  .feedback_header:hover {
+    background-color: #ffffff25;
+    transition: 0.2s; }
+
+/*# sourceMappingURL=component.css.map */

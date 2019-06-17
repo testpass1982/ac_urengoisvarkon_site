@@ -1,0 +1,31 @@
+.headline_bg_content {
+    font-size: 32px;
+    font-weight: 450;
+    color: #fff;
+    line-height: 1.6;
+
+    @media screen and (max-width: 992px) {
+        font-size: 18px;
+    }
+}
+
+.head_bg_box_button {
+
+    @media screen and (max-width: 992px) {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+.head_bg_text_small_two {
+    font-size: 18px;
+    font-weight: 300;
+    color: #fff;
+    line-height: 1.8;
+    margin-top: 10px;
+    margin-bottom: 25px;
+
+    @media screen and (max-width: 992px) {
+        font-size: 16px;
+    }
+}

@@ -460,6 +460,7 @@ class Component(models.Model):
         ('main_menu', 'Главное меню сайта'),
         ('secondary_menu', 'Второстепенное меню'),
         ('main_banner', 'Главный баннер'),
+        ('inner_head', 'Хедер для внутренних страниц'),
         ('pict_gallery', 'Галерея фотографий'),
         ('text_block', 'Текстовы блок'),
         ('contact_block', 'Блок с контактами'),

@@ -1,0 +1,200 @@
+{% load static %}
+{% load link_holders %}
+<!-- BG info -->
+<div class="bg-block-01">
+    <div class="bg">
+        <div class="blog-info">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                        <a href="http://www.naks.ru/">
+                            <img src="{% static 'img/SASP.png' %}" class="sasp__logo" title="Система Аттестации Сварочного Производства" alt="">
+                           </a>
+
+                        <div class="about__organization__text">
+                            <p>Аттестационный центр <br> <strong>{{ profile.org_short_name }}</strong> </p>
+                        </div>
+
+                        <div class="about__organization__text__two">
+                            <p> {{ profile.org_short_name }} является
+                                членом СРО Ассоциация «Национальное Агентство Контроля Сварки», внесено в реестр Системы Аттестации Сварочного
+                                производства (САСв) Ростехнадзора и оказывает услуги по аттестации сварщиков и
+                                специалистов сварочного производства и оценки квалификации в области сварки и родственных процессов.
+                            </p>
+                        </div>
+
+                        <div class="button__zayavka__online">
+                            <a href="#" class="button__zayavka__text" data-toggle="modal" data-target="#modal-statement">
+                                Подать заявку онлайн</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <p class="head__information">Информация</p>
+                        <div class="row align-items-stretch">
+                            <div class="col-xl-6 mb-3">
+                                <div class="head__box__text h-100">
+                                    <a href="{% link_holder 'INFO'%}">
+                                        <div class="head__box__info h-100">
+                                            {% title_holder 'INFO' %}
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 mb-3">
+                                <div class="head__box__text h-100">
+                                    <a data-fancybox="" data-src="#trueModal" data-modal="true" href="javascript:;">
+                                        <div class="head__box__info h-100">
+                                            Вопросы и ответы <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div id="trueModal" style="display: none; max-width: 800px;">
+                                            <h3>
+                                                <div class="close-modal-btn float-right" data-fancybox-close="#"><i class="fas fa-times"></i></div>
+                                                Часто задаваемые вопросы <br> в области аттетстации
+                                            </h3>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Стоимость аттестации?
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – В зависимости от направления аттестации, в соответствии с заявкой
+                                                </p>
+
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Порядок аттестации?
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    - Рассмотрение заявки, выставления счета, проведение
+                                                    предаттестационной
+                                                    подготовки,
+                                                    аттестации выдачи документов по результатам.
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Место проведение аттестации
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    - Производственная база НАКС Архангельск, Талажское шоссе 17, по
+                                                    мере
+                                                    формирования
+                                                    групп
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Сроки проведения аттестации
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – 3-4 дня, в зависимости от направления деятельности
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Какие необходимо документы?
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – Заявка, согласие на обработку персональных данных, документ об
+                                                    образовании,
+                                                    подтверждение трудового стажа и квалификации, копия предыдущего
+                                                    удостоверения ( При
+                                                    наличии) , реквизиты организации (для юр. Лиц), для частных лиц (
+                                                    паспорт , снилс , ИНН).
+                                                </p>
+                                            </div>
+                                            <div class="line__text"></div>
+                                            <p class="header__vopros__text">
+                                                Технологии
+                                            </p>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Стоимость аттестации
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – В зависимости от направления аттестации, в соответствии с заявкой
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Порядок аттестации?
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    - Рассмотрение заявки, выставления счета, составление программы
+                                                    аттестации, сварка КСС,
+                                                    проведение испытаний, оформление результатов с выдача документов.
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Место проведения аттестации
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – Производственная база / монтажная площадка / организация –
+                                                    заявителя
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Сроки проведения аттестации
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – от 60 дней
+                                                </p>
+                                            </div>
+                                            <div class="box__vopros__otvet">
+                                                <p class="vopros__text">
+                                                    Требования к организации - заявителю
+                                                </p>
+                                                <p class="vopros__otvet__main">
+                                                    – ТИ на заявленный способ аттестации, наличие аттестованного
+                                                    персонала,
+                                                    наличие службы
+                                                    сварки, наличие аттестованного оборудования, наличие оснастки,
+                                                    наличие
+                                                    основных материалов
+                                                    для сварки КСС согласно разработанной программы.
+                                                </p>
+                                            </div>
+                                            <p>
+                                                <button data-fancybox-close="" class="close__modal__voprosi">Закрыть</button>
+                                            </p>
+
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-6 mb-3">
+                                <div class="head__box__text h-100">
+                                    <a href="{% url 'doc' %}">
+                                        <div class="head__box__info h-100">
+                                           Документы (лицензии, сертификаты, образцы заявок)
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 mb-3">
+                                <div class="head__box__text h-100">
+                                    <a href="{% link_holder 'OBLD' %}" title="Перечень наименований квалификаций">
+                                        <div class="head__box__info h-100">
+                                            {% title_holder 'OBLD' %}
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

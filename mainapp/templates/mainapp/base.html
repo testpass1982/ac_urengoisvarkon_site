@@ -49,21 +49,22 @@
 
   {% include 'mainapp/includes/admin_panel.html' %}
 
+<!--include components order by number in admin panel -->
   {% for site_comp in site.components %}
-    {% if site_comp.component.component_type == 'top_addr_line' %}
+    {% if site_comp.component.component_type == 'top_addr_line' or site_comp.component.component_type == 'main_menu' or site_comp.component.component_type == 'inner_head'%}
       {% include site_comp %}
     {% endif %}
   {% endfor %}
 
-  <!-- Include bg-menu-info -->
-  {% if request.resolver_match.url_name == 'index' %}
-    {% include 'mainapp/includes/menu-bg-info.html' %}
-  {% else %}
-    {% include 'mainapp/includes/bg-inner-page.html' %}
-  {% endif %}
-  {% comment %} <div w3-include-html="includes/menu-bg-info.html"></div> {% endcomment %}
-  <!-- End Include bg-menu-info -->
 
+  <!-- Include main-banner on main page -->
+  {% if request.resolver_match.url_name == 'index' %}
+    {% for site_comp in site.components %}
+      {% if site_comp.component.component_type == 'main_banner' %}
+        {% include site_comp %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 
 
 

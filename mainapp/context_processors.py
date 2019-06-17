@@ -55,6 +55,7 @@ def site_configuration(request):
         site = SiteConfiguration.objects.filter(activated=True)
         bd_components = Component.objects.filter(configuration=site[0].pk).order_by('number')
         site_components = [SiteComponent(component) for component in bd_components]
+        # import pdb; pdb.set_trace()
         return {
                 'site': {
                     'components': site_components,

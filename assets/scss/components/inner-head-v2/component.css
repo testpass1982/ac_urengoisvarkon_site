@@ -1,0 +1,19 @@
+@media screen and (max-width: 576px) {
+  .head_number {
+    text-align: center; } }
+
+.consultant_text {
+  font-size: 14px;
+  color: blue; }
+
+.auth-edo-btn {
+  border: 1px solid blue;
+  box-shadow: 0 0 10px rgba(5, 59, 236, 0.5);
+  color: #053bec;
+  padding: 15px; }
+  .auth-edo-btn:hover {
+    border: 2px solid blue;
+    background-color: blue;
+    color: white; }
+
+/*# sourceMappingURL=component.css.map */
