@@ -1,7 +1,9 @@
 // Menu
+@import '_variables.scss';
+
 .main_menu__background {
     padding: 20px 0px 20px 30px;
-    background-color: black;
+    background-color: $primaryLight;
     // border-radius: 7px;
     @media screen and (max-width: 992px) {
         padding: 5px 0px;
@@ -11,7 +13,13 @@
 }
 
 .nav-link {
-    display: block;
+    padding-right: 0;
+    padding-left: 0;
+    // padding-top: 10px;
+    // padding-bottom: 10px;
+    // padding: 10px 15px !important;
+    // display: block;
+    color: $neutralLight !important;
     &:hover {
         text-decoration: underline;
         margin-top: -2px;
@@ -20,11 +28,11 @@
 
 .navbar {
     font-size: 16px;
-    color: #39567e;
+    color: $secondaryDark;
 }
 
 .navbar-dark .navbar-nav .navbar-dark .navbar-nav {
-    color: #39567e;
+    color: $secondaryDark;
 }
 
 .navbar-dark .navbar-toggler {
@@ -57,7 +65,7 @@
     list-style: none;
   }
 
-  .navbar-nav .nav-link {
+  .navbar-nav {
     padding-right: 0;
     padding-left: 0;
   }
@@ -80,7 +88,6 @@
 
 .header_phone a {
     text-decoration: none;
-
 }
 
 

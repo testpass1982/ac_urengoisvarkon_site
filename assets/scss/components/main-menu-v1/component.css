@@ -1,6 +1,6 @@
 .main_menu__background {
   padding: 20px 0px 20px 30px;
-  background-color: black; }
+  background-color: #7b405c; }
   @media screen and (max-width: 992px) {
     .main_menu__background {
       padding: 5px 0px;
@@ -8,17 +8,19 @@
       border-bottom: 1px solid #cfcfcf; } }
 
 .nav-link {
-  display: block; }
+  padding-right: 0;
+  padding-left: 0;
+  color: #dae2cd !important; }
   .nav-link:hover {
     text-decoration: underline;
     margin-top: -2px; }
 
 .navbar {
   font-size: 16px;
-  color: #39567e; }
+  color: #1f3549; }
 
 .navbar-dark .navbar-nav .navbar-dark .navbar-nav {
-  color: #39567e; }
+  color: #1f3549; }
 
 .navbar-dark .navbar-toggler {
   background-color: transparent;
@@ -45,7 +47,7 @@
   margin-bottom: 0;
   list-style: none; }
 
-.navbar-nav .nav-link {
+.navbar-nav {
   padding-right: 0;
   padding-left: 0; }
 

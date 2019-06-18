@@ -439,11 +439,11 @@ class SiteConfiguration(models.Model):
         u'Тип сайта', max_length=1,
         choices=SITE_TYPES, blank=True, default=None
     )
-    color_set = models.CharField(
-        u'Цветовая схема (через запятую)',
-        max_length=50, null=True,
+    color_set_path = models.CharField(
+        u'Путь к файлу с переменными SCSS',
+        max_length=200, null=True,
         blank=True,
-        default=None
+        default='assets/scss/_variables.scss'
     )
     activated = models.BooleanField(u'Активировать', default=False)
 
@@ -495,6 +495,18 @@ class Component(models.Model):
     class Meta:
         verbose_name = 'Компонент сайта'
         verbose_name_plural = 'Компоненты сайта'
+
+    def __str__(self):
+        return self.title
+
+class ColorScheme(models.Model):
+    title = models.CharField(u'Название', default='Цветовая схема', max_length=50)
+    colors = models.CharField(u'Цвета (через запятую, HEX)', max_length=100)
+    configuration = models.ForeignKey(SiteConfiguration, blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name = 'Цветовая схема'
+        verbose_name_plural = 'Цветовые схемы'
 
     def __str__(self):
         return self.title

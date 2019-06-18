@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
 from .models import Profstandard, DocumentCategory, SiteConfiguration
-from .models import Partner, Component
+from .models import Partner, Component, ColorScheme
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
@@ -120,9 +120,15 @@ class ChooseExistingComponentInline(admin.TabularInline):
     verbose_name = 'компонент'
     verbose_name_plural = 'Выбрать существующие компоненты'
 
+class ColorSchemeInline(admin.StackedInline):
+    model = ColorScheme
+    extra = 0
+    verbose_name = 'цветовая схема'
+    verbose_name_plural = 'цветовые схемы'
+
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
-    inlines = [ComponentInline]
+    inlines = [ComponentInline, ColorSchemeInline]
     # import pdb; pdb.set_trace()
     list_display = ['title', 'site_type', 'activated']
 
@@ -200,6 +206,9 @@ class ComponentAdmin(admin.ModelAdmin):
         # models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},
     }
 
+@admin.register(ColorScheme)
+class ColorSchemeAdmin(admin.ModelAdmin):
+    list_display = ['title', 'id', 'configuration']
 
 admin.site.register(Partner)
 # admin.site.register(Component)

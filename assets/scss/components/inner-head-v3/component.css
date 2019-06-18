@@ -1,0 +1,36 @@
+.header-logo {
+  border: 1px dotted gray; }
+
+.btn-outline-white {
+  background-color: transparent;
+  font-size: 0.875rem;
+  color: #fff;
+  border-color: #fff; }
+
+.btn-outline-white:hover {
+  color: #000;
+  background-color: #fff;
+  border-color: #fff; }
+
+.btn-blue {
+  font-size: 0.875rem;
+  color: #fff;
+  background-color: #5ba4dd;
+  border-color: #5ba4dd; }
+
+.btn-blue:hover {
+  color: #fff;
+  background-color: #0D9BFF;
+  border-color: #0D9BFF; }
+
+.btn-outline-blue {
+  font-size: 0.875rem;
+  color: #5ba4dd;
+  border-color: #5ba4dd; }
+
+.btn-outline-blue:hover {
+  color: #fff;
+  background-color: #5ba4dd;
+  border-color: #5ba4dd; }
+
+/*# sourceMappingURL=component.css.map */

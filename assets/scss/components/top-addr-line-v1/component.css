@@ -1,8 +1,37 @@
 .centered {
-  text-align: center;
-  color: blue; }
+  text-align: center; }
 
 .primary_colored {
-  color: red; }
+  color: #381d2a; }
+
+.primaryLight_colored {
+  color: #7b405c; }
+
+.primaryDark_colored {
+  color: #000000; }
+
+.secondary_colored {
+  color: #3e6990; }
+
+.secondaryLight_colored {
+  color: #729cc2; }
+
+.secondaryDark_colored {
+  color: #1f3549; }
+
+.neutral_colored {
+  color: #aabd8c; }
+
+.neutralLight_colored {
+  color: #dae2cd; }
+
+.neutralDark_colored {
+  color: #789053; }
+
+.bg_neutralLight_colored {
+  background-color: #dae2cd; }
+
+.bolded {
+  font-weight: bold; }
 
 /*# sourceMappingURL=component.css.map */
