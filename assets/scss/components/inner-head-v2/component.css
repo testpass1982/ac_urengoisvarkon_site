@@ -4,16 +4,16 @@
 
 .consultant_text {
   font-size: 14px;
-  color: blue; }
+  color: #61707d; }
 
 .auth-edo-btn {
-  border: 1px solid blue;
-  box-shadow: 0 0 10px rgba(5, 59, 236, 0.5);
-  color: #053bec;
+  border: 1px solid #61707d;
+  box-shadow: 0 0 10px #343d44;
+  color: #61707d;
   padding: 15px; }
   .auth-edo-btn:hover {
-    border: 2px solid blue;
-    background-color: blue;
-    color: white; }
+    border: 2px solid #61707d;
+    background-color: #61707d;
+    color: #fec196; }
 
 /*# sourceMappingURL=component.css.map */

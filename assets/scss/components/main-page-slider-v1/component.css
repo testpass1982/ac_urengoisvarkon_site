@@ -4,14 +4,13 @@
   background-size: cover; }
 
 .bg {
-  background: url(/static_root/img/gradient.png) no-repeat;
+  background: rgba(52, 61, 68, 0.5);
   background-size: cover;
   color: #fff;
   width: 100%; }
 
 .blog-info {
-  padding: 60px 0px 60px 0px;
-  margin-bottom: 50px; }
+  padding: 60px 0px 60px 0px; }
 
 .about__organization__text {
   font-size: 30px;

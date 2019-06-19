@@ -1,3 +1,5 @@
+@import '_variables.scss';
+
 .bg-block-01 {
     background: url(/static_root/img/background.png) no-repeat;
     width: 100%;
@@ -5,7 +7,8 @@
 }
 
 .bg {
-    background: url(/static_root/img/gradient.png) no-repeat;
+    // background: url(/static_root/img/gradient.png) no-repeat;
+    background: rgba($primaryDark, 0.5);
     background-size: cover;
     color: #fff;
     width: 100%;
@@ -13,7 +16,7 @@
 
 .blog-info {
     padding: 60px 0px 60px 0px;
-    margin-bottom: 50px;
+    // margin-bottom: 50px;
 }
 
 .about__organization__text {

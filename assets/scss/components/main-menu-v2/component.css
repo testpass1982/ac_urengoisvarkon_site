@@ -1,5 +1,5 @@
 .menu__background {
-  background-color: #4c6c9c;
+  background-color: #d1b5b8;
   padding: 20px 0px 20px 0px;
   font-weight: 300;
   text-transform: uppercase; }
@@ -15,5 +15,10 @@
   font-size: 16px;
   color: #fff;
   text-align: center; }
+
+.menu__navbar .navbar .nav-item .nav-link {
+  padding: 0;
+  color: #343d44;
+  font-weight: 300; }
 
 /*# sourceMappingURL=component.css.map */

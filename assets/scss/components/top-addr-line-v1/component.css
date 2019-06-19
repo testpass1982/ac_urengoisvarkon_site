@@ -2,34 +2,34 @@
   text-align: center; }
 
 .primary_colored {
-  color: #381d2a; }
+  color: #61707d; }
 
 .primaryLight_colored {
-  color: #7b405c; }
+  color: #96a3ae; }
 
 .primaryDark_colored {
-  color: #000000; }
+  color: #343d44; }
 
 .secondary_colored {
-  color: #3e6990; }
+  color: #aa767c; }
 
 .secondaryLight_colored {
-  color: #729cc2; }
+  color: #d1b5b8; }
 
 .secondaryDark_colored {
-  color: #1f3549; }
+  color: #73474c; }
 
 .neutral_colored {
-  color: #aabd8c; }
+  color: #d6a184; }
 
 .neutralLight_colored {
-  color: #dae2cd; }
+  color: #efdbd0; }
 
 .neutralDark_colored {
-  color: #789053; }
+  color: #b7683d; }
 
 .bg_neutralLight_colored {
-  background-color: #dae2cd; }
+  background-color: #efdbd0; }
 
 .bolded {
   font-weight: bold; }

@@ -57,11 +57,18 @@ def index(request):
     # can include component - give it a content
     # can component.render - give a context directly to component
 
+    pictured_posts = {}
+    main_page_posts = Post.objects.filter(publish_on_main_page=True).order_by('published_date')[:3]
+    for post in main_page_posts:
+        pictured_posts[post] = PostPhoto.objects.filter(post__pk=post.pk).first()
+
     content = {
         'title': title,
         'center_photos': CenterPhotos.objects.all().order_by('number'),
         'partners': Partner.objects.all().order_by('number'),
         'component_name': 'VASYA',
+        'pictured_posts': pictured_posts,
+        'not_pictured_posts': Post.objects.filter(publish_in_basement=True)
         # 'component_name': page_component.component.title
         # 'comp': page_component
         # 'component': page_component
@@ -71,6 +78,7 @@ def index(request):
         # 'subscribe_form': SubscribeForm(),
         # 'ask_question_form': AskQuestionForm()
     }
+    # import pdb; pdb.set_trace()
 
     return render(request, 'mainapp/index.html', content)
 

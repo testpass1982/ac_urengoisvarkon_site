@@ -11,9 +11,7 @@ from django.core.validators import FileExtensionValidator
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 from django.urls import reverse
-#using this as a store for weld orgs:
 from picklefield.fields import PickledObjectField
-# from django_resized import ResizedImageField
 
 
 # Create your models here.
@@ -461,6 +459,8 @@ class Component(models.Model):
         ('secondary_menu', 'Второстепенное меню'),
         ('main_banner', 'Главный баннер'),
         ('inner_head', 'Хедер для внутренних страниц'),
+        ('helper_block', 'Вспомогательный заполнятель пустоты'),
+        ('main_page_content', 'Контент главной страницы'),
         ('pict_gallery', 'Галерея фотографий'),
         ('text_block', 'Текстовы блок'),
         ('contact_block', 'Блок с контактами'),

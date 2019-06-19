@@ -5,11 +5,6 @@
   font-weight: 450;
 }
 
-.head_box_content_small_text {
-  font-size: 18px;
-  color: #555555;
-}
-
 .content_center_text {
   font-size: 16px;
   line-height: 1.8;
@@ -63,10 +58,7 @@
 //   background: url(/static_root/img/arrow_punkt.png) center 0 no-repeat;
 // }
 
-.list_link {
-  list-style: none;
-  padding: 0px;
-}
+
 
 // .border_li_style{
 //   border-bottom: 1px solid rgb(255, 196, 0);
@@ -74,36 +66,11 @@
 //   width: 45px;
 // }
 
-.list_link li {
-  margin-bottom: 15px;
-  border: 0.5px solid rgba(238, 238, 238, 0.507);
-  padding: 15px;
-
-}
-
-.service_link a {
-  color: #33465f;
-  font-size: 18px;
-  text-decoration: none;
-
-
-  &:hover {
-    color: #6184b1;
-    transition: 0.3s;
-  }
-}
 
 
 // Центр аттестации
 
 
-.box_img_center {
-  padding: 0px 0px 30px;
-}
-
-.box_center_content {
-  padding: 25px 0px 35px;
-}
 
 
 .headline_center {
@@ -150,9 +117,7 @@
   }
 }
 
-.imglist {
-  margin-bottom: 0px;
-}
+
 
 .img_center_doc {
   @media screen and (max-width: 320px) {
