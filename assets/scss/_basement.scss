@@ -1,4 +1,5 @@
 // footer
+@import '_variables.scss';
 
 .box_footer_bg{
     padding: 80px;
@@ -11,12 +12,12 @@
 }
 
 .box_footer_bg{
-background-color: #111111;
+background-color: $primaryDark;
 margin-top: -5px;
 }
 
 .footer_text_company{
-  color: #6f7379;
+  color: $neutralLight;
   margin-top: 35px;
   margin-bottom: 25px;
 }
@@ -30,7 +31,7 @@ margin-top: -5px;
 }
 
 .name_info_block{
-    color: #6f7379;
+    color: $neutralLight;
     font-size: 12px;
     text-transform: uppercase;
     font-weight: 500;
@@ -40,30 +41,34 @@ margin-top: -5px;
 .footer_number{
     font-size: 16px;
     font-weight: 500;
-    color: #fff;
+    color: $neutral;
     margin-bottom: 0px;
+}
+
+.box_footer_news a {
+    color: $secondary;
 }
 
 .footer_number_text{
 font-size: 12px;
-color: #fff;
+color: $neutral;
 margin-bottom: 0px;
 }
 
 .footer_number_mail{
 font-size: 14px;
-color: #fff;
+color: $neutral;
 }
 
 .footer_news{
     font-size: 14px;
-    color: #fff;
+    color: $neutral;
     font-weight: 400;
     margin-bottom: 0px;
 }
 
 .date_news_footer{
-    color: #6f7379;
+    color: $neutral;
     font-size: 12px;
     font-weight: 400;
 }
@@ -87,7 +92,7 @@ color: #fff;
 
 .feedback_button_footer a{
     text-decoration: none;
-    color: #fff;
+    color: $neutral;
     margin-top: 35px;
 }
 
@@ -160,7 +165,7 @@ color: #fff;
     text-align: right;
 a{
     font-size: 22px;
-    color: #fff;
+    color: $neutral;
 }
 }
 
@@ -169,7 +174,7 @@ a{
     margin-bottom: 15px;
 a{
     font-size: 16px;
-    color: rgb(146, 146, 146);
+    color: $neutral;
     text-align: right;
 
 }
@@ -177,7 +182,7 @@ a{
 
 .basement_number_text{
     font-size: 16px;
-    color: rgb(167, 167, 167);
+    color: $neutralLight;
     text-align: right;
 
 }

@@ -1,0 +1,52 @@
+.head_box_content_small_text {
+  font-size: 18px;
+  color: #381d2a; }
+
+.content_center_text {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #7b405c; }
+
+.center_podrobnee {
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+  margin-top: 10px; }
+  .center_podrobnee a {
+    border: 1px solid #3e6990;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: #3e6990;
+    font-size: 16px; }
+    .center_podrobnee a:hover {
+      background-color: #3e6990;
+      transition: 0.3s;
+      color: #aabd8c; }
+
+.list_link li::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 0;
+  margin-top: 10px;
+  background: url(/static/img/arrow_punkt.png) center 0 no-repeat; }
+
+.list_link {
+  list-style: none;
+  padding: 0px; }
+
+.list_link li {
+  margin-bottom: 15px;
+  padding: 0px 25px; }
+
+.service_link a {
+  color: #381d2a;
+  font-size: 20px;
+  text-decoration: none; }
+  .service_link a:hover {
+    color: #aabd8c;
+    transition: 0.3s; }
+
+/*# sourceMappingURL=component.css.map */

@@ -21,10 +21,13 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% sass_src 'scss/style.scss' %}">
   <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-  <link rel="stylesheet" href="{% static 'fonts/font.css' %}">
+  {% if site.font_url %}
+    {{ site.font_url|safe }}
+  {% else %}
+    <link rel="stylesheet" href="{% static 'fonts/font.css' %}">
+  {% endif %}
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
-  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
 
   <!-- components scss files -->
   {% block compontents_css %}
@@ -35,6 +38,15 @@
     {% endif %}
   {% endblock %}
   <!-- components scss files -->
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+
+  {% if site.font_family %}
+    <style>
+      body {
+        font-family: {{site.font_family}}, sans-serif;
+      }
+    </style>
+  {% endif %}
 
   <!-- HEADER -->
 </head>
@@ -72,6 +84,7 @@
 
   {% endblock content %}
 
+  {% include 'mainapp/includes/partners.html' %}
   <!-- Include Modal -->
   {% include 'mainapp/includes/basement.html' %}
   {% comment %} <div w3-include-html="includes/basement.html"></div> {% endcomment %}
@@ -92,15 +105,17 @@
   <script src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
   <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
   <script src="{% static 'js/jquery.counterup.js' %}"></script>
-  <script src="{% static 'owlcarousel/owl.carousel.min.js' %}"></script>
 
   <!--components js files -->
    {% if site.components|length >= 1 %}
       {% for c in site.components %}
-      <script src="{% static c.component.relative_js_path %}"></script>
+        {% if c.component.js_path %}
+          <script src="{% static c.component.relative_js_path %}"></script>
+        {% endif %}
       {% endfor %}
     {% endif %}
   <!--components js files -->
+  <script src="{% static 'owlcarousel/owl.carousel.min.js' %}"></script>
 
 </body>
 

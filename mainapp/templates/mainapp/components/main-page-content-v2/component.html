@@ -1,4 +1,4 @@
-<div class="main_page_container container p-4 mb-5">
+<div class="main_page_container container mb-5">
     <div class="row">
         <div class="col-xl-8">
             <div class="row align-items-center mb-3">
@@ -6,7 +6,6 @@
                     <h4 class="mb-0">Новости</h4>
                 </div>
                 <div class="col col-sm-4 text-right">
-                    <a href="#" class="text-dark text-size-14">Все новости →</a>
                 </div>
             </div>
 
@@ -29,11 +28,9 @@
                 <div class="col-sm-6 col-xl-12">
                     <div class="row align-items-center mb-3">
                         <div class="col">
-                            <h4 class="mb-0">Статьи</h4>
+                            <h4 class="mb-0">Материалы сайта</h4>
                         </div>
-                        <div class="col text-right">
-                            <a href="#" class="text-dark text-size-14">Все статьи →</a>
-                        </div>
+
                     </div>
                     {% include 'mainapp/includes/articles.html' %}
                 </div><!-- End Статьи -->
@@ -46,7 +43,7 @@
                                 <h4 class="mb-0">Документы</h4>
                             </div>
                             <div class="col-6 text-right">
-                                <a href="#" class="text-dark text-size-14">Все&nbsp;документы&nbsp;→</a>
+                                <a href="{% url 'doc' %}" class="text-dark text-size-14">Все&nbsp;документы&nbsp;→</a>
                             </div>
                         </div>
                         {% include 'mainapp/includes/documents.html' %}
@@ -57,4 +54,5 @@
 
         </div>
     </div>
+</div>
 </div>

@@ -87,7 +87,7 @@
                         <a href="tel:{{profile.org_main_phone}}">{{ profile.org_main_phone }}</a>
                     </div>
                     <div class="basement_number_text">
-                        Центр аттестации
+                        {{ profile.org_short_name }}
                     </div>
                                 <div class="basement_mail {% if user.is_authenticated %}editable{% endif %}">
                                     <a href="mailto:{{profile.org_email}}" title="Написать письмо">{{profile.org_email}}</a>

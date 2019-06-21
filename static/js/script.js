@@ -33,24 +33,24 @@ $(document).ready(function() {
     }
   })
 
-  //owl-carousel initiazilation
-  // $('.owl-carousel').owlCarousel({
-  //   stagePadding: 50,
-  //   loop: true,
-  //   margin: 10,
-  //   nav: true,
-  //   responsive: {
-  //     320: {
-  //       items: 1
-  //     },
-  //     600: {
-  //       items: 3
-  //     },
-  //     1000: {
-  //       items: 5
-  //     }
-  //   }
-  // })
+  // owl-carousel initiazilation
+  $('.owl-carousel').owlCarousel({
+    stagePadding: 50,
+    loop: true,
+    margin: 10,
+    nav: true,
+    responsive: {
+      320: {
+        items: 1
+      },
+      600: {
+        items: 3
+      },
+      1000: {
+        items: 5
+      }
+    }
+  })
 
   // Просмотр+скачать
   $().fancybox({

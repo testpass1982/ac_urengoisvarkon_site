@@ -1,7 +1,8 @@
 // Спецификация
+@import '_variables.scss';
 
 body {
-    font-family: "HelveticaNeueCyr", sans-serif;
+    // font-family: "HelveticaNeueCyr", sans-serif;
     font-size: 14px;
     line-height: 1.6;
     background-color: #fff;
@@ -224,16 +225,27 @@ text-decoration: underline;
 // inner page
 
 .bg_header_inner_page{
+  position: relative;
   background: url(/static_root/img/bg_center.jpg) no-repeat;
   background-size: cover;
   padding: 45px 0px 45px;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, $neutralLight, $highlight);
+    opacity: .9;
+  }
 }
 
 .headline_bg_inner_page{
   font-size: 26px;
   font-weight: 400;
   margin-bottom: 10px;
-  color: #fff;
+  color: $secondaryLight;
 }
 
 .subtitle_inner_page_text{

@@ -7,8 +7,8 @@
   .head_number {
     text-align: center; } }
 
-.number {
-  font-size: 26px;
+.phone_number {
+  font-size: 18px;
   font-weight: 500; }
 
 @media screen and (max-width: 1300px) {
@@ -28,5 +28,13 @@
 .logo_otstup {
   margin-left: 15px;
   margin-right: 15px; }
+
+.auth_edo_btn {
+  color: #131418;
+  border: 1px solid #131418; }
+  .auth_edo_btn:hover {
+    background-color: #131418;
+    color: #243E32;
+    border: 2px solid #131418; }
 
 /*# sourceMappingURL=component.css.map */

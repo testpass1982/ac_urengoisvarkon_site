@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
-
+@import '_variables.scss';
 *, *:before, *:after{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -35,7 +35,7 @@ nav {
       transition: all .2s ease-in-out;
     }
 
-    nav ul li:hover{background: rgba(0,0,0,.15);}
+    nav ul li:hover{background: rgba($primary,.15);}
     nav ul li:hover > ul{display: block;}
     nav ul li{
       float: left;
@@ -46,7 +46,7 @@ nav {
       nav ul li a{
         display: block;
         padding: 30px 20px;
-        color: #222;
+        color: $primary;
         font-size: .9em;
         letter-spacing: 1px;
         text-decoration: none;

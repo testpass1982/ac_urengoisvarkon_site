@@ -20,12 +20,10 @@ from .classes import SiteComponent
 from .models import CenterPhotos
 from .models import Partner
 
-
-
 # Create your views here.
 
 def index(request):
-    #TODO:  сделать когда-нибудь вывод форм на глваную
+    #TODO:  сделать когда-нибудь вывод форм на главную
     title = 'Главная страница'
     """this is mainpage view with forms handler and adapter to messages"""
     # tracker = MessageTracker()
@@ -68,7 +66,9 @@ def index(request):
         'partners': Partner.objects.all().order_by('number'),
         'component_name': 'VASYA',
         'pictured_posts': pictured_posts,
-        'not_pictured_posts': Post.objects.filter(publish_in_basement=True)
+        'not_pictured_posts': Post.objects.filter(publish_in_basement=True),
+        'documents': Document.objects.filter(publish_on_main_page=True).order_by('-created_date'),
+        'articles': Article.objects.filter(publish_on_main_page=True).order_by('-created_date')
         # 'component_name': page_component.component.title
         # 'comp': page_component
         # 'component': page_component
@@ -105,13 +105,23 @@ def partners(request):
     return render(request, 'mainapp/partners.html')
 
 def page_details(request, pk=None):
+
     post = get_object_or_404(Post, pk=pk)
+
     side_panel = post.side_panel
     # service = get_object_or_404(Service, pk=pk)
     content = {
         'title': 'Детальный просмотр',
         'post': post,
         'side_panel': side_panel
+    }
+    return render(request, 'mainapp/page_details.html', content)
+
+def article_details(request, pk=None):
+    post = get_object_or_404(Article, pk=pk)
+    content = {
+        'title': 'Детальный просмотр',
+        'post': post,
     }
     return render(request, 'mainapp/page_details.html', content)
 

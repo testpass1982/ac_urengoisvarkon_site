@@ -348,7 +348,7 @@ class Profile(models.Model):
     org_header_emails = models.TextField(u'Адреса электронной почты (для хедера)', blank=True, null=True, default=None)
     org_header_phones = models.TextField(u'Телефоны (для хедера)', blank=True, null=True, default=None)
     org_address = models.TextField(u'Адрес местоположения организации', null=True, blank=True, default=None)
-    org_address_map_link = models.URLField(u'Ссылка на карту', blank=True, null=True, default=None)
+    org_address_map_link = models.CharField(u'Ссылка на карту', blank=True, null=True, default=None, max_length=500)
     org_csp_code = models.CharField(u'шифр ЦСП (необязательно)', max_length=20, null=True, blank=True)
     org_csp_reestr_link = models.URLField(u'Ссылка на реестр ЦСП', blank=True, null=True)
     org_acsp_code = models.CharField(u'шифр АЦСП (необязательно)', max_length=20, null=True, blank=True)
@@ -422,6 +422,16 @@ class CenterPhotos(models.Model):
     def __str__(self):
         return self.title
 
+class Font(models.Model):
+    title = models.CharField(u'Название шрифта', default=None, blank=True, null=True, max_length=30)
+    font_url = models.CharField(u'Ссылка на шрифт', default=None, blank=True, null=True, max_length=200)
+
+    class Meta:
+        verbose_name = 'Шрифт'
+        verbose_name_plural = 'Шрифты'
+
+    def __str__(self):
+        return self.title
 
 
 class SiteConfiguration(models.Model):
@@ -443,6 +453,7 @@ class SiteConfiguration(models.Model):
         blank=True,
         default='assets/scss/_variables.scss'
     )
+    font = models.ForeignKey(Font, null=True, blank=True, on_delete=models.SET_NULL)
     activated = models.BooleanField(u'Активировать', default=False)
 
     class Meta:

@@ -25,12 +25,17 @@
                             <div class="headline_content_box_content">
                                 {{ post.title }}
                             </div>
+
+                            {% if 'article_details' not in request.path %}
                             <div>
+                            {% comment %} {{ request.get_full_path }} {% endcomment %}
+
                                     <button class="request_page_details">
                                             <a href="" data-toggle="modal" data-target="#modal-statement" class="request_button_page_details">Подать
                                               заявку</a>
                                           </button>
                             </div>
+                            {% endif %}
                             <div class="line_center"></div>
             <div class="content_text_page_details">
                     {{ post.text|safe }}

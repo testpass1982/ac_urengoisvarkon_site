@@ -9,7 +9,7 @@ padding: 35px;
 .side_panel_right_column_text{
     font-size: 14px;
     font-weight: 400;
-    line-height: 1.8;    
+    line-height: 1.8;
 }
 
 .side_panel_list_link{
@@ -211,7 +211,7 @@ padding: 25px 0px 25px;
     display: block;
     font-size: 14px;
     color: #8d8d8d;
-  
+
 
     &:hover {
         color: #585858;
@@ -305,7 +305,7 @@ padding: 25px 0px 25px;
 
 .box__news {
     // padding: 25px 0px;
-    // margin-top: 15px;      
+    // margin-top: 15px;
     font-size: 16px;
     font-weight: 400;
     color: #5a5a5a;
@@ -330,32 +330,32 @@ padding: 25px 0px 25px;
 
 .read_news {
     background-color: transparent;
-    border: none; 
-    padding: 0px;   
+    border: none;
+    padding: 0px;
 
     a {
         text-decoration: none;
         font-weight: 350;
-        color: #000; 
+        color: #000;
         padding: 5px 35px;
-        
+
     }
     &:hover{
-        
+
         -moz-transition: all 0.2s ease-out;
         -o-transition: all 0.2s ease-out;
         -webkit-transition: all 0.2s ease-out;
         -webkit-transform: scale(1.02);
         -moz-transform: scale(2.02);
         -o-transform: scale(2.02);
-     
+
 }
 }
 
-.read_news_text {   
-    border: 0.5px solid #4e88ff;  
-    display: block;   
-    font-size: 14px;  
+.read_news_text {
+    border: 0.5px solid #4e88ff;
+    display: block;
+    font-size: 14px;
     padding: 5px 35px;
 }
 
@@ -372,22 +372,22 @@ padding: 25px 0px 25px;
         text-decoration: none;
         color: #fff;
         font-size: 16px;
-        font-weight: 350;      
+        font-weight: 350;
     }
 }
 
 .request_button_page_details {
-    background-color: #2660ad;
+    background-color: $primary;
     border: none;
-    padding: 12px 25px; 
-    text-decoration: none;    
+    padding: 12px 25px;
+    text-decoration: none;
     @media screen and (max-width: 1079px) {
-        padding:12px 20px;        
+        padding:12px 20px;
     }
     &:hover {
-        background-color: #3772c0;
+        background-color: $primaryLight;
         transition: 0.2s;
-        color: #fff;
+        color: $neutral;
     }
 }
 

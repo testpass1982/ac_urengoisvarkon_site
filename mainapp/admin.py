@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
 from .models import Profstandard, DocumentCategory, SiteConfiguration
+from .models import Font
 from .models import Partner, Component, ColorScheme
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
@@ -211,6 +212,7 @@ class ColorSchemeAdmin(admin.ModelAdmin):
     list_display = ['title', 'id', 'configuration']
 
 admin.site.register(Partner)
+admin.site.register(Font)
 # admin.site.register(Component)
 admin.site.register(Tag)
 admin.site.register(Category)

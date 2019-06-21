@@ -32,7 +32,7 @@ nav ul li {
   transition: all .2s ease-in-out; }
 
 nav ul li:hover {
-  background: rgba(0, 0, 0, 0.15); }
+  background: rgba(19, 20, 24, 0.15); }
 
 nav ul li:hover > ul {
   display: block; }
@@ -46,7 +46,7 @@ nav ul li {
 nav ul li a {
   display: block;
   padding: 30px 20px;
-  color: #222;
+  color: #131418;
   font-size: .9em;
   letter-spacing: 1px;
   text-decoration: none;

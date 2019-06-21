@@ -3,15 +3,18 @@
     <div class="container">
             <div class="row">
                     <div class="col-xl-12">
+                    {% if partners %}
                         <div class="head_box_content">
                             <p class="headline_name_box">
                                Партнеры
                             </p>
                             </div>
+                    {% endif %}
                     </div>
                 </div>
+
         <div class="row align-items-center">
-            <div class="owl-carousel owl-theme">
+            <div id="owl" class="owl-carousel owl-theme">
 
                 {% for partner in partners %}
                 <div class="img-item img-fluid">

@@ -30,38 +30,44 @@
                 <div class="headline_text_contacts {% if user.is_authenticated %}editable{% endif %}">
                     Email: {{ profile.org_email }}
                 </div>
-                <div class="dotted_border_bottom"></div>
-
+            </div>
+            <div class="col-xl-6">
                 <p class="headline_contacti">
                     Местоположение
                 </p>
-                <div class="phone_contacti {% if user.is_authenticated %}editable{% endif %}">
+                <div class="headline_text_contacts {% if user.is_authenticated %}editable{% endif %}">
                     {{ profile.org_address }}
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <script type="text/javascript" charset="utf-8" async src="{{ profile.org_address_map_link|safe }}"></script>
+    </div>
+
+    <div class="dotted_border_bottom"></div>
+    <div class="container">
+        <div class="row align-items-stretch">
                 {% if contacts %}
                 {% for contact in contacts %}
-                <div class="alert alert-secondary">
-                    <h5><strong>{{contact.number}}</strong> {{contact.title}}</h5>
+                <div class="col-xl-4 mb-3">
+                <div class="bg_neutralLight_colored alert alert-secondary">
+                    <h5 class="contact_head">{{contact.title}}</h5>
+                    <hr>
                     <p>{{ contact.description}}</p>
-                    <ul>
+                    <ul class="contacts_list">
                         <li><i class="fas fa-phone"></i> {{contact.phone}}</li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:{{contact.email}}" id="">{{contact.email}}</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:{{contact.email}}"
+                                id="">{{contact.email}}</a>
+                        </li>
                     </ul>
+                </div>
                 </div>
                 {% endfor %}
                 {% endif %}
-
-            </div>
-            <div class="col-xl-6">
-                <div class="ya__map {% if user.is_authenticated %}editable{% endif %}">
-                    <script type="text/javascript" charset="utf-8" async src="{{profile.org_address_map_link}}">
-                    </script>
-                </div>
-
-            </div>
-
         </div>
-
     </div>
+
 </div>
 {% endblock content %}

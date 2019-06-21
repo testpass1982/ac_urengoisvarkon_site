@@ -1,5 +1,5 @@
 from .models import Document
-from .models import Profile, Service, Post, SiteConfiguration, Component
+from .models import Profile, Service, Post, SiteConfiguration, Component, Partner
 from .forms import ProfileImportForm
 import random
 from django.template import Context, Template
@@ -59,8 +59,19 @@ def site_configuration(request):
         return {
                 'site': {
                     'components': site_components,
+                    'font_url': site[0].font.font_url,
+                    'font_family': site[0].font.title,
                     }
                 }
     except Exception as e:
         print (colorize('###---> SITE CONFIGURATION ERROR: {}'.format(e), bg='red'))
         return {'site': {'components': None}}
+
+def partners(request):
+    try:
+        partners = Partner.objects.all().order_by('number')
+    except Exception as e:
+        print('PARTNERS ERROR:', e)
+        partners = [{'partner': {'title': 'Загрузите партнеров в админку'}}]
+    # import pdb; pdb.set_trace()
+    return {'partners': partners}

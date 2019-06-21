@@ -5,12 +5,13 @@
         <p class="text-size-20 mb-3 mb-lg-4">{{ article.title }}</p>
         <div class="row">
             <div class="col-6"><small>{{ article.published_date|date:"d M. Y"}}</small></div>
-            <div class="col-6 text-right"><a href="{% url 'detailview' 'article' article.pk %}#page-top" class="btn btn-outline-purple btn-sm">Читать
+            <div class="col-6 text-right"><a href="{% url 'article_details' article.pk %}" class="btn btn-outline-purple btn-sm">Читать
                     →</a></div>
         </div>
     </div>
 {% endfor %}
 {% else %}
+    Демо статьи
     <div class="section p-3 p-sm-4 mb-4">
         <p class="text-size-20 mb-3 mb-lg-4">Применение СМТ технологий при сварке</p>
         <div class="row">
