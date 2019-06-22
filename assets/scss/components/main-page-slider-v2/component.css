@@ -1,7 +1,7 @@
 .headline_bg_content {
   font-size: 32px;
   font-weight: 450;
-  color: #fff;
+  color: #EDF205;
   line-height: 1.6; }
   @media screen and (max-width: 992px) {
     .headline_bg_content {
@@ -25,7 +25,7 @@
 
 .bg_color {
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(162, 253, 106, 0.5);
   padding: 85px; }
   @media screen and (max-width: 576px) {
     .bg_color {
@@ -33,7 +33,7 @@
       text-align: center; } }
 
 .request_button {
-  background-color: #381d2a;
+  background-color: #38402E;
   border: none;
   padding: 12px 50px;
   text-decoration: none; }
@@ -41,14 +41,14 @@
     .request_button {
       padding: 12px 20px; } }
   .request_button:hover {
-    background-color: #7b405c;
+    background-color: #6c7b59;
     transition: 0.2s;
     color: #fff; }
 
 .headline_bg_content {
   font-size: 32px;
   font-weight: 450;
-  color: #381d2a;
+  color: #38402E;
   line-height: 1.6; }
   @media screen and (max-width: 992px) {
     .headline_bg_content {
@@ -57,7 +57,7 @@
 .head_bg_text_small_two {
   font-size: 18px;
   font-weight: 300;
-  color: #381d2a;
+  color: #38402E;
   line-height: 1.8;
   margin-top: 10px;
   margin-bottom: 25px; }

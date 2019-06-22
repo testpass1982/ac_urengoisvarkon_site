@@ -26,11 +26,19 @@
     min-height: 60vh;
 }
 
+.headline_name_box {
+    font-size: 30px;
+    line-height: 35px;
+    color: $primaryDark;
+    font-weight: 450;
+  }
+
 .headline_bg_content{
     font-size: 34px;
     font-weight: 350;
-    color: $secondaryLight;
-        line-height: 1.6;
+    color: $highlight;
+        font-weight: bold;
+        line-height: 2;
     @media screen and (max-width: 992px) {
         font-size: 18px;
     }
@@ -45,7 +53,7 @@
 }
 
 .bg_carousel_content_color{
-    background-color: #20202085;
+    background-color: rgba($primaryDark, .5);
     height: 100%;
 }
 
@@ -76,6 +84,7 @@
 
 .slide_text {
     color: $highlight;
+    // font-weight: bold;
     margin-bottom: 50px;
 }
 

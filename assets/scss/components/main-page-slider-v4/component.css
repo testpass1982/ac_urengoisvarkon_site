@@ -18,11 +18,18 @@
   padding: 100px 60px;
   min-height: 60vh; }
 
+.headline_name_box {
+  font-size: 30px;
+  line-height: 35px;
+  color: #000000;
+  font-weight: 450; }
+
 .headline_bg_content {
   font-size: 34px;
   font-weight: 350;
-  color: #464d64;
-  line-height: 1.6; }
+  color: #95FDCE;
+  font-weight: bold;
+  line-height: 2; }
   @media screen and (max-width: 992px) {
     .headline_bg_content {
       font-size: 18px; } }
@@ -33,7 +40,7 @@
     margin-bottom: 10px; } }
 
 .bg_carousel_content_color {
-  background-color: #20202085;
+  background-color: rgba(0, 0, 0, 0.5);
   height: 100%; }
 
 .carousel-control-prev-icon {
@@ -57,7 +64,7 @@
   height: 45px; }
 
 .slide_text {
-  color: #243E32;
+  color: #95FDCE;
   margin-bottom: 50px; }
 
 .vh5 {

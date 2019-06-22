@@ -1,5 +1,5 @@
 .menu__background {
-  background-color: #d1b5b8;
+  background-color: #f8fc61;
   padding: 20px 0px 20px 0px;
   font-weight: 300;
   text-transform: uppercase; }
@@ -18,7 +18,7 @@
 
 .menu__navbar .navbar .nav-item .nav-link {
   padding: 0;
-  color: #343d44;
+  color: #040503;
   font-weight: 300; }
 
 /*# sourceMappingURL=component.css.map */

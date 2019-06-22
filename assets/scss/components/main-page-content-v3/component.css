@@ -1,12 +1,12 @@
 .head_box_content_small_text {
   font-size: 18px;
-  color: #381d2a; }
+  color: #000000; }
 
 .content_center_text {
   font-size: 16px;
   line-height: 1.8;
   font-weight: 400;
-  color: #7b405c; }
+  color: #000000; }
 
 .center_podrobnee {
   background-color: transparent;
@@ -14,15 +14,15 @@
   padding: 0px;
   margin-top: 10px; }
   .center_podrobnee a {
-    border: 1px solid #3e6990;
+    border: 1px solid #736DF5;
     padding: 12px 25px;
     text-decoration: none;
-    color: #3e6990;
+    color: #000000;
     font-size: 16px; }
     .center_podrobnee a:hover {
-      background-color: #3e6990;
+      background-color: #95FDCE;
       transition: 0.3s;
-      color: #aabd8c; }
+      color: #171E2D; }
 
 .list_link li::before {
   content: '';
@@ -42,11 +42,11 @@
   padding: 0px 25px; }
 
 .service_link a {
-  color: #381d2a;
+  color: #000000;
   font-size: 20px;
   text-decoration: none; }
   .service_link a:hover {
-    color: #aabd8c;
+    color: #95FDCE;
     transition: 0.3s; }
 
 /*# sourceMappingURL=component.css.map */

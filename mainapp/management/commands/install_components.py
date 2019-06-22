@@ -141,12 +141,12 @@ class Command(BaseCommand):
         with open(file, 'r') as f:
             lock_data = f.read()
             lock_json = json.loads(lock_data)
-        components = Component.objects.all()
-        if len(components) == 0:
-            print(colorize('NO APPLICATION COMPONENTS INSTALLED', bg='red'))
-            self.create_component_object(lock_json)
-        else:
-            for c in components:
-                if c.title == lock_json['title']:
-                    print(colorize('Component {} installed'.format(lock_json['title']), bg='blue'))
-                    continue
+            # import pdb; pdb.set_trace()
+            print('LOCK_JSON', lock_json['title'])
+            try:
+                component = Component.objects.get(title=lock_json['title'])
+                print('COMPONENT {} in database'.format(component.title))
+            except Component.DoesNotExist:
+                self.create_component_object(lock_json)
+
+

@@ -4,7 +4,7 @@
   background-size: cover; }
 
 .bg {
-  background: rgba(52, 61, 68, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   background-size: cover;
   color: #fff;
   width: 100%; }
@@ -28,7 +28,7 @@
       font-size: 16px; } }
 
 .button__zayavka__online {
-  background-color: #ff5d5d;
+  background-color: #F87AB4;
   border-radius: 3px;
   text-align: center;
   border: none;
@@ -58,11 +58,11 @@
   padding: 15px; }
 
 .button__zayavka__online:hover {
-  background-color: #e63838;
+  background-color: #f3197d;
   transition: 0.3s; }
 
 .button__zayavka__text {
-  color: #fff;
+  color: #171E2D;
   display: block;
   font-size: 16px;
   text-transform: uppercase; }
@@ -99,7 +99,7 @@
   font-size: 20px;
   font-weight: 300; }
   .head__box__text a {
-    color: #616161; }
+    color: #000000; }
 
 .header__vopros__text {
   font-size: 20px;
@@ -124,14 +124,14 @@
   font-size: 16px; }
 
 .head__box__info {
-  background-color: #fff;
+  background-color: rgba(115, 109, 245, 0.8);
   padding: 45px 35px;
   margin-bottom: 25px;
   border-radius: 3px;
-  border-bottom: 3px solid #4f7eff; }
+  border-bottom: 3px solid #95FDCE; }
 
 .head__box__info:hover {
-  background-color: #f0f0f0; }
+  background-color: #736DF5; }
 
 .close-modal-btn {
   cursor: pointer; }

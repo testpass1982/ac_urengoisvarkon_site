@@ -28,6 +28,23 @@ get_picture_preview.allow_tags = True
 get_picture_preview.short_description = "Предварительный просмотр:"
 
 
+def get_colors_preview(obj):
+    if obj.pk:
+        scheme = obj.colors.split(',')
+        scheme_render_arr = []
+        for color in scheme:
+            scheme_render_arr.append('<div style="width: 50px; height: 50px; background-color: {};"></div>'.format(color))
+        # import pdb; pdb.set_trace()
+        return format_html("""
+            <div style="display: flex; flex-flow: row nowrap; justify-content: space-between;">
+                {}
+            </div>
+        """.format("".join(scheme_render_arr)))
+
+get_colors_preview.allow_tags = True
+get_colors_preview.short_description = "Предварительный просмотр цветов:"
+
+
 def get_url(obj):
     # Надо обязательно изменить на боевом сервере адрес ссылки
     if obj.pk:
@@ -89,6 +106,7 @@ class ComponentInline(admin.StackedInline):
     verbose_name = 'компонент'
     verbose_name_plural = 'Создать связанный компонент'
     # fields = ['title', 'code', 'number']
+    readonly_fields = ['id', get_colors_preview]
     # list_display = ['title']
 
 from django import forms
@@ -126,6 +144,7 @@ class ColorSchemeInline(admin.StackedInline):
     extra = 0
     verbose_name = 'цветовая схема'
     verbose_name_plural = 'цветовые схемы'
+    readonly_fields = ['id', get_colors_preview]
 
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
@@ -209,7 +228,8 @@ class ComponentAdmin(admin.ModelAdmin):
 
 @admin.register(ColorScheme)
 class ColorSchemeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'id', 'configuration']
+    list_display = ['title', get_colors_preview, 'id', 'configuration']
+    readonly_fields = ['id', get_colors_preview]
 
 admin.site.register(Partner)
 admin.site.register(Font)

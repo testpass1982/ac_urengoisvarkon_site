@@ -40,7 +40,7 @@
 }
 
 .button__zayavka__online {
-    background-color: #ff5d5d;
+    background-color: $neutral;
     border-radius: 3px;
     text-align: center;
     border: none;
@@ -79,12 +79,12 @@
 }
 
 .button__zayavka__online:hover {
-    background-color: #e63838;
+    background-color: $neutralDark;
     transition: 0.3s;
 }
 
 .button__zayavka__text {
-    color: #fff;
+    color: $primary;
     display: block;
     font-size: 16px;
     text-transform: uppercase;
@@ -131,7 +131,7 @@
     font-size: 20px;
     font-weight: 300;
     a {
-        color: #616161;
+        color: $primaryDark;
     }
 }
 
@@ -161,17 +161,21 @@
 }
 
 .head__box__info {
-    background-color: #fff;
+    background-color: rgba($secondary, 0.8);
     padding: 45px 35px;
     margin-bottom: 25px;
     border-radius: 3px;
-    border-bottom: 3px solid rgb(79, 126, 255);
+    border-bottom: 3px solid $highlight;
 }
 
 .head__box__info:hover {
-    background-color: #f0f0f0;
+    background-color: $secondary;
 }
 
 .close-modal-btn {
     cursor: pointer;
+}
+
+.text-dopusk {
+	font-size: 0.7rem;
 }

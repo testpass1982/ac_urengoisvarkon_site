@@ -1,5 +1,5 @@
 # from django.core.signals import request_finished
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from mainapp.models import Component, ColorScheme, SiteConfiguration
 from django.shortcuts import get_object_or_404
@@ -15,7 +15,6 @@ def check_it():
 def my_callback(sender, **kwargs):
     print('------------->SIGNAL RICIEVED from {}'.format(sender))
 
-
 @receiver(pre_save, sender=Component)
 def make_template(sender, **kwargs):
     print('------------->ME TOO')
@@ -26,14 +25,29 @@ def make_template(sender, **kwargs):
     # place include in the right place of base.html
     pass
 
-@receiver(pre_save, sender=ColorScheme)
-def callback(sender, **kwargs):
-    print('---->callback colorscheme')
-    pass
+# @receiver(pre_save, sender=ColorScheme)
+# def callback(sender, **kwargs):
+#     print('---->callback colorscheme')
 
+@receiver(post_save, sender=ColorScheme)
+def update_configuration_colors(sender, instance, **kwargs):
+    # import pdb; pdb.set_trace()
+    print('--------------------->callback colorscheme')
+    if instance.configuration:
+        #check other schemes
+        #save configuration to update scss variables
+        other_schemes = ColorScheme.objects.all().exclude(pk=instance.pk)
+        for scheme in other_schemes:
+            if scheme.configuration:
+                scheme.configuration = None
+                scheme.save()
+        configuration = instance.configuration
+        configuration.save()
+        print('POST_SAVE CONFIGURATION UPDATED', configuration)
+    
 @receiver(pre_save, sender=SiteConfiguration)
 def callback(sender, instance, **kwargs):
-    print('---->callback configuration')
+    # print('---->callback configuration')
     # print(sender.color_set.__get__(instance))
     try:
         colorscheme = ColorScheme.objects.get(configuration=instance.pk)

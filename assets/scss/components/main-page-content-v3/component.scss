@@ -2,14 +2,14 @@
 
 .head_box_content_small_text {
     font-size: 18px;
-    color: $primary;
+    color: $primaryDark;
   }
 
 .content_center_text {
     font-size: 16px;
     line-height: 1.8;
     font-weight: 400;
-    color: $primaryLight;
+    color: $primaryDark;
   }
 
   .center_podrobnee {
@@ -22,13 +22,13 @@
       border: 1px solid $secondary;
       padding: 12px 25px;
       text-decoration: none;
-      color: $secondary;
+      color: $primaryDark;
       font-size: 16px;
 
       &:hover {
-        background-color: $secondary;
+        background-color: $highlight;
         transition: 0.3s;
-        color: $neutral;
+        color: $primary;
       }
     }
   }
@@ -55,12 +55,12 @@
   }
 
   .service_link a {
-    color: $primary;
+    color: $primaryDark;
     font-size: 20px;
     text-decoration: none;
 
     &:hover {
-      color: $neutral;
+      color: $highlight;
       transition: 0.3s;
     }
   }
