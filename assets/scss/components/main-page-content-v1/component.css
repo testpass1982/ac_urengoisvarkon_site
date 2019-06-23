@@ -33,12 +33,12 @@
 
 .list_link li {
   margin-bottom: 15px;
-  border: 0.5px solid #F8C17A;
+  border: 0.5px solid #603859;
   padding: 15px; }
   .list_link li:hover {
-    background-color: #F8C17A; }
+    background-color: #603859; }
     .list_link li:hover a {
-      color: #95FDCE; }
+      color: #78A3FF; }
 
 .box_img_center {
   padding: 0px 0px 30px; }

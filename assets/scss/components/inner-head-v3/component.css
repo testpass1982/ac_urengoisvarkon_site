@@ -14,23 +14,23 @@
 
 .btn-blue {
   font-size: 0.875rem;
-  color: #fff;
-  background-color: #5ba4dd;
-  border-color: #5ba4dd; }
+  color: #78A3FF;
+  background-color: #1c2436;
+  border-color: #1c2436; }
 
 .btn-blue:hover {
-  color: #fff;
-  background-color: #0D9BFF;
-  border-color: #0D9BFF; }
+  color: #dee9ff;
+  background-color: #6a82b4;
+  border-color: #6a82b4; }
 
 .btn-outline-blue {
   font-size: 0.875rem;
-  color: #5ba4dd;
-  border-color: #5ba4dd; }
+  color: #3E517A;
+  border-color: #3E517A; }
 
 .btn-outline-blue:hover {
-  color: #fff;
-  background-color: #5ba4dd;
-  border-color: #5ba4dd; }
+  color: #dee9ff;
+  background-color: #3E517A;
+  border-color: #3E517A; }
 
 /*# sourceMappingURL=component.css.map */

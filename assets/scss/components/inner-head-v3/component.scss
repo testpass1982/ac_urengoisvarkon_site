@@ -1,3 +1,5 @@
+@import '_variables.scss';
+
 .header-logo {
     border: 1px dotted gray;
 }
@@ -14,24 +16,24 @@
 }
 .btn-blue {
 	font-size: 0.875rem;
-	color: #fff;
-	background-color: #5ba4dd;
-	border-color: #5ba4dd;
+	color: $highlight;
+	background-color: $primaryDark;
+	border-color: $primaryDark;
 }
 .btn-blue:hover {
-	color: #fff;
-	background-color: #0D9BFF;
-	border-color: #0D9BFF;
+	color: $highlightLight;
+	background-color: $primaryLight;
+	border-color: $primaryLight;
 }
 
 
 .btn-outline-blue {
 	font-size: 0.875rem;
-	color: #5ba4dd;
-	border-color: #5ba4dd;
+	color: $primary;
+	border-color: $primary;
 }
 .btn-outline-blue:hover {
-	color: #fff;
-	background-color: #5ba4dd;
-	border-color: #5ba4dd;
+	color: $highlightLight;
+	background-color: $primary;
+	border-color: $primary;
 }

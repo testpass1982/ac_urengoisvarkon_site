@@ -33,7 +33,10 @@ def get_colors_preview(obj):
         scheme = obj.colors.split(',')
         scheme_render_arr = []
         for color in scheme:
-            scheme_render_arr.append('<div style="width: 50px; height: 50px; background-color: {};"></div>'.format(color))
+            # scheme_render_arr.append('<button class="jscolor" style="width: 50px; height: 50px; background-color: {};"></button>'.format(color))
+            scheme_render_arr.append("""
+            <input class="jscolor rect" value="{color}" class="rect" style="width: 50px; height: 50px;"></input>
+            """.format(color=color))
         # import pdb; pdb.set_trace()
         return format_html("""
             <div style="display: flex; flex-flow: row nowrap; justify-content: space-between;">
@@ -230,6 +233,9 @@ class ComponentAdmin(admin.ModelAdmin):
 class ColorSchemeAdmin(admin.ModelAdmin):
     list_display = ['title', get_colors_preview, 'id', 'configuration']
     readonly_fields = ['id', get_colors_preview]
+
+    class Media:
+        js = ('js/jquery-3.3.1.min.js', 'js/admin_colors.js', 'js/jscolor.js')
 
 admin.site.register(Partner)
 admin.site.register(Font)
