@@ -1,6 +1,6 @@
 .main_menu__background {
   padding: 20px 0px 20px 30px;
-  background-color: #6a82b4; }
+  background-color: #1eb03b; }
   @media screen and (max-width: 992px) {
     .main_menu__background {
       padding: 5px 0px;
@@ -10,17 +10,17 @@
 .nav-link {
   padding-right: 0;
   padding-left: 0;
-  color: #fffaf0 !important; }
+  color: #ffffff !important; }
   .nav-link:hover {
     text-decoration: underline;
     margin-top: -2px; }
 
 .navbar {
   font-size: 16px;
-  color: #20121d; }
+  color: #4a5102; }
 
 .navbar-dark .navbar-nav .navbar-dark .navbar-nav {
-  color: #20121d; }
+  color: #4a5102; }
 
 .navbar-dark .navbar-toggler {
   background-color: transparent;

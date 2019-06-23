@@ -21,13 +21,13 @@
 .headline_name_box {
   font-size: 30px;
   line-height: 35px;
-  color: #1c2436;
+  color: #000201;
   font-weight: 450; }
 
 .headline_bg_content {
   font-size: 34px;
   font-weight: 350;
-  color: #78A3FF;
+  color: #FBFFCC;
   font-weight: bold;
   line-height: 2; }
   @media screen and (max-width: 992px) {
@@ -40,7 +40,7 @@
     margin-bottom: 10px; } }
 
 .bg_carousel_content_color {
-  background-color: rgba(28, 36, 54, 0.5);
+  background-color: rgba(0, 2, 1, 0.5);
   height: 100%; }
 
 .carousel-control-prev-icon {
@@ -64,7 +64,7 @@
   height: 45px; }
 
 .slide_text {
-  color: #78A3FF;
+  color: #FBFFCC;
   margin-bottom: 50px; }
 
 .vh5 {
