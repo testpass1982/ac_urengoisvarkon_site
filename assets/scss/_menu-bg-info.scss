@@ -91,7 +91,7 @@
 
 .dropdown-item:hover {
     border-radius: 15px;
-    background-color: rgba(173, 173, 173, 0.185);
+    background-color: rgba($highlightLight, 0.5);
     transition: 0.3s;
 }
 

@@ -30,11 +30,11 @@
   margin-right: 15px; }
 
 .auth_edo_btn {
-  color: #171E2D;
-  border: 1px solid #171E2D; }
+  color: #234234;
+  border: 1px solid #234234; }
   .auth_edo_btn:hover {
-    background-color: #171E2D;
-    color: #95FDCE;
-    border: 2px solid #171E2D; }
+    background-color: #234234;
+    color: #74C4A0;
+    border: 2px solid #234234; }
 
 /*# sourceMappingURL=component.css.map */

@@ -1,6 +1,6 @@
 from .models import Document
 from .models import Profile, Service, Post, SiteConfiguration, Component, Partner
-from .forms import ProfileImportForm
+from .forms import ProfileImportForm, OrderForm
 import random
 from django.template import Context, Template
 from django.shortcuts import render, get_object_or_404
@@ -75,3 +75,7 @@ def partners(request):
         partners = [{'partner': {'title': 'Загрузите партнеров в админку'}}]
     # import pdb; pdb.set_trace()
     return {'partners': partners}
+
+def order_form(request):
+    order_form = OrderForm()
+    return {'order_form': order_form}

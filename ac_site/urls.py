@@ -42,6 +42,8 @@ urlpatterns = [
         name='detailview'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('test_component/<slug:pk>', mainapp.test_component, name='test_component'),
+    path('accept_order/', mainapp.accept_order, name="accept_order"),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:

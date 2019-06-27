@@ -2,14 +2,15 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import resolve, reverse
 from django.http import HttpRequest
-from mainapp.models import Post, Document, DocumentCategory, SidePanel
-from mainapp.models import Service, CenterPhotos, Profstandard, Contact, Profile
+from mainapp.models import Post, Document, DocumentCategory, SidePanel, SiteConfiguration, Component, ColorScheme
+from mainapp.models import Service, CenterPhotos, Profstandard, Contact, Profile, Font
 # from http import HTTPStatus
 from django.shortcuts import get_object_or_404
 from mixer.backend.django import mixer
 import random
 from django.core.files import File
 from django.contrib.auth.models import User
+from captcha.models import CaptchaStore
 
 
 # Create your tests here.
@@ -19,7 +20,41 @@ from django.contrib.auth.models import User
 #         self.assertEqual(1+1, 3)
 
 class SiteTest(TestCase):
-    # def setUp(self):
+    def setUp(self):
+        self.font = Font.objects.create(
+            title='Montserrat',
+            font_url='<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">'
+        )
+        self.site_configuration = SiteConfiguration.objects.create(
+            title='Конфигурация 1',
+            site_type='1',
+            activated=False,
+            font=self.font
+            )
+        color_scheme = ColorScheme.objects.create(
+            title='SEED_B08EA2_analogic-complement',
+            colors='#20384D, #98B5A4, #FFFF8C, #B1A08D, #FBFFCC',
+            configuration=self.site_configuration
+        )
+        self.site_configuration.activated = True
+        self.site_configuration.save()
+        component_data = {
+            "relative_scss_path": "scss/components/main-menu-v1/component.scss",
+            "title": "main-menu-v1",
+            "component_type": "main_menu",
+            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-menu-v1/component.html",
+            "relative_js_path": "js/main-menu-v1/",
+            "js_path": "",
+            "relative_html_path":
+            "mainapp/components/main-menu-v1/component.html",
+            "code": "main-menu-v1",
+            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-menu-v1/component.scss"
+        }
+        component_data.update({'configuration': self.site_configuration})
+
+        self.component = Component.objects.create(**component_data)
+
+
     def test_main_page_loads_without_errors(self):
         response = self.client.get(reverse('index'))
         html = response.content.decode('utf8')
@@ -27,6 +62,39 @@ class SiteTest(TestCase):
         self.assertIn('<title>Главная страница</title>', html)
         self.assertTrue(html.strip().endswith('</html>'))
         self.assertTemplateUsed(response, 'mainapp/index.html')
+
+    def test_can_create_site_configuration_and_add_components(self):
+        self.assertTrue(self.component.pk is not None)
+        self.assertTrue(self.site_configuration is not None)
+        self.assertIn(self.component, Component.objects.filter(configuration=self.site_configuration))
+        self.assertTrue(self.font.pk == self.site_configuration.font.pk)
+
+    def test_can_add_font_url_main_page(self):
+        response = self.client.get(reverse('index'))
+        html = response.content.decode('utf8')
+        self.assertIn(self.font.font_url, html)
+
+    def test_can_post_form_from_main_page(self):
+        component_data = {
+            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-page-slider-v3/component.html",
+            "relative_js_path": "js/main-page-slider-v3/",
+            "component_type": "main_banner",
+            "title": "main-page-slider-v3",
+            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-page-slider-v3/component.scss",
+            "js_path": "",
+            "code": "main-page-slider-v3",
+            "relative_html_path": "mainapp/components/main-page-slider-v3/component.html",
+            "relative_scss_path": "scss/components/main-page-slider-v3/component.scss",
+            "configuration": self.site_configuration
+            }
+        component = Component.objects.create(**component_data)
+        CaptchaStore.objects.all().delete()
+        self.assertTrue(CaptchaStore.objects.count() == 0)
+        response = self.client.get(reverse('index'))
+        self.failUnlessEqual(CaptchaStore.objects.count(), 2)
+        self.assertTrue(any(CaptchaStore.objects.all()) in response.context['order_form'])
+        self.assertEqual(1+1, 3, 'OOPS')
+
 
     def test_can_create_and_publish_posts(self):
         for i in range(3):
@@ -97,6 +165,18 @@ class SiteTest(TestCase):
         self.assertTrue(self.client.get(reverse('contacts')).status_code, 200)
 
     def test_can_upload_photos_and_publish_them(self):
+        component_data = {
+            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-page-content-v1/component.html",
+            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-page-content-v1/component.scss", "relative_scss_path": "scss/components/main-page-content-v1/component.scss",
+            "title": "main-page-content-v1",
+            "relative_js_path": "js/main-page-content-v1/",
+            "code": "main-page-content-v1",
+            "relative_html_path": "mainapp/components/main-page-content-v1/component.html",
+            "component_type": "main_page_content",
+            "js_path": "",
+            "configuration": self.site_configuration
+            }
+        component = Component.objects.create(**component_data)
         photos = ['media/center_1.jpg', 'media/center_2.jpg', 'media/center_3.jpg']
         for photo in photos:
             mixer.blend(CenterPhotos, image=File(open(photo, 'rb')))

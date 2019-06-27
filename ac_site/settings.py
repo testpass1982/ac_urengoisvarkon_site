@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'sass_processor',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +100,7 @@ TEMPLATES = [
                 'mainapp.context_processors.basement_news',
                 'mainapp.context_processors.site_configuration',
                 'mainapp.context_processors.partners',
+                'mainapp.context_processors.order_form',
             ],
         },
     },
@@ -239,3 +242,20 @@ DJANGORESIZED_DEFAULT_KEEP_META = True
 DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
 DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
+
+#####################################
+### SEND_MAIL_SETTINGS ##############
+#####################################
+#/home/popov/send_mail_secret.json
+
+with open(os.path.join('/', 'home', 'popov', 'send_mail_secret.json'), 'r') as f:
+    json_email_settings = f.read()
+    email_settings = json.loads(json_email_settings)
+    EMAIL_HOST = email_settings['EMAIL_HOST']
+    EMAIL_PORT = email_settings['EMAIL_PORT']
+    EMAIL_HOST_USER = email_settings['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = email_settings['EMAIL_HOST_PASSWORD']
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True

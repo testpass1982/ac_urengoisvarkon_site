@@ -2,13 +2,12 @@ import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
-# from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, PostPhoto, Tag, Category, Document, Article, Message, Contact
 from .models import Registry, Menu, Profile, Service
 from .models import Staff, Component
-from .forms import PostForm, ArticleForm, DocumentForm, ProfileImportForm
+from .forms import PostForm, ArticleForm, DocumentForm, ProfileImportForm, OrderForm
 from .forms import SendMessageForm, SubscribeForm, AskQuestionForm, SearchRegistryForm
 from .adapters import MessageModelAdapter
 from .message_tracker import MessageTracker
@@ -19,11 +18,58 @@ from django.template.loader import render_to_string
 from .classes import SiteComponent
 from .models import CenterPhotos
 from .models import Partner
+from django.core.mail import send_mail
+from django.urls import resolve
 
 # Create your views here.
 
+def accept_order(request):
+    if request.method == 'POST':
+        print('REQUEST POST', request.POST)
+        data = {
+            "name": request.POST.get('name'),
+            "phone": request.POST.get('phone'),
+            "captcha_1": request.POST.get('captcha_1'),
+            "captcha_0": request.POST.get('captcha_0'),
+            }
+        order_variants = ['attst', 'attso', 'attsvsp', 'attlab', 'attsm']
+        if any([request.POST.get(order_item) for order_item in order_variants]):
+            order_compound = {
+                "Аттестация технологий": 'attst' in request.POST,
+                "Аттестация оборудования": 'attso' in request.POST,
+                "Аттестация персонала": 'attso' in request.POST,
+                "Аттестация лаборатории": 'attlab' in request.POST,
+                "Аттестация материалов": 'attsm' in request.POST,
+            }
+            data.update({"compound": "{}".format(order_compound)})
+        form = OrderForm(data)
+        if form.is_valid():
+            instance = form.save()
+            current_absolute_url = request.build_absolute_uri()
+            email_address_arr = ['popov.anatoly@gmail.com']
+            order_arr = []
+            for key in order_compound.keys():
+                if order_compound[key] is True:
+                    order_arr.append(key)
+            if '8000' not in current_absolute_url:
+                admin_email_address = Profile.objects.first().org_email
+                email_address_arr += ['it@naks.ru', admin_email_address]
+            send_mail(
+                'Заполнена заявка на сайте',
+"""
+Заполнена заявка на сайте {url}
+Имя: {name}, Телефон: {phone},
+Заявлено: {order_string}
+""".format(url=current_absolute_url, name=instance.name, phone=instance.phone, order_string=", ".join(order_arr)),
+                settings.EMAIL_HOST_USER,
+                email_address_arr
+            )
+            return JsonResponse({'message': 'ok', 'order_id': instance.pk})
+        else:
+            return JsonResponse({'errors': form.errors})
+
+
 def index(request):
-    #TODO:  сделать когда-нибудь вывод форм на главную
     title = 'Главная страница'
     """this is mainpage view with forms handler and adapter to messages"""
     # tracker = MessageTracker()
@@ -49,11 +95,6 @@ def index(request):
             tracker.notify_observers()
         else:
             raise ValidationError('form not valid')
-
-    # c = get_object_or_404(Component, pk=39)
-    # page_component = SiteComponent(c)
-    # can include component - give it a content
-    # can component.render - give a context directly to component
 
     pictured_posts = {}
     main_page_posts = Post.objects.filter(publish_on_main_page=True).order_by('published_date')[:3]
@@ -224,7 +265,7 @@ def import_profile(request):
                     update_from_dict(profile, import_data)
                     content.update({'profile_dict': '{}'.format(profile.__dict__)})
                     content.update({'profile': profile})
-                    print('***imported***')
+                    # print('***imported***')
                 except Exception as e:
                     print("***ERRORS***", e)
                     content.update({'errors': e})

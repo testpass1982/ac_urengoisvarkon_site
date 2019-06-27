@@ -7,13 +7,13 @@ from colour import Color
 from django.utils.termcolors import colorize
 
 
-@receiver(pre_save, sender=Component)
-def my_callback(sender, **kwargs):
-    print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
+# @receiver(pre_save, sender=Component)
+# def my_callback(sender, **kwargs):
+#     print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
-    print('------------->post_save reciever: {}'.format(instance))
+    # print('------------->post_save reciever: {}'.format(instance))
     if instance.configuration:
         #check other schemes
         #save configuration to update scss variables
@@ -24,18 +24,16 @@ def update_configuration_colors(sender, instance, **kwargs):
                 scheme.save()
         configuration = instance.configuration
         configuration.save()
-        print('POST_SAVE SIGNAL -> CONFIGURATION {} UPDATED'.format(configuration))
-    
-@receiver(pre_save, sender=SiteConfiguration)
+        # print('POST_SAVE SIGNAL -> CONFIGURATION {} UPDATED'.format(configuration))
+
+# @receiver(pre_save, sender=SiteConfiguration)
+@receiver(post_save, sender=SiteConfiguration)
 def callback(sender, instance, **kwargs):
     # print('---->callback configuration')
     # print(sender.color_set.__get__(instance))
-    try:
-        colorscheme = ColorScheme.objects.get(configuration=instance.pk)
-    except Exception as e:
-        print('ERROR', e)
     # components = Component.objects.filter(configuration=instance.pk)
     if instance.activated:
+        colorscheme = ColorScheme.objects.get(configuration=instance.pk)
         site_colors = [color.strip() for color in colorscheme.colors.split(",")]
         site_colors_pseudo_names = ['$primary', '$secondary', '$neutral',
             '$background', '$highlight']
@@ -63,5 +61,5 @@ def callback(sender, instance, **kwargs):
             for key, value in color_dict.items():
                 data.append("{}: {};\n".format(key, value))
             color_set_file.writelines(data)
-            print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
+            # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
 

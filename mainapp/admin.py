@@ -7,7 +7,7 @@ from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, 
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
 from .models import Profstandard, DocumentCategory, SiteConfiguration
 from .models import Font
-from .models import Partner, Component, ColorScheme
+from .models import Partner, Component, ColorScheme, OrderService
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
@@ -236,6 +236,12 @@ class ColorSchemeAdmin(admin.ModelAdmin):
 
     class Media:
         js = ('js/jquery-3.3.1.min.js', 'js/admin_colors.js', 'js/jscolor.js')
+
+
+@admin.register(OrderService)
+class OrderServiceAdmin(admin.ModelAdmin):
+    list_display = ['name', 'phone', 'ready', 'compound']
+    fields = ['name', 'phone', 'compound', 'ready']
 
 admin.site.register(Partner)
 admin.site.register(Font)

@@ -2,6 +2,34 @@
 
 $(document).ready(function() {
 
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+
   $('[data-fancybox="gallery"]').fancybox({
     // Options will go here
   });
@@ -148,8 +176,8 @@ $(document).ready(function() {
     var $value = $(this).parent().next();
     $value.addClass("added").text($(this).val().replace(/C:\\fakepath\\/i, ''));
   });
-  $("#phone").mask("+8 (9999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
-  $("#phone2").mask("+8 (9999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
+  $("#phone").mask("+7 (999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
+  $("#id_phone").mask("+7 (999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
 
   // //jQuery plugin
   // (function ($) {
@@ -270,4 +298,125 @@ $(document).ready(function() {
       $('#toggle_panel').html('<i class="fas fa-arrow-down"></i>');
     }
   });
+
+  // $('.button__to__send_zayavka__formmodal').click(
+  //   function(event) {
+  //     event.preventDefault();
+  //     let data = $('#ask_question_form').serializeArray();
+  //     $.post("", data)
+  //       .done(response=>{
+  //         if (response['question_id']) {
+  //           var id = response['question_id']
+  //           $('.modal-title:visible').text('Спасибо!')
+  //           $('.modal__title__small__text:visible').hide();
+  //           $('.modal-body:visible').html(`
+  //           <h3 class="text text-info">
+  //             Обращение зарегистрировано, идентификатор вопроса ${id}
+  //           </h3>
+  //           <p class="text text-primary py-3">
+  //             В ближайшее время с Вами свяжется наш специалист
+  //           </p>
+  //           `);
+  //           $('.modal-footer:visible').hide();
+  //         }
+
+  //         if (response['errors']) {
+  //             // console.log(response['errors'], typeof response['errors'])
+  //             for (let key in response['errors']) {
+  //               console.log(
+  //                 key, ":", response['errors'][key]
+  //                 );
+  //               let form = $("#ask_question_form");
+  //               let element = form.find(`input[name="${key}"]`);
+
+  //               // element.after(`<small class="text-danger">${response['errors'][key]}</small>`);
+  //               element.addClass('is-invalid border border-danger');
+  //               element.after(`<div class="invalid-feedback">${response['errors'][key]}</div>`);
+  //               if (key == 'captcha') {
+  //                 let captcha_div = $('#captcha_check');
+  //                 captcha_div.addClass('border border-danger');
+  //                 captcha_div.css("border-radius", "3px");
+  //                 $('#captcha_error_message').html(`
+  //                 <p class="text text-danger">
+  //                   ${response['errors'][key]}
+  //                 </p>
+  //                 `
+  //                 );
+  //               }
+  //             }
+  //           }
+  //       })
+  //       .fail(response=>{
+  //         console.log('FAIL', response);
+  //       });
+  //   }
+  // );
+
+  $('#order_service_button').click(function(event) {
+    event.preventDefault();
+    order = $('#order_form').serializeArray();
+    $('.choose__item ul li').each(function() {
+        if ($(this).hasClass('selected')) {
+          // console.log('DATA', $(this).data('order'));
+          order.push({"name": $(this).data('order'), "value": "selected"});
+        }
+      });
+    // console.table(order);
+    console.log(order)
+    $.post('/accept_order/', order)
+      .done(response=>{
+          if (response['order_id']) {
+            var id = response['order_id'];
+            $('.modal-title:visible').text('Спасибо!');
+            $('.modal__title__small__text:visible').hide();
+            $('.modal-body:visible').html(`
+            <h3 class="text text-info">
+              Обращение зарегистрировано, идентификатор заявки ${id}
+            </h3>
+            <p class="text text-primary py-3">
+              В ближайшее время с Вами свяжется наш специалист
+            </p>
+            `);
+            $('.modal-footer:visible').hide();
+          }
+
+          if (response['errors']) {
+            $('.invalid-feedback').remove();
+            $('.border').each(function() {
+              $(this).removeClass('border border-danger');
+            });
+            for (let key in response['errors']) {
+              // remove all red borders
+              // $('.border-danger').removeClass('is-invalid border border-danger');
+              // $('.invalid-feedback:visible').hide();
+              console.log(
+                key, ":", response['errors'][key]
+                );
+              let form = $("#order_form");
+              let element = form.find(`input[name="${key}"]`);
+
+              // element.after(`<small class="text-danger">${response['errors'][key]}</small>`);
+              element.addClass('is-invalid border border-danger');
+              element.after(`<div class="invalid-feedback">${response['errors'][key]}</div>`);
+              if (key == 'captcha') {
+                let captcha_div = $('#order_captcha_check');
+                captcha_div.addClass('border border-danger');
+                captcha_div.css("border-radius", "3px");
+                $('#order_captcha_message').html(
+                `<p class="text text-danger">
+                  ${response['errors'][key]}
+                </p>`
+                )}
+            }
+          }
+        }
+      )
+      .fail(response=>{
+        console.log('fail');
+        console.log(response);
+        }
+      );
+  });
+
+
 });

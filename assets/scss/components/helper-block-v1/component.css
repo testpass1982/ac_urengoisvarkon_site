@@ -1,12 +1,12 @@
 .bg_info_box {
   padding: 15px 0px 15px;
-  background-color: #597747; }
+  background-color: #fdeedb; }
 
 .shifr_link a {
   display: inline-block;
-  color: #131418;
+  color: #234234;
   font-size: 14px;
-  border: 0.5px solid #1C1F28;
+  border: 0.5px solid #9593F5;
   border-radius: 20px;
   padding: 7px 15px;
   margin-bottom: 5px;
@@ -16,6 +16,6 @@
       margin-bottom: 15px;
       margin-top: 15px; } }
   .shifr_link a:hover {
-    box-shadow: 0 0 10px #1C1F28; }
+    box-shadow: 0 0 10px #9593F5; }
 
 /*# sourceMappingURL=component.css.map */
