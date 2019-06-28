@@ -138,13 +138,13 @@ color: $neutral;
 
 .basement_text_prava_kompany{
     font-size: 11px;
-    color: #6f7379;
+    color: $highlight;
     margin-bottom: 0px;
 }
 
 .political_konf a{
     font-size: 11px;
-    color: #6f7379;
+    color: $highlight;
     margin-bottom: 0px;
 }
 
@@ -155,7 +155,7 @@ color: $neutral;
         text-align: center;
            }
     a{
-        color: #6f7379;
+        color: $highlight;
     }
 
 }
@@ -216,7 +216,7 @@ a{
 
   .enter_system_edo a{
     text-decoration: none;
-    color: #fff;
+    color: $background;
     @media screen and (max-width: 1200px) {
      margin-top: 15px;
      margin-bottom: 15px;

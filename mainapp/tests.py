@@ -7,11 +7,13 @@ from mainapp.models import Service, CenterPhotos, Profstandard, Contact, Profile
 # from http import HTTPStatus
 from django.shortcuts import get_object_or_404
 from mixer.backend.django import mixer
+from django.conf import settings
 import random
 from django.core.files import File
 from django.contrib.auth.models import User
 from captcha.models import CaptchaStore
-
+import re
+import os
 
 # Create your tests here.
 
@@ -19,8 +21,10 @@ from captcha.models import CaptchaStore
 #     def test_bad_maths(self):
 #         self.assertEqual(1+1, 3)
 
+
 class SiteTest(TestCase):
     def setUp(self):
+        self.project_name = settings.PROJECT_NAME
         self.font = Font.objects.create(
             title='Montserrat',
             font_url='<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">'
@@ -42,17 +46,25 @@ class SiteTest(TestCase):
             "relative_scss_path": "scss/components/main-menu-v1/component.scss",
             "title": "main-menu-v1",
             "component_type": "main_menu",
-            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-menu-v1/component.html",
+            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-menu-v1/component.html".format(self.project_name),
             "relative_js_path": "js/main-menu-v1/",
             "js_path": "",
             "relative_html_path":
             "mainapp/components/main-menu-v1/component.html",
             "code": "main-menu-v1",
-            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-menu-v1/component.scss"
+            "scss_path": "/home/popov/{}/assets/scss/components/main-menu-v1/component.scss".format(self.project_name)
         }
         component_data.update({'configuration': self.site_configuration})
 
         self.component = Component.objects.create(**component_data)
+
+    def tearDown(self):
+        # clean media folder
+        for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
+            for file in f:
+                if file.startswith(('center', 'document', 'file')) and len(file) > 13:
+                    print('TEAR DOWN: REMOVING FILE------------>', file)
+                    os.remove(os.path.join(r, file))
 
 
     def test_main_page_loads_without_errors(self):
@@ -66,7 +78,8 @@ class SiteTest(TestCase):
     def test_can_create_site_configuration_and_add_components(self):
         self.assertTrue(self.component.pk is not None)
         self.assertTrue(self.site_configuration is not None)
-        self.assertIn(self.component, Component.objects.filter(configuration=self.site_configuration))
+        self.assertIn(self.component, Component.objects.filter(
+            configuration=self.site_configuration))
         self.assertTrue(self.font.pk == self.site_configuration.font.pk)
 
     def test_can_add_font_url_main_page(self):
@@ -76,11 +89,11 @@ class SiteTest(TestCase):
 
     def test_can_post_form_from_main_page(self):
         component_data = {
-            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-page-slider-v3/component.html",
+            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v3/component.html".format(self.project_name),
             "relative_js_path": "js/main-page-slider-v3/",
             "component_type": "main_banner",
             "title": "main-page-slider-v3",
-            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-page-slider-v3/component.scss",
+            "scss_path": "/home/popov/{}/assets/scss/components/main-page-slider-v3/component.scss".format(self.project_name),
             "js_path": "",
             "code": "main-page-slider-v3",
             "relative_html_path": "mainapp/components/main-page-slider-v3/component.html",
@@ -92,8 +105,21 @@ class SiteTest(TestCase):
         self.assertTrue(CaptchaStore.objects.count() == 0)
         response = self.client.get(reverse('index'))
         self.failUnlessEqual(CaptchaStore.objects.count(), 2)
-        self.assertTrue(any(CaptchaStore.objects.all()) in response.context['order_form'])
-        self.assertEqual(1+1, 3, 'OOPS')
+        self.assertTrue(any(CaptchaStore.objects.all()) in response.context)
+        #find captcha hash in response content by regular expression
+        hash_ = re.findall(r'value="([0-9a-f]+)"', str(response.content))[0]
+        #get captcha response
+        captcha_response = CaptchaStore.objects.get(hashkey=hash_).response
+        self.assertTrue(hash_ is not None)
+        r = self.client.post(reverse('accept_order'), dict(
+            captcha_0=hash_,
+            captcha_1=captcha_response,
+            name='tolik',
+            phone='79257777777'))
+        self.assertEqual(r.status_code, 200)
+        # captcha = CaptchaStore.objects.get_or_create(response=response)
+        # self.assertTrue(captcha in response.context)
+        # self.assertEqual(1+1, 3, 'OOPS')
 
 
     def test_can_create_and_publish_posts(self):
@@ -166,8 +192,8 @@ class SiteTest(TestCase):
 
     def test_can_upload_photos_and_publish_them(self):
         component_data = {
-            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-page-content-v1/component.html",
-            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-page-content-v1/component.scss", "relative_scss_path": "scss/components/main-page-content-v1/component.scss",
+            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-content-v1/component.html".format(self.project_name),
+            "scss_path": "/home/popov/{}/assets/scss/components/main-page-content-v1/component.scss", "relative_scss_path": "scss/components/main-page-content-v1/component.scss".format(self.project_name),
             "title": "main-page-content-v1",
             "relative_js_path": "js/main-page-content-v1/",
             "code": "main-page-content-v1",

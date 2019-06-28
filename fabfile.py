@@ -7,6 +7,7 @@ import time
 import json
 import os
 import zipfile
+import sys
 
 
 # env.use_ssh_config = False
@@ -25,6 +26,30 @@ try:
         # env.hosts = secret['hosts']
 except FileNotFoundError:
     print('***ERROR: no secret file***')
+
+#check if WORKING_LOCAL is set to True
+CWD = os.getcwd()
+
+# path = 'c:\\projects\\hc2\\'
+# r=root, d=directories, f = files
+for r, d, f in os.walk(CWD):
+    for file in f:
+        if file == 'settings.py':
+            path_to_settings = r+'/'+file
+            with open(path_to_settings, 'r') as settings_file:
+                for line in settings_file.readlines():
+                    if line.startswith('WORKING_LOCAL'):
+                        working_local_variable = [var.strip() for var in line.split('=')]
+                        if working_local_variable[1] == 'False':
+                            print(green('ERROR: SET WORKING LOCAL TO TRUE'))
+                            sys.exit()
+
+try:
+    with open("project.json") as project_file:
+        project_data = json.load(project_file)
+        env.update(project_data)
+except FileNotFoundError:
+    print('***ERROR: no project file***')
 
 PATH_TO_PROJECT = '{}/{}/'.format(env.path_to_projects, env.project_name)
 

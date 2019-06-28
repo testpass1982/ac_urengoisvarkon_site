@@ -25,7 +25,7 @@ from django.urls import resolve
 
 def accept_order(request):
     if request.method == 'POST':
-        print('REQUEST POST', request.POST)
+        # print('REQUEST POST', request.POST)
         data = {
             "name": request.POST.get('name'),
             "phone": request.POST.get('phone'),
@@ -42,17 +42,24 @@ def accept_order(request):
                 "Аттестация материалов": 'attsm' in request.POST,
             }
             data.update({"compound": "{}".format(order_compound)})
+        else:
+            order_compound = {'Ничего не заявлено': True}
         form = OrderForm(data)
         if form.is_valid():
             instance = form.save()
             current_absolute_url = request.build_absolute_uri()
             email_address_arr = ['popov.anatoly@gmail.com']
             order_arr = []
+
             for key in order_compound.keys():
                 if order_compound[key] is True:
                     order_arr.append(key)
+
             if '8000' not in current_absolute_url:
-                admin_email_address = Profile.objects.first().org_email
+                if Profile.objects.first() is not None:
+                    admin_email_address = Profile.objects.first().org_email
+                else:
+                    admin_email_address = 'popov@naks.ru'
                 email_address_arr += ['it@naks.ru', admin_email_address]
             send_mail(
                 'Заполнена заявка на сайте',

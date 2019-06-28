@@ -35,7 +35,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,6 +52,15 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['ac_site.minml.ru']
 ALLOWED_HOSTS = ['*']
+
+
+print('CWD', os.getcwd())
+WORKING_LOCAL = True
+if WORKING_LOCAL is True:
+        PROJECT_NAME = 'ac_template_site'
+else:
+    with open("project.json") as project_file:
+        PROJECT_NAME = json.load(project_file)['project_name']
 
 
 # Application definition

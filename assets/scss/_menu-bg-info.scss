@@ -91,7 +91,7 @@
 
 .dropdown-item:hover {
     border-radius: 15px;
-    background-color: rgba($highlightLight, 0.5);
+    background-color: rgba($neutral, 0.8);
     transition: 0.3s;
 }
 
@@ -135,7 +135,7 @@
 
 .dropdown-item.active,
 .dropdown-item:active {
-    background-color: #03274b;
+    background-color: $primary;
 }
 
 .navbar-toggler {
