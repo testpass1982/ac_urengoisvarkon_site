@@ -19,7 +19,7 @@ class SiteComponent:
             cwd_arr = os.getcwd().split('\\')
             # print('PATH', html_path_arr)
             win_html_path = os.path.join(settings.BASE_DIR, *html_path_arr)
-            print(win_html_path)
+            # print(win_html_path)
             # import pdb; pdb.set_trace()
             with open(win_html_path, encoding='utf-8') as f:
                     html_string = f.read()

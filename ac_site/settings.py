@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import json
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -255,7 +256,10 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 #####################################
 #/home/popov/send_mail_secret.json
 
-with open(os.path.join('/', 'home', 'popov', 'send_mail_secret.json'), 'r') as f:
+home = str(Path.home())
+# import pdb; pdb.set_trace()
+# with open(os.path.join('/', 'home', 'popov', 'send_mail_secret.json'), 'r') as f:
+with open(os.path.join(home, 'send_mail_secret.json'), 'r') as f:
     json_email_settings = f.read()
     email_settings = json.loads(json_email_settings)
     EMAIL_HOST = email_settings['EMAIL_HOST']

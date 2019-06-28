@@ -64,6 +64,10 @@ class SiteTest(TestCase):
             for file in f:
                 if file.startswith(('center', 'document', 'file')) and len(file) > 13:
                     os.remove(os.path.join(r, file))
+        for r, d, f in os.walk(os.path.join(os.getcwd())):
+            for file in f:
+                if file in ['component.css', 'component.css.map']:
+                    os.remove(os.path.join(r, file))
 
 
     def test_main_page_loads_without_errors(self):

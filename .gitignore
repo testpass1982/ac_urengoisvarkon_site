@@ -70,8 +70,10 @@ secret.json
 collected_static.zip
 *.service
 *_nginx
-style.css
-style.css.map
+*style.css
+*style.css.map
+*component.css
+*component.css.map
 # *.jpg
 # *.pdf
 # *.jpeg
