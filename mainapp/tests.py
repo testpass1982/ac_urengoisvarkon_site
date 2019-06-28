@@ -99,6 +99,7 @@ class SiteTest(TestCase):
     
     @measure_time
     def tearDown(self):
+        pass
         # response = self.client.get(reverse('index'))
         # self.assertTrue(response.status_code, 200)
         # request = self.factory.get('/')
