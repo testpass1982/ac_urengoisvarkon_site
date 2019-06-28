@@ -53,9 +53,8 @@ DEBUG = True
 # ALLOWED_HOSTS = ['ac_site.minml.ru']
 ALLOWED_HOSTS = ['*']
 
-
-print('CWD', os.getcwd())
 WORKING_LOCAL = True
+
 if WORKING_LOCAL is True:
         PROJECT_NAME = 'ac_template_site'
 else:

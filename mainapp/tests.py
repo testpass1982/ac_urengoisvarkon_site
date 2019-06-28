@@ -63,7 +63,6 @@ class SiteTest(TestCase):
         for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
             for file in f:
                 if file.startswith(('center', 'document', 'file')) and len(file) > 13:
-                    print('TEAR DOWN: REMOVING FILE------------>', file)
                     os.remove(os.path.join(r, file))
 
 

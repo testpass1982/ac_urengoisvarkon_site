@@ -8,6 +8,7 @@ import json
 import os
 import zipfile
 import sys
+import pprint
 
 
 # env.use_ssh_config = False
@@ -27,15 +28,15 @@ try:
 except FileNotFoundError:
     print('***ERROR: no secret file***')
 
-#check if WORKING_LOCAL is set to True
 CWD = os.getcwd()
+COMPONENTS_FOLDER = os.path.join(CWD, 'mainapp', 'templates', 'mainapp', 'components')
 
-# path = 'c:\\projects\\hc2\\'
+#check if WORKING_LOCAL is set to True
 # r=root, d=directories, f = files
 for r, d, f in os.walk(CWD):
     for file in f:
         if file == 'settings.py':
-            path_to_settings = r+'/'+file
+            path_to_settings = os.path.join(r, file)
             with open(path_to_settings, 'r') as settings_file:
                 for line in settings_file.readlines():
                     if line.startswith('WORKING_LOCAL'):
@@ -52,6 +53,7 @@ except FileNotFoundError:
     print('***ERROR: no project file***')
 
 PATH_TO_PROJECT = '{}/{}/'.format(env.path_to_projects, env.project_name)
+
 
 #check if os is not windows
 if os.name != 'nt':
@@ -73,6 +75,36 @@ def backup():
     local('git commit -m "{}"'.format(comment))
     print(green('pushing master...'))
     local('git push -u origin master')
+
+
+def backup_lock_files():
+    # path to components mainapp/templates/mainapp/components
+    for r, d, f in os.walk(COMPONENTS_FOLDER):
+        for file in f:
+            if file == 'installed.lock':
+                file_path = os.path.join(r, file)
+                local('cp {file_path} {file_path}_backup'.format(file_path=file_path))
+
+
+def update_project_name_in_lock_files():
+    for r, d, f in os.walk(COMPONENTS_FOLDER):
+        for file in f:
+            if file == 'installed.lock':
+                file_path = os.path.join(r, file)
+                with open(file_path, 'r') as lock_file:
+                    file_data = lock_file.read()
+                updated_file_data = file_data.replace('ac_template_site', env.project_name)
+                pprint.pprint(updated_file_data)
+                with open(file_path, 'w') as updated_lock_file:
+                    updated_lock_file.write(str(json.dumps(updated_file_data)))
+
+def restore_lock_files():
+    for r, d, f in os.walk(COMPONENTS_FOLDER):
+        for file in f:
+            if set(['installed.lock', 'installed.lock_backup']).issubset(os.listdir(r)):
+                local('rm {}'.format(os.path.join(r, 'installed.lock')))
+                local('cp {} {}'.format(os.path.join(r, 'installed.lock_backup'), os.path.join(r, 'installed.lock')))
+                local('rm {}'.format(os.path.join(r, 'installed.lock_backup')))
 
 @runs_once
 def remote_migrate():
