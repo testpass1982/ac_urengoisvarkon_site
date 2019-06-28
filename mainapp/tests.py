@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.test import Client
 from django.urls import resolve, reverse
 from django.http import HttpRequest
@@ -14,6 +14,12 @@ from django.contrib.auth.models import User
 from captcha.models import CaptchaStore
 import re
 import os
+from functools import wraps
+from time import time
+# from mainapp.views import accept_order, index
+import mainapp.views as mainapp
+from unittest import skip
+from django.test.utils import override_settings
 
 # Create your tests here.
 
@@ -21,9 +27,41 @@ import os
 #     def test_bad_maths(self):
 #         self.assertEqual(1+1, 3)
 
+timing_report = {}
+
+def measure_time(func):
+    @wraps(func)
+    def _time_it(*args, **kwargs):
+        start = int(round(time() * 1000))
+        try:
+            return func(*args, **kwargs)
+        finally:
+            end_ = int(round(time() * 1000)) - start
+            # print(f"Execution time of {func.__name__}: {end_ if end_ > 0 else 0} ms")
+            timing_report[func.__name__] = end_ if end_ > 0 else 0
+    return _time_it
 
 class SiteTest(TestCase):
+
+    @classmethod
+    def tearDownClass(cls):
+        for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
+            for file in f:
+                if file.startswith(('center', 'document', 'file')) and len(file) > 13:
+                    os.remove(os.path.join(r, file))
+        for r, d, f in os.walk(os.path.join(os.getcwd())):
+            for file in f:
+                if file in ['component.css', 'component.css.map']:
+                    os.remove(os.path.join(r, file))
+        print('\n<-TIMING REPORT->') 
+        for element in sorted((value,key) for (key,value) in timing_report.items()):
+            print(element[1], ':', element[0], 'ms')
+        # clean media folder
+    
+
+    @measure_time
     def setUp(self):
+        self.factory = RequestFactory()
         self.project_name = settings.PROJECT_NAME
         self.font = Font.objects.create(
             title='Montserrat',
@@ -57,19 +95,29 @@ class SiteTest(TestCase):
         component_data.update({'configuration': self.site_configuration})
 
         self.component = Component.objects.create(**component_data)
-
+        # self.addCleanup(os.remove, os.path.join(f"{settings.MEDIA_ROOT}", "email_out"))
+    
+    @measure_time
     def tearDown(self):
-        # clean media folder
-        for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
-            for file in f:
-                if file.startswith(('center', 'document', 'file')) and len(file) > 13:
-                    os.remove(os.path.join(r, file))
-        for r, d, f in os.walk(os.path.join(os.getcwd())):
-            for file in f:
-                if file in ['component.css', 'component.css.map']:
-                    os.remove(os.path.join(r, file))
+        # response = self.client.get(reverse('index'))
+        # self.assertTrue(response.status_code, 200)
+        # request = self.factory.get('/')
+        # response = mainapp.index(request)
+        # self.assertTrue(response.status_code, 200)
 
+    #     pass
+        # # clean media folder
+        # for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
+        #     for file in f:
+        #         if file.startswith(('center', 'document', 'file')) and len(file) > 13:
+        #             os.remove(os.path.join(r, file))
+        # for r, d, f in os.walk(os.path.join(os.getcwd())):
+        #     for file in f:
+        #         if file in ['component.css', 'component.css.map']:
+        #             os.remove(os.path.join(r, file))
+        
 
+    @measure_time
     def test_main_page_loads_without_errors(self):
         response = self.client.get(reverse('index'))
         html = response.content.decode('utf8')
@@ -77,7 +125,8 @@ class SiteTest(TestCase):
         self.assertIn('<title>Главная страница</title>', html)
         self.assertTrue(html.strip().endswith('</html>'))
         self.assertTemplateUsed(response, 'mainapp/index.html')
-
+    
+    @measure_time
     def test_can_create_site_configuration_and_add_components(self):
         self.assertTrue(self.component.pk is not None)
         self.assertTrue(self.site_configuration is not None)
@@ -85,12 +134,18 @@ class SiteTest(TestCase):
             configuration=self.site_configuration))
         self.assertTrue(self.font.pk == self.site_configuration.font.pk)
 
+    @measure_time
     def test_can_add_font_url_main_page(self):
         response = self.client.get(reverse('index'))
         html = response.content.decode('utf8')
         self.assertIn(self.font.font_url, html)
 
+    @measure_time
+    # @skip('too long to execute')
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.filebased.EmailBackend', EMAIL_FILE_PATH = f"{settings.MEDIA_ROOT}/email_out")
     def test_can_post_form_from_main_page(self):
+        for f in os.listdir(os.path.join(settings.MEDIA_ROOT, "email_out")):
+            os.remove(os.path.join(settings.MEDIA_ROOT, "email_out", f))
         component_data = {
             "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v3/component.html".format(self.project_name),
             "relative_js_path": "js/main-page-slider-v3/",
@@ -104,27 +159,25 @@ class SiteTest(TestCase):
             "configuration": self.site_configuration
             }
         component = Component.objects.create(**component_data)
-        CaptchaStore.objects.all().delete()
         self.assertTrue(CaptchaStore.objects.count() == 0)
-        response = self.client.get(reverse('index'))
-        self.failUnlessEqual(CaptchaStore.objects.count(), 2)
-        self.assertTrue(any(CaptchaStore.objects.all()) in response.context)
-        #find captcha hash in response content by regular expression
-        hash_ = re.findall(r'value="([0-9a-f]+)"', str(response.content))[0]
+        factory_request = self.factory.get('/')
+        factory_response = mainapp.index(factory_request)
+        self.assertEqual(CaptchaStore.objects.count(), 2)
+        # find captcha hash with re
+        f_hash = re.findall(r'value="([0-9a-f]+)"', factory_response.content.decode('utf-8'))[0]
         #get captcha response
-        captcha_response = CaptchaStore.objects.get(hashkey=hash_).response
-        self.assertTrue(hash_ is not None)
-        r = self.client.post(reverse('accept_order'), dict(
-            captcha_0=hash_,
+        captcha_response = CaptchaStore.objects.get(hashkey=f_hash).response
+        request = self.factory.post('/accept_order/', dict(
+            # captcha_0=hash_,
+            captcha_0=f_hash,
             captcha_1=captcha_response,
-            name='tolik',
+            name='tolik_make_tests',
             phone='79257777777'))
-        self.assertEqual(r.status_code, 200)
-        # captcha = CaptchaStore.objects.get_or_create(response=response)
-        # self.assertTrue(captcha in response.context)
-        # self.assertEqual(1+1, 3, 'OOPS')
+        post_response = mainapp.accept_order(request)
+        self.assertEqual(post_response.status_code, 200)
 
 
+    @measure_time
     def test_can_create_and_publish_posts(self):
         for i in range(3):
             mixer.blend(Post, publish_on_main_page=True)
@@ -139,6 +192,7 @@ class SiteTest(TestCase):
         self.assertIn(Post.objects.first().title, html)
         self.assertIn(Post.objects.first().text, html)
 
+    @measure_time
     def test_can_open_posts_by_details_url(self):
         posts = mixer.cycle(3).blend(Post, publish_on_main_page=True)
         for post in posts:
@@ -150,6 +204,7 @@ class SiteTest(TestCase):
             self.assertTrue('related_posts' in response.context)
             self.assertTrue(post not in response.context['related_posts'])
 
+    @measure_time
     def test_can_create_link_holders_and_open_pages(self):
         side_panel = mixer.blend(SidePanel)
         post_center_info = mixer.blend(Post, url_code='CENTER_INFO', title="About us", side_panel=mixer.SELECT)
@@ -164,6 +219,7 @@ class SiteTest(TestCase):
         self.assertTrue('side_panel' in details_response.context)
         self.assertTrue(side_panel.text in details_html)
 
+    @measure_time
     def test_can_create_documents_and_publish_them_with_categories(self):
         docs = ['media/document1.doc', 'media/document2.doc', 'media/document3.doc']
         document_categories = mixer.cycle(3).blend(DocumentCategory)
@@ -182,6 +238,7 @@ class SiteTest(TestCase):
             self.assertTrue(doc.category.name in html)
             self.assertTrue(doc.title in html)
 
+    @measure_time
     def test_can_open_all_site_pages(self):
         self.assertTrue(self.client.get(reverse('index')).status_code, 200)
         self.assertTrue(self.client.get(reverse('doc')).status_code, 200)
@@ -193,6 +250,7 @@ class SiteTest(TestCase):
         self.assertTrue(self.client.get(reverse('profstandarti')).status_code, 200)
         self.assertTrue(self.client.get(reverse('contacts')).status_code, 200)
 
+    @measure_time
     def test_can_upload_photos_and_publish_them(self):
         component_data = {
             "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-content-v1/component.html".format(self.project_name),
@@ -215,6 +273,7 @@ class SiteTest(TestCase):
         for photo in CenterPhotos.objects.all():
             self.assertTrue(photo.image.url in html)
 
+    @measure_time
     def test_can_make_profstandards_and_publish_them(self):
         profstandards = mixer.cycle(6).blend(Profstandard)
         response = self.client.get(reverse('profstandarti'))
@@ -225,6 +284,7 @@ class SiteTest(TestCase):
             self.assertTrue(ps.title in html)
             self.assertTrue(ps.document.url in html)
 
+    @measure_time
     def test_can_make_contacts_and_publish_them(self):
         contacts = mixer.cycle(5).blend(Contact)
         response = self.client.get(reverse('contacts'))
@@ -235,6 +295,7 @@ class SiteTest(TestCase):
             self.assertTrue(contact.phone in response.content.decode('utf8'))
             self.assertTrue(contact.email in response.content.decode('utf8'))
 
+    @measure_time
     def test_can_load_profile_import_file(self):
         user = mixer.blend(User)
         response = self.client.get('/admin/')
@@ -258,4 +319,3 @@ class SiteTest(TestCase):
             '<div class="admin_panel row bg-light p-3">',
             self.client.get('/').content.decode('utf8')
             )
-        # self.assertRedirects('/import_profile/')

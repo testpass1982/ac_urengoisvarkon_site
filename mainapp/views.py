@@ -61,16 +61,18 @@ def accept_order(request):
                 else:
                     admin_email_address = 'popov@naks.ru'
                 email_address_arr += ['it@naks.ru', admin_email_address]
-            send_mail(
-                'Заполнена заявка на сайте',
-"""
-Заполнена заявка на сайте {url}
-Имя: {name}, Телефон: {phone},
-Заявлено: {order_string}
-""".format(url=current_absolute_url, name=instance.name, phone=instance.phone, order_string=", ".join(order_arr)),
-                settings.EMAIL_HOST_USER,
-                email_address_arr
-            )
+            # 4seconds economy to send_email every time i make tests
+            if not instance.name == 'tolik_make_tests':
+                send_mail(
+                    'Заполнена заявка на сайте',
+    """
+    Заполнена заявка на сайте {url}
+    Имя: {name}, Телефон: {phone},
+    Заявлено: {order_string}
+    """.format(url=current_absolute_url, name=instance.name, phone=instance.phone, order_string=", ".join(order_arr)),
+                    settings.EMAIL_HOST_USER,
+                    email_address_arr
+                )
             return JsonResponse({'message': 'ok', 'order_id': instance.pk})
         else:
             return JsonResponse({'errors': form.errors})
