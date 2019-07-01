@@ -1,7 +1,32 @@
+from django.test.runner import DiscoverRunner
+from django.conf import settings
 from django.template import Context, Template
 from django.utils.safestring import mark_safe
 from django.conf import settings
 import os
+import argparse
+
+class MyDiscoverRunner(DiscoverRunner):
+    def __init__(self, project_name=None, **kwargs):
+        # super(DiscoverRunner, self).__init__(**kwargs)
+        super().__init__(**kwargs)
+        if project_name is None:
+            settings.PROJECT_NAME = 'ac_template_site'
+        else:
+            settings.PROJECT_NAME = project_name
+        # print(settings.PROJECT_NAME)
+
+    @classmethod
+    def add_arguments(cls, parser):
+        try:
+            parser.add_argument(
+                '-pn', '--project-name',
+                help='specify a project name',
+                )
+        except Exception as e:
+            print('TEST ENV ERROR', e)
+        # except argparse.ArgumentError:
+        #     pass
 
 class SiteComponent:
     """composition class, wich renders self template with self context"""

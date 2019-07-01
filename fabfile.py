@@ -10,7 +10,6 @@ import zipfile
 import sys
 import pprint
 
-
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
 # https://micropyramid.com/blog/automate-django-deployments-with-fabfile/
@@ -30,20 +29,21 @@ except FileNotFoundError:
 
 CWD = os.getcwd()
 COMPONENTS_FOLDER = os.path.join(CWD, 'mainapp', 'templates', 'mainapp', 'components')
+REMOTE_COMPONENTS_FOLDER = 'mainapp/templates/mainapp/components'
 
 #check if WORKING_LOCAL is set to True
 # r=root, d=directories, f = files
-for r, d, f in os.walk(CWD):
-    for file in f:
-        if file == 'settings.py':
-            path_to_settings = os.path.join(r, file)
-            with open(path_to_settings, 'r') as settings_file:
-                for line in settings_file.readlines():
-                    if line.startswith('WORKING_LOCAL'):
-                        working_local_variable = [var.strip() for var in line.split('=')]
-                        if working_local_variable[1] == 'False':
-                            print(green('ERROR: SET WORKING LOCAL TO TRUE'))
-                            sys.exit()
+# for r, d, f in os.walk(CWD):
+#     for file in f:
+#         if file == 'settings.py':
+#             path_to_settings = os.path.join(r, file)
+#             with open(path_to_settings, 'r') as settings_file:
+#                 for line in settings_file.readlines():
+#                     if line.startswith('WORKING_LOCAL'):
+#                         working_local_variable = [var.strip() for var in line.split('=')]
+#                         if working_local_variable[1] == 'False':
+#                             print(green('ERROR: SET WORKING LOCAL TO TRUE'))
+#                             sys.exit()
 
 try:
     with open("project.json") as project_file:
@@ -51,8 +51,7 @@ try:
         env.update(project_data)
 except FileNotFoundError:
     print('***ERROR: no project file***')
-
-PATH_TO_PROJECT = '{}/{}/'.format(env.path_to_projects, env.project_name)
+PATH_TO_PROJECT = '{}/{}'.format(env.path_to_projects, env.project_name)
 
 
 #check if os is not windows
@@ -89,14 +88,17 @@ def backup_lock_files():
 def update_project_name_in_lock_files():
     for r, d, f in os.walk(COMPONENTS_FOLDER):
         for file in f:
-            if file == 'installed.lock':
+            if set(['installed.lock', 'installed.lock_backup']).issubset(os.listdir(r)) and file=='installed.lock':
                 file_path = os.path.join(r, file)
+                print('FILE_PATH', file_path)
                 with open(file_path, 'r') as lock_file:
                     file_data = lock_file.read()
                 updated_file_data = file_data.replace('ac_template_site', env.project_name)
-                pprint.pprint(updated_file_data)
+                updated_file_data_dict = json.loads(updated_file_data)
+                # import pdb; pdb.set_trace()
+                # pprint.pprint(updated_file_data)
                 with open(file_path, 'w') as updated_lock_file:
-                    updated_lock_file.write(str(json.dumps(updated_file_data)))
+                    updated_lock_file.write(json.dumps(updated_file_data_dict))
 
 def restore_lock_files():
     for r, d, f in os.walk(COMPONENTS_FOLDER):
@@ -106,10 +108,38 @@ def restore_lock_files():
                 local('cp {} {}'.format(os.path.join(r, 'installed.lock_backup'), os.path.join(r, 'installed.lock')))
                 local('rm {}'.format(os.path.join(r, 'installed.lock_backup')))
 
+def upload_lock_files():
+    backup_lock_files()
+    update_project_name_in_lock_files()
+    for r, d, f in os.walk(COMPONENTS_FOLDER):
+        for file in f:
+            if file == 'installed.lock' and exists('{path_to_project}'.format(
+                path_to_project=PATH_TO_PROJECT)):
+                with open(os.path.join(r, file), 'r', encoding='utf-8') as lock_file:
+                    component_name = json.load(lock_file)['title']
+                run('rm {path_to_project}/{remote_components_folder}/{component_name}/installed.lock'.format(
+                    path_to_project=PATH_TO_PROJECT,
+                    remote_components_folder=REMOTE_COMPONENTS_FOLDER,
+                    component_name=component_name
+                ))
+                put('{}'.format(os.path.join(r, file)),
+                    '{path_to_project}/{remote_components_folder}/{component_name}/'.format(
+                    path_to_project=PATH_TO_PROJECT,
+                    remote_components_folder=REMOTE_COMPONENTS_FOLDER,
+                    component_name=component_name
+                ))
+    restore_lock_files()
+
+def rebuild_components():
+    with cd('{}'.format(PATH_TO_PROJECT)):
+        with prefix(env.activate):
+            # run('pwd')
+            run('{python} manage.py install_components'.format(python=p))
+            run('deactivate')
+
 @runs_once
 def remote_migrate():
-    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
-        # run('cd {}{}'.format(env.path_to_projects, env.project_name))
+    with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
             run('{} manage.py makemigrations --noinput'.format(p))
             run('{} manage.py migrate --noinput'.format(p))
@@ -134,7 +164,7 @@ def local_migrate():
     ))
 
 def app_migrate(app):
-        with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+        with cd('{}'.format(PATH_TO_PROJECT)):
             with prefix(env.activate):
                 run('pwd')
                 run('{} manage.py makemigrations {}'.format(p, app))
@@ -151,8 +181,8 @@ def app_migrate(app):
 # def deactivate():
 
 def create_superuser():
-    put('secret.json', '{}{}/'.format(env.path_to_projects, env.project_name))
-    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+    put('secret.json', '{}/'.format(PATH_TO_PROJECT))
+    with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
             run('pwd')
             run('{} manage.py init_admin'.format(p))
@@ -172,7 +202,7 @@ def check_exists(filename):
         return False
 
 def test_remote_folder():
-    execute(check_exists, '{}{}'.format(env.path_to_projects, env.project_name))
+    execute(check_exists, '{}'.format(PATH_TO_PROJECT))
 
 def test():
     local('{} manage.py test'.format(p))
@@ -198,7 +228,7 @@ def clone():
 
 #as user
 def update():
-    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+    with cd('{}'.format(PATH_TO_PROJECT)):
         print(green('UPDATING...'))
         run('git add .')
         run('git commit -m "server commit {}"'.format(time.ctime()))
@@ -229,13 +259,6 @@ def make_configs():
 ****CONFIGS CREATED*****
 ************************
     """))
-
-#as sudo
-# def copy_systemd_config():
-#     run('cp {}.service /etc/systemd/system/{}.service'.format(env.project_name))
-#     run('cd /etc/systemd/system/')
-#     run('systemctl enable {}.service'.format(env.project_name))
-#     run('systemctl start {}.service'.format(env.project_name))
 
 #as sudo
 def copy_nginx_config():
@@ -271,10 +294,6 @@ def copy_configs():
 """
     ))
 
-# env.local_static_root = '/static_root/'
-# env.remote_static_root = '{}{}/static_root/'.format(env.path_to_projects, env.project_name)
-
-
 def zipdir(path, ziph):
     # ziph is zipfile handle
     for root, dirs, files in os.walk(path):
@@ -293,7 +312,7 @@ def deploy_static():
     zipf = zipfile.ZipFile('collected_static.zip', 'w', zipfile.ZIP_DEFLATED)
     execute(zipdir, 'static_root/', zipf)
     zipf.close()
-    put('collected_static.zip', '{}'.format(PATH_TO_PROJECT))
+    put('collected_static.zip', '{}/'.format(PATH_TO_PROJECT))
     local('rm collected_static.zip')
     with cd(PATH_TO_PROJECT):
         run('unzip collected_static.zip')
@@ -307,16 +326,13 @@ def deploy_static():
 *Static files uploaded*
 ***********************
     """))
-    # zip_ref = zipfile.ZipFile('{}/{}/collected_static.zip'.format(env.path_to_projects, env.project_name))
-    # zip_ref.extractall('{}/{}/static_root/'.format(env.path_to_projects, env.project_name))
-
-    # remote_dir = env.remote_static_root
-    # local_dir = env.local_static_root
 
 def remote_test():
-    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+    with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
-            run('{} manage.py test'.format(p))
+            run('{python} manage.py test --project_name={project_name}'.format(
+                python=p,
+                project_name=env.project_name))
     print(green(
 """
 ************************
@@ -337,7 +353,7 @@ def commit():
     ))
 
 def fill_db_with_demo_data():
-    with cd('{}{}'.format(env.path_to_projects, env.project_name)):
+    with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
             run('{} manage.py fill_db'.format(p))
     print(green(
@@ -353,10 +369,9 @@ def fill_db_with_demo_data():
 #     local('pwd')
 
 def rename_template_folder():
-    run('mv {}/ac_template_site/ {}{}'.format(
-        env.path_to_projects,
-        env.path_to_projects,
-        env.project_name
+    run('mv {path_to_projects}/ac_template_site/ {path_to_project}'.format(
+        path_to_projects=env.path_to_projects,
+        path_to_project=PATH_TO_PROJECT
         ))
     print(green(
 """
@@ -399,8 +414,8 @@ def wait(seconds):
 
 
 def deploy():
-    if not exists('{}{}'.format(env.path_to_projects, env.project_name)):
-        print(green('***Project folder {}{} does not exist***'.format(env.path_to_projects, env.project_name)))
+    if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
+        print(green('***Project folder {} does not exist***'.format(PATH_TO_PROJECT)))
         confirm = prompt(green('Start new deployment? ---> (y/n): '))
         if confirm == 'y':
             print(blue("""
@@ -408,27 +423,23 @@ def deploy():
 STARTING in 5 seconds...
 ************************
             """))
-            # for i in range(5):
-            #     time.sleep(1)
-            #     print(blue('...{}...'.format(i+1)))
-            wait(5)
             test()
-            wait(3)
             clone()
-            wait(3)
             rename_template_folder()
             remote_migrate()
             create_superuser()
             app_migrate('mainapp')
+            upload_lock_files()
+            rebuild_components()
             fill_db_with_demo_data()
             make_configs()
             copy_systemd_config()
             copy_nginx_config()
             deploy_static()
             remote_test()
-            #change secret key
-            #change debug mode
-            #change allowed hosts
+            # change secret key
+            # change debug mode
+            # change allowed hosts
             local('{} functional_tests.py {}'.format(p, env.domain_name))
             print(blue("""
             *********************
@@ -447,9 +458,9 @@ STARTING in 5 seconds...
             app_migrate('mainapp')
             remote_test()
             deploy_static()
-            #change  secret_key
-            #change debug mode
-            #change allowed hosts
+            # change  secret_key
+            # change debug mode
+            # change allowed hosts
             sudo('systemctl restart {}.service'.format(env.project_name))
             sudo('systemctl show {}.service --no-page'.format(env.project_name))
             sudo('nginx -s reload')

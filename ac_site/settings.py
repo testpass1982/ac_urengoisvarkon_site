@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import json
+import sys, argparse
 from pathlib import Path
+TEST_RUNNER = 'mainapp.classes.MyDiscoverRunner'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,14 +56,16 @@ DEBUG = True
 # ALLOWED_HOSTS = ['ac_site.minml.ru']
 ALLOWED_HOSTS = ['*']
 
-WORKING_LOCAL = True
+# WORKING_LOCAL = False
 
-if WORKING_LOCAL is True:
-        PROJECT_NAME = 'ac_template_site'
-else:
-    with open("project.json") as project_file:
-        PROJECT_NAME = json.load(project_file)['project_name']
-
+# if WORKING_LOCAL is True:
+#         PROJECT_NAME = 'ac_template_site'
+# else:
+#     with open("project.json") as project_file:
+#         PROJECT_NAME = json.load(project_file)['project_name']
+#         email_folder_path = os.path.join(os.getcwd(), 'media', 'email_out')
+#         if not os.path.exists(email_folder_path):
+#             os.mkdir(email_folder_path)
 
 # Application definition
 

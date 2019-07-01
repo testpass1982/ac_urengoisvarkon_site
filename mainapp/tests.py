@@ -13,7 +13,7 @@ from django.core.files import File
 from django.contrib.auth.models import User
 from captcha.models import CaptchaStore
 import re
-import os
+import os, sys
 from functools import wraps
 from time import time
 # from mainapp.views import accept_order, index
@@ -27,7 +27,11 @@ from django.test.utils import override_settings
 #     def test_bad_maths(self):
 #         self.assertEqual(1+1, 3)
 
+# PROJECT_NAME = 'ac_template_site'
+
+
 timing_report = {}
+
 
 def measure_time(func):
     @wraps(func)
@@ -44,6 +48,20 @@ def measure_time(func):
 class SiteTest(TestCase):
 
     @classmethod
+    def setUpClass(cls):
+        print('CWD', os.getcwd())
+        email_folder_path = os.path.join(os.getcwd(), 'media', 'email_out')
+        if not os.path.exists(email_folder_path):
+            os.mkdir(email_folder_path)
+        # WORKING_LOCAL = False
+
+        # if WORKING_LOCAL is True:
+        #         PROJECT_NAME = 'ac_template_site'
+        # else:
+        #     with open("project.json") as project_file:
+        #         PROJECT_NAME = json.load(project_file)['project_name']
+
+    @classmethod
     def tearDownClass(cls):
         for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
             for file in f:
@@ -53,11 +71,11 @@ class SiteTest(TestCase):
             for file in f:
                 if file in ['component.css', 'component.css.map']:
                     os.remove(os.path.join(r, file))
-        print('\n<-TIMING REPORT->') 
+        print('\n<-TIMING REPORT->')
         for element in sorted((value,key) for (key,value) in timing_report.items()):
             print(element[1], ':', element[0], 'ms')
         # clean media folder
-    
+
 
     @measure_time
     def setUp(self):
@@ -96,27 +114,12 @@ class SiteTest(TestCase):
 
         self.component = Component.objects.create(**component_data)
         # self.addCleanup(os.remove, os.path.join(f"{settings.MEDIA_ROOT}", "email_out"))
-    
+
     @measure_time
     def tearDown(self):
-        pass
-        # response = self.client.get(reverse('index'))
-        # self.assertTrue(response.status_code, 200)
-        # request = self.factory.get('/')
-        # response = mainapp.index(request)
-        # self.assertTrue(response.status_code, 200)
+        response = self.client.get(reverse('index'))
+        self.assertTrue(response.status_code, 200)
 
-    #     pass
-        # # clean media folder
-        # for r, d, f in os.walk(os.path.join(os.getcwd(), 'media')):
-        #     for file in f:
-        #         if file.startswith(('center', 'document', 'file')) and len(file) > 13:
-        #             os.remove(os.path.join(r, file))
-        # for r, d, f in os.walk(os.path.join(os.getcwd())):
-        #     for file in f:
-        #         if file in ['component.css', 'component.css.map']:
-        #             os.remove(os.path.join(r, file))
-        
 
     @measure_time
     def test_main_page_loads_without_errors(self):
@@ -126,7 +129,7 @@ class SiteTest(TestCase):
         self.assertIn('<title>Главная страница</title>', html)
         self.assertTrue(html.strip().endswith('</html>'))
         self.assertTemplateUsed(response, 'mainapp/index.html')
-    
+
     @measure_time
     def test_can_create_site_configuration_and_add_components(self):
         self.assertTrue(self.component.pk is not None)
@@ -143,7 +146,7 @@ class SiteTest(TestCase):
 
     @measure_time
     # @skip('too long to execute')
-    @override_settings(EMAIL_BACKEND='django.core.mail.backends.filebased.EmailBackend', EMAIL_FILE_PATH = f"{settings.MEDIA_ROOT}/email_out")
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.filebased.EmailBackend', EMAIL_FILE_PATH = "{mr}/email_out".format(mr=settings.MEDIA_ROOT))
     def test_can_post_form_from_main_page(self):
         for f in os.listdir(os.path.join(settings.MEDIA_ROOT, "email_out")):
             os.remove(os.path.join(settings.MEDIA_ROOT, "email_out", f))
