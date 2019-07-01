@@ -2,18 +2,21 @@
 from django.core.management.base import BaseCommand
 from django.urls import reverse
 from django.core.files import File
-from mainapp.models import Menu, Post, Article, PostPhoto, Tag, Category, Chunk
-from mainapp.models import Contact, Document, Profile, DocumentCategory, Service, CenterPhotos
-from mainapp.models import Attestat
+# from mainapp.models import Menu, Post, Article, PostPhoto, Tag, Category, Chunk, SiteConfiguration, ColorScheme, Font, Component
+# from mainapp.models import Contact, Document, Profile, DocumentCategory, Service, CenterPhotos
+# from mainapp.models import Attestat
+from mainapp.models import *
 from django.conf import settings
 from mixer.backend.django import mixer
 import random
 from django.conf import settings
 from django.utils import timezone
 import os, shutil
+from django.contrib.auth.models import User
 
 # from model_mommy.recipe import Recipe, foreign_key, seq
-
+# clean Users
+User.objects.all().exclude(username='popov').delete()
 # clean upload folder
 if os.path.isdir(os.path.join(settings.BASE_DIR, 'media', 'upload')):
     folder = os.path.join(settings.BASE_DIR, 'media', 'upload')
@@ -110,6 +113,35 @@ document_categories = [
     'Аттестация сварочных технологий'
 ]
 
+fonts = [
+    {
+        'title': 'Roboto',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Montserrat',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Literata',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Literata&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Oswald',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">'
+    }
+]
+
+partners = ['media/alrosa.png', 'media/zabtek.png']
+
+def set_random_component(components, configuration):
+    components_array = [c for c in components]
+    if components[0].component_type in ['top_addr_line', 'helper_block']:
+        components_array += ''
+    random_component = random.choice(components_array)
+    random_component.configuration = configuration
+    random_component.save()
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         #delete all Posts, Articles, Menus and other
@@ -127,6 +159,9 @@ class Command(BaseCommand):
         Attestat.objects.all().delete()
         Chunk.objects.all().delete()
         CenterPhotos.objects.all().delete()
+        SiteConfiguration.objects.all().delete()
+        Font.objects.all().delete()
+        Partner.objects.all().delete()
 
 
         #upload_center_photos
@@ -175,11 +210,12 @@ class Command(BaseCommand):
                 publish_on_main_page=True,
                 publish_on_news_page=True,
                 published_date=timezone.now(),
+                author=User.objects.get(username='popov')
                 )
             mixer.blend(PostPhoto,
                         image=File(open(images[i], 'rb')))
             #make Articles
-            mixer.blend(Article),
+            mixer.blend(Article, author=User.objects.get(username='popov')),
             mixer.blend(Contact)
             print('Загружена демо-картинка {}'.format(i+1))
             print('Создана демо-статья {}'.format(i+1))
@@ -268,3 +304,40 @@ class Command(BaseCommand):
         #         title ='image{}'.format(i),
         #         image=File(open(images[i], 'rb')))
         print('*********fill_db_complete (демо-данные созданы)************')
+
+        # create site_configuration and assign fonts, components and colorschemes
+        for f in fonts:
+            new_font = mixer.blend(Font, title=f['title'], font_url=f['font_url'])
+            print('font created', new_font.title, new_font.pk)
+        # mixer.blend(SiteConfiguration)
+        configuration = mixer.blend(
+            SiteConfiguration,
+            title='Конфигурация 1',
+            site_type='1',
+            font=random.choice([f for f in Font.objects.all()]),
+            activated=False
+            )
+        random_color_scheme = random.choice([c for c in ColorScheme.objects.all()])
+        random_color_scheme.configuration = configuration
+        random_color_scheme.save()
+        configuration.activated = True
+        configuration.save()
+        top_addr_lines = Component.objects.filter(component_type='top_addr_line')
+        inner_heads = Component.objects.filter(component_type='inner_head')
+        main_menus = Component.objects.filter(component_type='main_menu')
+        main_banners = Component.objects.filter(component_type='main_banner')
+        main_page_contents = Component.objects.filter(component_type='main_page_content')
+        helper_blocks = Component.objects.filter(component_type='helper_block')
+        set_random_component(top_addr_lines, configuration)
+        set_random_component(inner_heads, configuration)
+        set_random_component(main_menus, configuration)
+        set_random_component(main_banners, configuration)
+        set_random_component(main_page_contents, configuration)
+        set_random_component(helper_blocks, configuration)
+        mixer.blend(Post, url_code='CENTER_INFO', title='Информация о центре')
+        mixer.blend(Post, url_code='INFO', title='Информация')
+        mixer.blend(Post, url_code='OBLD', title='Область деятельности')
+        mixer.blend(Post, url_code='SERVICES', title='Услуги')
+        for i in range(len(partners)):
+            mixer.blend(Partner, logo=File(open(partners[i], 'rb')))
+

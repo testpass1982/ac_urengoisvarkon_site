@@ -9,6 +9,7 @@ import os
 import zipfile
 import sys
 import pprint
+import re
 
 # env.use_ssh_config = False
 # env.disable_known_hosts = True
@@ -48,9 +49,15 @@ REMOTE_COMPONENTS_FOLDER = 'mainapp/templates/mainapp/components'
 try:
     with open("project.json") as project_file:
         project_data = json.load(project_file)
-        env.update(project_data)
+        pattern = re.compile('[^a-z0-9_]')
+        if re.match(pattern, project_data['project_name']) or len(project_data['project_name']) == 0:
+            print('ERROR PROJECT_NAME, sys.exit()')
+            sys.exit()
+        else:
+            env.update(project_data)
 except FileNotFoundError:
     print('***ERROR: no project file***')
+
 PATH_TO_PROJECT = '{}/{}'.format(env.path_to_projects, env.project_name)
 
 
@@ -226,6 +233,7 @@ def clone():
 """
     ))
 
+
 #as user
 def update():
     with cd('{}'.format(PATH_TO_PROJECT)):
@@ -330,7 +338,7 @@ def deploy_static():
 def remote_test():
     with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
-            run('{python} manage.py test --project_name={project_name}'.format(
+            run('{python} manage.py test --project-name={project_name}'.format(
                 python=p,
                 project_name=env.project_name))
     print(green(
@@ -361,6 +369,18 @@ def fill_db_with_demo_data():
 **********************
 **DEMO DATA COMPLETE**
 **********************
+"""
+    ))
+# mainapp/management/commands/randomize_colors.py
+def remote_randomize_colorschemes():
+    with cd('{}'.format(PATH_TO_PROJECT)):
+        with prefix(env.activate):
+            run('{python} manage.py randomize_colors'.format(python=p))
+            print(green(
+"""
+************************
+**COLORSCHEMES CREATED**
+************************
 """
     ))
 
