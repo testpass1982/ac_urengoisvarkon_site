@@ -23,7 +23,7 @@
 <!-- End Include Modal -->
 {% comment %} {% include 'mainapp/includes/info_box.html' %} {% endcomment %}
   {% for site_comp in site.components %}
-    {% if site_comp.component.component_type == 'helper_block' or site_comp.component.component_type == 'main_page_content' or site_comp.component.component_type == 'pict_gallery' or site_comp.component.component_type == 'partners_block' or site_comp.component.component_type == 'advertising_block'   %}
+    {% if site_comp.component.component_type == 'helper_block' or site_comp.component.component_type == 'main_page_content' or site_comp.component.component_type == 'pict_gallery' or site_comp.component.component_type == 'partners_block'   %}
       {% include site_comp %}
     {% endif %}
   {% endfor %}

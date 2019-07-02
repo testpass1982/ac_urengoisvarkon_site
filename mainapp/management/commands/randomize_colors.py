@@ -13,7 +13,7 @@ import colour
 # COLOR_MODES = ['triad', 'analogic-complement', 'analogic', 'quad', 'monochrome-dark']
 # COLOR_MODES = ['triad', 'quad', 'analogic-complement']
 COLOR_MODES = ['triad', 'quad', 'analogic-complement']
-SEED_COLORS = ['85FFC7', '3E517A', 'B08EA2', '031927', '693668', '8DAA9D']
+SEED_COLORS = ['3E517A', 'B08EA2', '031927', '693668', '8DAA9D']
 
 class Command(BaseCommand):
     def handle(self, *args, **options):

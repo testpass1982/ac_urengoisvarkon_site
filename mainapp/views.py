@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, PostPhoto, Tag, Category, Document, Article, Message, Contact
-from .models import Registry, Menu, Profile, Service
-from .models import Staff, Component
+from .models import Registry, Menu, Profile, Service, SiteConfiguration, Component
+from .models import Staff, Component, SlideBackgrounds
 from .forms import PostForm, ArticleForm, DocumentForm, ProfileImportForm, OrderForm
 from .forms import SendMessageForm, SubscribeForm, AskQuestionForm, SearchRegistryForm
 from .adapters import MessageModelAdapter
@@ -118,18 +118,21 @@ def index(request):
         'pictured_posts': pictured_posts,
         'not_pictured_posts': Post.objects.filter(publish_in_basement=True),
         'documents': Document.objects.filter(publish_on_main_page=True).order_by('-created_date'),
-        'articles': Article.objects.filter(publish_on_main_page=True).order_by('-created_date')
-        # 'component_name': page_component.component.title
-        # 'comp': page_component
-        # 'component': page_component
-        # 'docs': docs,
-        # 'articles': main_page_articles,
-        # 'send_message_form': SendMessageForm(),
-        # 'subscribe_form': SubscribeForm(),
-        # 'ask_question_form': AskQuestionForm()
+        'articles': Article.objects.filter(publish_on_main_page=True).order_by('-created_date'),
+        'slide_background': SlideBackgrounds.objects.filter(activated=True).first(),
     }
+    # main-page-slider-v1
+    configuration = SiteConfiguration.objects.first()
+    activated_components = Component.objects.filter(configuration=configuration)
+    faq_component = Component.objects.get(title='main-page-slider-v1')
+    if faq_component in activated_components:
+        try:
+            content.update({'faq': Post.objects.get(title='Часто задаваемые вопросы')})
+        except:
+            content.update({'faq': {'title': 'Добавьте страницу faq в админке',
+                                    'text': '<p class="text text-danger">Страница faq не создана</p>'}
+                            })
     # import pdb; pdb.set_trace()
-
     return render(request, 'mainapp/index.html', content)
 
 def reestr(request):

@@ -111,14 +111,27 @@ class SiteTest(TestCase):
             "scss_path": "/home/popov/{}/assets/scss/components/main-menu-v1/component.scss".format(self.project_name)
         }
         component_data.update({'configuration': self.site_configuration})
-
+        slider_component_data = {
+            "relative_html_path": "mainapp/components/main-page-slider-v1/component.html",
+            "relative_scss_path": "scss/components/main-page-slider-v1/component.scss",
+            "relative_js_path": "js/main-page-slider-v1/",
+            "scss_path": "/home/popov/ac_template_site/assets/scss/components/main-page-slider-v1/component.scss",
+            "html_path": "/home/popov/ac_template_site/mainapp/templates/mainapp/components/main-page-slider-v1/component.html",
+            "code": "main-page-slider-v1",
+            "js_path": "",
+            "component_type": "main_banner",
+            "title": "main-page-slider-v1",
+            "configuration": self.site_configuration,
+        }
+        self.slider_component = Component.objects.create(**slider_component_data)
         self.component = Component.objects.create(**component_data)
         # self.addCleanup(os.remove, os.path.join(f"{settings.MEDIA_ROOT}", "email_out"))
 
     @measure_time
     def tearDown(self):
-        response = self.client.get(reverse('index'))
-        self.assertTrue(response.status_code, 200)
+        pass
+        # response = self.client.get(reverse('index'))
+        # self.assertTrue(response.status_code, 200)
 
 
     @measure_time
@@ -183,9 +196,14 @@ class SiteTest(TestCase):
 
     @measure_time
     def test_can_create_and_publish_posts(self):
+        titles = ['Post1', 'Post2', 'Часто задаваемые вопросы']
         for i in range(3):
-            mixer.blend(Post, publish_on_main_page=True)
+            mixer.blend(Post,
+            publish_on_main_page=True,
+            publish_in_basement=True,
+            title=titles[i])
         response = self.client.get(reverse('index'))
+
         self.assertTrue(len(response.context['basement_news']), 3)
         post_details_response = self.client.get(
             reverse('details_news', kwargs={'pk': Post.objects.first().pk})

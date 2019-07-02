@@ -1,7 +1,7 @@
 {% load static %}
 {% load link_holders %}
 <!-- BG info -->
-<div class="bg-block-01">
+<div class="bg-block-01" {% if slide_background %}style="background: url({{ slide_background.image.large.url }}); background-size:cover;"{% endif %}>
     <div class="bg">
         <div class="blog-info">
             <div class="container">
@@ -47,118 +47,16 @@
                                 <div class="head__box__text h-100">
                                     <a data-fancybox="" data-src="#trueModal" data-modal="true" href="javascript:;">
                                         <div class="head__box__info h-100">
-                                            Вопросы и ответы <i class="fas fa-question-circle"></i>
+                                            <span style='white-space:nowrap;'>Вопросы и ответы <img src="{% static 'img/icon_question.png' %}" style="width:30px;" alt=""></span>
                                         </div>
                                         <div id="trueModal" style="display: none; max-width: 800px;">
                                             <h3>
-                                                <div class="close-modal-btn float-right" data-fancybox-close="#"><i class="fas fa-times"></i></div>
-                                                Часто задаваемые вопросы <br> в области аттетстации
+                                                <div class="close-modal-btn float-right" data-fancybox-close="#">
+                                                    <img src="{% static 'img/icon_cross.png' %}" style="width:30px;" alt="">
+                                                </div>
+                                                {{ faq.title }}
                                             </h3>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Стоимость аттестации?
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – В зависимости от направления аттестации, в соответствии с заявкой
-                                                </p>
-
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Порядок аттестации?
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    - Рассмотрение заявки, выставления счета, проведение
-                                                    предаттестационной
-                                                    подготовки,
-                                                    аттестации выдачи документов по результатам.
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Место проведение аттестации
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    - Производственная база НАКС Архангельск, Талажское шоссе 17, по
-                                                    мере
-                                                    формирования
-                                                    групп
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Сроки проведения аттестации
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – 3-4 дня, в зависимости от направления деятельности
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Какие необходимо документы?
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – Заявка, согласие на обработку персональных данных, документ об
-                                                    образовании,
-                                                    подтверждение трудового стажа и квалификации, копия предыдущего
-                                                    удостоверения ( При
-                                                    наличии) , реквизиты организации (для юр. Лиц), для частных лиц (
-                                                    паспорт , снилс , ИНН).
-                                                </p>
-                                            </div>
-                                            <div class="line__text"></div>
-                                            <p class="header__vopros__text">
-                                                Технологии
-                                            </p>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Стоимость аттестации
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – В зависимости от направления аттестации, в соответствии с заявкой
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Порядок аттестации?
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    - Рассмотрение заявки, выставления счета, составление программы
-                                                    аттестации, сварка КСС,
-                                                    проведение испытаний, оформление результатов с выдача документов.
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Место проведения аттестации
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – Производственная база / монтажная площадка / организация –
-                                                    заявителя
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Сроки проведения аттестации
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – от 60 дней
-                                                </p>
-                                            </div>
-                                            <div class="box__vopros__otvet">
-                                                <p class="vopros__text">
-                                                    Требования к организации - заявителю
-                                                </p>
-                                                <p class="vopros__otvet__main">
-                                                    – ТИ на заявленный способ аттестации, наличие аттестованного
-                                                    персонала,
-                                                    наличие службы
-                                                    сварки, наличие аттестованного оборудования, наличие оснастки,
-                                                    наличие
-                                                    основных материалов
-                                                    для сварки КСС согласно разработанной программы.
-                                                </p>
-                                            </div>
+                                                {{ faq.text|safe}}
                                             <p>
                                                 <button data-fancybox-close="" class="close__modal__voprosi">Закрыть</button>
                                             </p>

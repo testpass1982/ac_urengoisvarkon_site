@@ -12,6 +12,7 @@ from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 from django.urls import reverse
 from picklefield.fields import PickledObjectField
+from stdimage.models import StdImageField
 
 
 # Create your models here.
@@ -80,9 +81,10 @@ class Post(ContentMixin):
     '''child of contentmixin'''
     category = models.ForeignKey(
         Category, verbose_name='Категория', on_delete=models.CASCADE)
+    publish_on_main_page = models.NullBooleanField(u'Опубликовать на главной', default=False)
     publish_on_news_page = models.BooleanField(
         verbose_name="Опубликовать в ленте новостей", default=False)
-    publish_in_basement=models.BooleanField(u'Опубликовать в подвале на главной', default=False)
+    publish_in_basement = models.BooleanField(u'Опубликовать в подвале на главной', default=False)
     side_panel = models.ForeignKey(SidePanel, verbose_name='Боковая панель', blank=True,
                                     null=True, default=None, on_delete=models.SET_NULL)
 
@@ -320,8 +322,12 @@ class Service(models.Model):
             будет создан пункт меню в разделе "Услуги", в котором они
             сортируются в соответствии с порядком сортировки
         """)
+    short_description = models.CharField(u'Краткое описание услуги', max_length=200, blank=True, null=True, default=None)
     html = RichTextUploadingField(u'Описание услуги')
     number = models.SmallIntegerField(u'Порядок сортировки', blank=True, null=True, default=None)
+    bg_photo = models.ImageField(u'Картинка для главной', upload_to="upload/", null=True, blank=True, default=None)
+    documents = models.ManyToManyField(Document, blank=True)
+
 
     class Meta:
         verbose_name = 'Услуга'
@@ -547,3 +553,26 @@ class OrderService(models.Model):
 
     def __str__(self):
         return self.name
+
+class SlideBackgrounds(models.Model):
+    title = models.CharField(
+        u'Название',
+        default='Слайдер_{}'.format(timezone.now()),
+        max_length=50
+    )
+    image = StdImageField(
+        u'Картинка для фона баннера',
+        upload_to='backgrounds/',
+        variations={
+            'thumbnail': {"width": 200, "height": 100, "crop": True},
+            'large': {"width": 1920, "height": 1080, "crop": True}
+        }
+    )
+    activated = models.NullBooleanField(u'Активировать', default=False)
+
+    class Meta:
+        verbose_name = 'Картинка для баннера'
+        verbose_name_plural = 'Картинки для баннера'
+
+    def __str__(self):
+        return self.title

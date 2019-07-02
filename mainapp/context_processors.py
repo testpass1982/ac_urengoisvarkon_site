@@ -28,10 +28,13 @@ def random_documents(request):
 
 
 def basement_news(request):
-    basement_news = Post.objects.filter(
-        publish_on_main_page=True).order_by(
-            '-published_date')[:3]
-    return {'basement_news': basement_news}
+    try:
+        basement_news = Post.objects.filter(
+            publish_in_basement=True).order_by(
+                '-published_date')[:3]
+        return {'basement_news': basement_news}
+    except Exception as e:
+        print('ERROR', e)
 
 
 def profile_chunks(request):

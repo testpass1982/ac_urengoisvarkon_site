@@ -28,7 +28,6 @@
   {% endif %}
   <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.min.css' %}">
-
   <!-- components scss files -->
   {% block compontents_css %}
     {% if site.components|length >= 1 %}
@@ -84,13 +83,22 @@
 
   {% endblock content %}
 
+
+
   {% include 'mainapp/includes/partners.html' %}
+
+    {% for site_comp in site.components %}
+      {% if site_comp.component.component_type == 'advertising_block' %}
+        {% include site_comp %}
+      {% endif %}
+    {% endfor %}
+
   <!-- Include Modal -->
   {% include 'mainapp/includes/basement.html' %}
   {% comment %} <div w3-include-html="includes/basement.html"></div> {% endcomment %}
   <!-- End Include Modal -->
 
-
+  <!-- Include main-banner on main page -->
 
   <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"

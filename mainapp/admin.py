@@ -8,6 +8,7 @@ from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat
 from .models import Profstandard, DocumentCategory, SiteConfiguration
 from .models import Font
 from .models import Partner, Component, ColorScheme, OrderService
+from .models import SlideBackgrounds
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
@@ -244,6 +245,7 @@ class OrderServiceAdmin(admin.ModelAdmin):
     fields = ['name', 'phone', 'compound', 'ready']
 
 admin.site.register(Partner)
+admin.site.register(SlideBackgrounds)
 admin.site.register(Font)
 # admin.site.register(Component)
 admin.site.register(Tag)

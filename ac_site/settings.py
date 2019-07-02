@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'sass_processor',
     'captcha',
+    'stdimage',
 ]
 
 MIDDLEWARE = [

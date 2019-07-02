@@ -75,6 +75,7 @@ news_titles = [
     'Общее собрание',
     'Семинар НАКС',
     'Вебинар НАКС',
+    'Съезд НАКС',
 ]
 
 documents = [
@@ -107,10 +108,73 @@ menu_urls_titles = [
 ]
 
 document_categories = [
-    'Аттестация персонала',
+    'Аттестация персонала в области сварки',
     'Аттестация сварочных материалов',
     'Аттестация сварочного оборудования',
     'Аттестация сварочных технологий'
+]
+
+color_schemes = [
+    {
+        'title': 'SEED_031927_triad',
+        'colors': '#031927, #D11E8F, #A0FF1E, #E4EAF5, #EBECFF',
+    },
+    {
+        'title': 'SEED_3E517A_analogic-complement',
+        'colors': '#3E517A, #FFE6AA, #F7D690, #B164C4, #DE6EB6',
+    },
+    {
+        'title': 'SEED_3E517A_quad',
+        'colors': '#3E517A, #C473B6, #B89D63, #73E388, #6B91E3',
+    },
+    {
+        'title': 'SEED_3E517A_triad',
+        'colors': '#293652, #C77491, #91D674, #82A9FF, #78A3FF',
+    },
+    {
+        'title': 'SEED_693668_analogic-complement',
+        'colors': '#3D1F3D, #C7FFCD, #72C274, #B86B5E, #A68E53',
+    },
+    {
+        'title': 'SEED_693668_quad',
+        'colors': '#693668, #C79F75, #7CE07F, #364F69, #FCD9F8',
+    },
+    {
+        'title': 'SEED_693668_triad',
+        'colors':'#693668, #ADAD66, #69BBBD, #D66ED4, #FFA8FF',
+    },
+    {
+        'title': 'SEED_85FFC7_analogic-complement',
+        'colors': '#030504, #EDE0FF, #F0A3CA, #D2E1FD, #9B8CFE',
+    },
+    {
+        'title': 'SEED_85FFC7_triad',
+        'colors': '#274A3A, #B46DF5, #F8C17A, #CBFBE7, #D2FDD6',
+    },
+    {
+        'title': 'SEED_8DAA9D_analogic-complement',
+        'colors': '#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF',
+    },
+    {
+        'title': 'SEED_8DAA9D_quad',
+        'colors': '#424F49, #B0AFD1, #E3B8CB, #ABAD8A, #91B6A5',
+    },
+    {
+        'title': 'SEED_8DAA9D_triad',
+        'colors': '#3D4A44, #C5B3D6, #D6C5AD, #8AAD9D, #91B6A5',
+    },
+    {
+        'title': 'SEED_B08EA2_analogic-complement',
+        'colors': '#6B5663, #60C45E, #ABFFD2, #FFE7CB, #FCFFCB',
+    },
+    {
+        'title': 'SEED_B08EA2_quad',
+        'colors': '#755F6C, #9E9B80, #86A894, #8C90B2, #BB93AA',
+    },
+    {
+        'title': 'SEED_B08EA2_triad',
+        'colors': '#5C5C5C, #929E80, #CBE8FF, #FFC9E8, #E8E0FF',
+    }
 ]
 
 fonts = [
@@ -130,6 +194,13 @@ fonts = [
         'title': 'Oswald',
         'font_url': '<link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">'
     }
+]
+
+service_bg_photos = [
+    'media/service_sm.jpg',
+    'media/service_so.jpg',
+    'media/service_sp.jpg',
+    'media/service_st.jpg',
 ]
 
 partners = ['media/alrosa.png', 'media/zabtek.png']
@@ -162,9 +233,10 @@ class Command(BaseCommand):
         SiteConfiguration.objects.all().delete()
         Font.objects.all().delete()
         Partner.objects.all().delete()
+        ColorScheme.objects.all().delete()
 
 
-        #upload_center_photos
+        # upload_center_photos
         for i in range(0, len(center_photos)):
             mixer.blend(
                 CenterPhotos,
@@ -172,7 +244,13 @@ class Command(BaseCommand):
                 number=i+1
             )
 
-        #make Chunk for page "About"
+        # make ColorSchemes
+        for i in range(len(color_schemes)):
+            ColorScheme.objects.create(
+                title=color_schemes[i]['title'],
+                colors=color_schemes[i]['colors'])
+
+        # make Chunk for page "About"
         mixer.blend(
             Chunk,
             title='Описание для страницы "о центре"',
@@ -198,13 +276,19 @@ class Command(BaseCommand):
 
         #make PostPhotos
         print('Загружаем картинки...')
+
+        mixer.cycle(3).blend(
+                Article,
+                author=User.objects.get(username='popov'),
+                publish_on_main_page=True
+                )
         for i in range(0, len(images)):
             #make Tags
             mixer.blend(Tag),
             #make Categories
             # mixer.blend(Category),
             #make Posts without pictures
-            mixer.blend(
+            new_post = mixer.blend(
                 Post,
                 title=random.choice(news_titles),
                 publish_on_main_page=True,
@@ -212,14 +296,21 @@ class Command(BaseCommand):
                 published_date=timezone.now(),
                 author=User.objects.get(username='popov')
                 )
-            mixer.blend(PostPhoto,
-                        image=File(open(images[i], 'rb')))
+            PostPhoto.objects.create(
+                title='{}'.format(images[i]),
+                image=File(open(images[i], 'rb')),
+                post=new_post
+                )
+            # mixer.blend(PostPhoto,
+            #             image=File(open(images[i], 'rb')))
             #make Articles
-            mixer.blend(Article, author=User.objects.get(username='popov')),
+
             mixer.blend(Contact)
             print('Загружена демо-картинка {}'.format(i+1))
             print('Создана демо-статья {}'.format(i+1))
-
+        for post in Post.objects.all()[3:]:
+            post.publish_in_basement=True
+            post.save()
 
 
         #make Menus
@@ -228,13 +319,18 @@ class Command(BaseCommand):
                 'details', kwargs={'pk': Post.objects.first().pk}),
                 title=menu_urls_titles[i])
 
-        for i in range(0, len(document_categories)):
+        for i in range(len(document_categories)):
             mixer.blend(DocumentCategory, name=document_categories[i])
-            mixer.blend(Service, title=document_categories[i], html="""
+            mixer.blend(Service,
+            title=document_categories[i],
+            html="""
                         <hr>
                         <p>Страница в разработке</p>
                         <hr>
-                """)
+                """,
+            bg_photo=File(open(service_bg_photos[i], 'rb')),
+            short_description='Краткое описание'
+            )
 
         print('Загружаем демо-документы...')
         for i in range(0, len(documents)):
@@ -278,7 +374,7 @@ class Command(BaseCommand):
                                 svarka1@naks.ru""",
             org_header_phones='+7 (3842)44-14-90 <br>+7(3842)44-14-92',
             org_address='109469, г. Владимир, улица Полины Осипенко, дом 66',
-            org_address_map_link="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af0AYyonWlZv3y9KCrhIOKmz2nH5lreSu&amp;width=607&amp;height=529&amp;lang=ru_RU&amp;scroll=true",
+            org_address_map_link="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2f2a5847babdf5c0e4cefcc8a84e57a1e46232a8403ac03c80e9e180cba713eb&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=false",
             org_csp_code='ВВР-1ЦСП',
             org_csp_reestr_link="http://naks.ru",
             org_acsp_code='ВВР-2ГАЦ',
@@ -295,15 +391,7 @@ class Command(BaseCommand):
         print('Демо-профиль {} создан'.format(Profile.objects.first().org_short_name))
 
 
-        # Category.objects.create(name=settings.ACSP_CODE)
-        # Category.objects.create(name=settings.CSP_CODE)
-        # Category.objects.create(name=settings.ACSO_CODE)
-        # Category.objects.create(name=settings.ACST_CODE)
-        # for i in range(0, len(images)):
-        #     PostPhoto.objects.create(
-        #         title ='image{}'.format(i),
-        #         image=File(open(images[i], 'rb')))
-        print('*********fill_db_complete (демо-данные созданы)************')
+
 
         # create site_configuration and assign fonts, components and colorschemes
         for f in fonts:
@@ -328,16 +416,24 @@ class Command(BaseCommand):
         main_banners = Component.objects.filter(component_type='main_banner')
         main_page_contents = Component.objects.filter(component_type='main_page_content')
         helper_blocks = Component.objects.filter(component_type='helper_block')
+        info_blocks = Component.objects.filter(component_type='advertising_block')
         set_random_component(top_addr_lines, configuration)
         set_random_component(inner_heads, configuration)
         set_random_component(main_menus, configuration)
         set_random_component(main_banners, configuration)
         set_random_component(main_page_contents, configuration)
         set_random_component(helper_blocks, configuration)
+        set_random_component(info_blocks, configuration)
         mixer.blend(Post, url_code='CENTER_INFO', title='Информация о центре')
         mixer.blend(Post, url_code='INFO', title='Информация')
         mixer.blend(Post, url_code='OBLD', title='Область деятельности')
         mixer.blend(Post, url_code='SERVICES', title='Услуги')
+        mixer.blend(Post, title='Часто задаваемые вопросы')
+        mixer.blend(Post, url_code='OK', title='Оценка квалификации в области сварки')
+        mixer.blend(Post, url_code='CENTER_MVC', title='Обучение в МВЦ НАКС')
+
+
         for i in range(len(partners)):
             mixer.blend(Partner, logo=File(open(partners[i], 'rb')))
+        print('*********fill_db_complete (демо-данные созданы)************')
 

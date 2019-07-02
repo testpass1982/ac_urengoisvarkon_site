@@ -5,7 +5,7 @@
     <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active" data-interval="10000">
-          <div class="bg_carousel_content_one">
+          <div class="bg_carousel_content_one" {% if slide_background %}style="background: url({{ slide_background.image.large.url }}); background-size:cover;"{% endif %}>
             <div class="bg_carousel_content_color">
               <div class="container">
                 <div class="slider__box_head_bg">

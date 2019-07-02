@@ -1,5 +1,5 @@
 {% load static %}{% load link_holders %}
-<div class="header-info">
+<div class="header-info" {% if slide_background %}style="background: url({{ slide_background.image.large.url }}); background-size:cover;"{% endif %}>
         <div class="img-overlay">
             <div class="container">
                 <div class="row align-items-center">
