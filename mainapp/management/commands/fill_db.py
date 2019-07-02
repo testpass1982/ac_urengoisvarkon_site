@@ -207,8 +207,10 @@ partners = ['media/alrosa.png', 'media/zabtek.png']
 
 def set_random_component(components, configuration):
     components_array = [c for c in components]
-    if components[0].component_type in ['top_addr_line', 'helper_block']:
-        components_array += ''
+    if components.first().component_type in  ['top_addr_line', 'helper_block']:
+        dice = random.randint(0, 100)
+        if dice < 50:
+            return
     random_component = random.choice(components_array)
     random_component.configuration = configuration
     random_component.save()
