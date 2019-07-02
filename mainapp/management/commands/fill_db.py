@@ -206,14 +206,17 @@ service_bg_photos = [
 partners = ['media/alrosa.png', 'media/zabtek.png']
 
 def set_random_component(components, configuration):
-    components_array = [c for c in components]
-    if components.first().component_type in  ['top_addr_line', 'helper_block']:
-        dice = random.randint(0, 100)
-        if dice < 50:
-            return
-    random_component = random.choice(components_array)
-    random_component.configuration = configuration
-    random_component.save()
+    if len(components) > 0:
+        components_array = [c for c in components]
+        if components.first().component_type in ['top_addr_line', 'helper_block']:
+            dice = random.randint(0, 100)
+            if dice < 50:
+                return
+        random_component = random.choice(components_array)
+        random_component.configuration = configuration
+        random_component.save()
+    else:
+        return
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
