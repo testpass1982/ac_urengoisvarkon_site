@@ -69,7 +69,7 @@
 	color: $primaryDark;
 	&:hover {
 		background-color: rgba($secondary, .5);
-		color: $primaryLight;
+		color: $primaryDark;
 		border: solid 1px $primaryLight;
 	}
 }

@@ -338,10 +338,15 @@ def deploy_static():
 
 def remote_collectstatic():
     # manage.py collectstatic --noinput
+    if exists('{path}/static_root/'.format(path=PATH_TO_PROJECT)):
+        # import pdb; pdb.set_trace()
+        run('rm -rf {path}/static_root/'.format(path=PATH_TO_PROJECT))
     with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
             run('{python} manage.py collectstatic --noinput'.format(
                 python=p))
+    sudo('systemctl restart {config}.service'.format(config=env.project_name))
+    sudo('nginx -s reload')
     print(green(
             """
             *********************************
@@ -470,7 +475,7 @@ def deploy():
             copy_systemd_config()
             copy_nginx_config()
             # deploy_static()
-            remote_test()
+            # remote_test()
             remote_collectstatic()
             # change secret key
             # change debug mode
