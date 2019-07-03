@@ -9,6 +9,7 @@ from django.conf import settings
 import shutil, os, subprocess
 
 
+
 # @receiver(pre_save, sender=Component)
 # def my_callback(sender, **kwargs):
 #     print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
@@ -24,7 +25,7 @@ def update_styles_on_component_save(sender, instance, **kwargs):
     # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
     # copy_and_overwrite(assets_scss_path, static_root_scss_path)
     try:
-        subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--noinput"])
+        subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--clear", "--noinput"])
     except:
         print('PASSING COMPONENT')
         pass
@@ -43,7 +44,7 @@ def update_configuration_colors(sender, instance, **kwargs):
         configuration = instance.configuration
         configuration.save()
         try:
-            subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--noinput"])
+            subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--clear", "--noinput"])
         except:
             print('PASSING')
             pass
