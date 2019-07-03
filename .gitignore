@@ -66,6 +66,7 @@ local_settings.py
 .env
 db.sqlite3
 static_root/
+static_root_backup/
 secret.json
 collected_static.zip
 *.service

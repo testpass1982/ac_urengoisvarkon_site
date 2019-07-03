@@ -470,9 +470,8 @@ def deploy():
             copy_systemd_config()
             copy_nginx_config()
             # deploy_static()
-            sys.exit()
-            remote_collectstatic()
             remote_test()
+            remote_collectstatic()
             # change secret key
             # change debug mode
             # change allowed hosts
