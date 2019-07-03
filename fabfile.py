@@ -1,6 +1,6 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.contrib.files import exists
+from fabric.contrib.files import exists, sed
 from fabric.colors import green, red, blue
 from fabric.contrib import project
 import time
@@ -419,6 +419,30 @@ def rename_template_folder():
         """
     ))
 
+def switch_debug_and_hosts():
+    settings_path = '{path}/ac_site/settings.py'.format(path=PATH_TO_PROJECT)
+    # domain_arr = env.domain_name.split('.')
+    # import pdb; pdb.set_trace()
+    # domain_escaped = "\\".join
+    run(sed(settings_path, "DEBUG = True", "DEBUG = False"))
+    run(sed(settings_path,
+        'ALLOWED_HOSTS = .+$',
+        'ALLOWED_HOSTS = ["{}"]'.format(env.domain_name)
+        ))
+    #check if WORKING_LOCAL is set to True
+    # r=root, d=directories, f = files
+    # for r, d, f in os.walk(CWD):
+    #     for file in f:
+    #         if file == 'settings.py':
+    #             path_to_settings = os.path.join(r, file)
+    #             with open(path_to_settings, 'r') as settings_file:
+    #                 for line in settings_file.readlines():
+    #                     if line.startswith('WORKING_LOCAL'):
+    #                         working_local_variable = [var.strip() for var in line.split('=')]
+    #                         if working_local_variable[1] == 'False':
+    #                             print(green('ERROR: SET WORKING LOCAL TO TRUE'))
+    #                             sys.exit()
+
 
 def clean():
     are_you_sure = prompt(red('ARE YOU SURE YOU WANT TO CLEAN? y/n:'))
@@ -480,6 +504,7 @@ def deploy():
             # change secret key
             # change debug mode
             # change allowed hosts
+            switch_debug_and_hosts()
             local('{} functional_tests.py {}'.format(p, env.domain_name))
             remote_collectstatic()
             print(blue("""
