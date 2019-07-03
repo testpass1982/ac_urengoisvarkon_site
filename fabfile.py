@@ -469,7 +469,8 @@ def deploy():
             make_configs()
             copy_systemd_config()
             copy_nginx_config()
-            deploy_static()
+            # deploy_static()
+            sys.exit()
             remote_collectstatic()
             remote_test()
             # change secret key
@@ -492,7 +493,7 @@ def deploy():
             remote_migrate()
             app_migrate('mainapp')
             remote_test()
-            deploy_static()
+            # deploy_static()
             # change  secret_key
             # change debug mode
             # change allowed hosts
