@@ -25,11 +25,11 @@ class NewVisitorTest(unittest.TestCase):
         # прежде всего мы проверяем загузку заголовка главной страницы "Сайта"
         self.browser.get(self.url)
         self.assertIn('Главная страница', self.browser.title)
-
-        # self.fail('Finish the test!')
-    def test_user_can_go_to_contact_page(self):
         self.browser.get(self.url+'contacts/')
         self.assertIn('Контакты', self.browser.title)
+
+        # self.fail('Finish the test!')
+    # def test_user_can_go_to_contact_page(self):
 
     # def test_can_go_to_vacancies_list(self):
     #     #Пользователь переходит на страницу вакансий

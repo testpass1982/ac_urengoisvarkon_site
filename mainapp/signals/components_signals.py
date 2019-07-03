@@ -5,6 +5,8 @@ from mainapp.models import Component, ColorScheme, SiteConfiguration
 from django.shortcuts import get_object_or_404
 from colour import Color
 from django.utils.termcolors import colorize
+from django.conf import settings
+import shutil, os
 
 
 # @receiver(pre_save, sender=Component)
@@ -24,6 +26,12 @@ def update_configuration_colors(sender, instance, **kwargs):
                 scheme.save()
         configuration = instance.configuration
         configuration.save()
+        src_file = os.path.join(settings.BASE_DIR, 'assets', 'scss', '_variables.scss')
+        dst_file = os.path.join(settings.BASE_DIR, 'static_root', 'scss', '_variables.scss')
+        if os.path.isfile(dst_file):
+            # import pdb; pdb.set_trace()
+            os.remove(dst_file)
+            shutil.copy(src_file, dst_file)
         # print('POST_SAVE SIGNAL -> CONFIGURATION {} UPDATED'.format(configuration))
 
 # @receiver(pre_save, sender=SiteConfiguration)
