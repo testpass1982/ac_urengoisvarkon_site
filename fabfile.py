@@ -506,7 +506,7 @@ def deploy():
             # change secret key
             # change debug mode
             # change allowed hosts
-            switch_debug_and_hosts()
+            # switch_debug_and_hosts()
             local('{} functional_tests.py {}'.format(p, env.domain_name))
             remote_collectstatic()
             print(blue("""

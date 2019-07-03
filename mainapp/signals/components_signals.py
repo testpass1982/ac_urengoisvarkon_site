@@ -27,6 +27,7 @@ def update_configuration_colors(sender, instance, **kwargs):
         configuration = instance.configuration
         configuration.save()
         if settings.DEBUG is False:
+            assets_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
             for r, d, f in os.walk(assets_path):
                 for file in f:
                     if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
@@ -34,10 +35,8 @@ def update_configuration_colors(sender, instance, **kwargs):
                         src_path = os.path.join(r, file)
                         dst_path = src_path.replace('assets', 'static_root')
                         if os.path.isfile(dst_path):
-                            print('it is here', file)
                             os.remove(dst_path)
                             shutil.copy(src_path, dst_path)
-                            print('replaced')
                         if not os.path.isfile(dst_path):
                             shutil.copy(src_path, dst_path)
 
