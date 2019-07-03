@@ -152,21 +152,21 @@ def remote_migrate():
             run('{} manage.py migrate --noinput'.format(p))
             run('deactivate')
     print(green(
-"""
-***************************
-**REMOTE MIGRATE COMPLETE**
-***************************
-"""
+        """
+        ***************************
+        **REMOTE MIGRATE COMPLETE**
+        ***************************
+        """
     ))
 
 def local_migrate():
     local('{} manage.py makemigrations'.format(p))
     local('{} manage.py migrate'.format(p))
     print(green(
-"""
-**********************
-**MIGRATION COMPLETE**
-**********************
+        """
+        **********************
+        **MIGRATION COMPLETE**
+        **********************
 """
     ))
 
@@ -178,11 +178,11 @@ def app_migrate(app):
                 run('{} manage.py migrate {}'.format(p, app))
                 run('deactivate')
                 print(green(
-"""
-****************************
-***Django App {} migrated***
-****************************
-""".format(app)))
+                    """
+                    ****************************
+                    ***Django App {} migrated***
+                    ****************************
+                    """.format(app)))
 # def activate_virtualenv():
 
 # def deactivate():
@@ -195,10 +195,11 @@ def create_superuser():
             run('{} manage.py init_admin'.format(p))
             run('deactivate')
             print(green("""
-*******************
-*Superuser created*
-*******************
-"""))
+                *******************
+                *Superuser created*
+                *******************
+                """
+            ))
 
 def check_exists(filename):
     if files.exists(filename):
@@ -214,11 +215,11 @@ def test_remote_folder():
 def test():
     local('{} manage.py test'.format(p))
     print(green(
-"""
-********************
-**Testing complete**
-********************
-"""
+        """
+        ********************
+        **Testing complete**
+        ********************
+        """
     ))
 
 #as user
@@ -226,11 +227,11 @@ def clone():
     print(green('CLONING...'))
     run('git clone {}'.format(env.git_repo))
     print(green(
-"""
-********************
-**CLONING COMPLETE**
-********************
-"""
+        """
+        ********************
+        **CLONING COMPLETE**
+        ********************
+        """
     ))
 
 
@@ -330,10 +331,26 @@ def deploy_static():
     sudo('systemctl restart {}.service'.format(env.project_name))
     sudo('nginx -s reload')
     print(green("""
-***********************
-*Static files uploaded*
-***********************
+        ***********************
+        *Static files uploaded*
+        ***********************
     """))
+
+def remote_collectstatic():
+    # manage.py collectstatic --noinput
+    with cd('{}'.format(PATH_TO_PROJECT)):
+        with prefix(env.activate):
+            run('{python} manage.py collectstatic --noinput'.format(
+                python=p))
+    print(green(
+            """
+            *********************************
+            **REMOTE COLLECTSTATIC COMPLETE**
+            *********************************
+            """
+        ))
+
+
 
 def remote_test():
     with cd('{}'.format(PATH_TO_PROJECT)):
@@ -342,22 +359,22 @@ def remote_test():
                 python=p,
                 project_name=env.project_name))
     print(green(
-"""
-************************
-**REMOTE TEST COMPLETE**
-************************
-"""
+        """
+        ************************
+        **REMOTE TEST COMPLETE**
+        ************************
+        """
     ))
 
 def commit():
     local('git add .')
     local('git commit -m "commit {}"'.format(time.ctime()))
     print(green(
-"""
-********************
-**COMMIT COMPLETE***
-********************
-"""
+        """
+        ********************
+        **COMMIT COMPLETE***
+        ********************
+        """
     ))
 
 def fill_db_with_demo_data():
@@ -365,11 +382,11 @@ def fill_db_with_demo_data():
         with prefix(env.activate):
             run('{} manage.py fill_db'.format(p))
     print(green(
-"""
-**********************
-**DEMO DATA COMPLETE**
-**********************
-"""
+        """
+        **********************
+        **DEMO DATA COMPLETE**
+        **********************
+        """
     ))
 # mainapp/management/commands/randomize_colors.py
 def remote_randomize_colorschemes():
@@ -377,16 +394,12 @@ def remote_randomize_colorschemes():
         with prefix(env.activate):
             run('{python} manage.py randomize_colors'.format(python=p))
             print(green(
-"""
-************************
-**COLORSCHEMES CREATED**
-************************
-"""
+        """
+        ************************
+        **COLORSCHEMES CREATED**
+        ************************
+        """
     ))
-
-# def change_project_name():
-#     print(green('checking project name before renaming'))
-#     local('pwd')
 
 def rename_template_folder():
     run('mv {path_to_projects}/ac_template_site/ {path_to_project}'.format(
@@ -394,11 +407,11 @@ def rename_template_folder():
         path_to_project=PATH_TO_PROJECT
         ))
     print(green(
-"""
-****************************
-**PROJECT FOLDER RENAMED****
-****************************
-"""
+        """
+        ****************************
+        **PROJECT FOLDER RENAMED****
+        ****************************
+        """
     ))
 
 
@@ -439,10 +452,11 @@ def deploy():
         confirm = prompt(green('Start new deployment? ---> (y/n): '))
         if confirm == 'y':
             print(blue("""
-************************
-STARTING in 5 seconds...
-************************
+                ************************
+                STARTING in 3 seconds...
+                ************************
             """))
+            wait(3)
             test()
             clone()
             rename_template_folder()
@@ -456,15 +470,16 @@ STARTING in 5 seconds...
             copy_systemd_config()
             copy_nginx_config()
             deploy_static()
+            remote_collectstatic()
             remote_test()
             # change secret key
             # change debug mode
             # change allowed hosts
             local('{} functional_tests.py {}'.format(p, env.domain_name))
             print(blue("""
-            *********************
-            DEPLOYMENT COMPLETE...
-            *********************
+                *********************
+                DEPLOYMENT COMPLETE...
+                *********************
             """))
         else:
             print(green('***NEW DEPLOYMENT CANCELLED***'))
@@ -487,9 +502,3 @@ STARTING in 5 seconds...
             local('{} functional_tests.py {}'.format(p, env.domain_name))
         else:
             print(green('***UPDATE CANCELLED***'))
-
-    # local('git push -u origin master')
-    # #switch_debug("True", "False")
-    # local('python3 manage.py collectstatic --noinput')
-    # print(green('***Executing on {} as {}***'.format(unv.hosts, env.user)))
-    # #switch_debug("False", "True")

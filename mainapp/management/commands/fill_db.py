@@ -117,15 +117,15 @@ document_categories = [
 color_schemes = [
     {
         'title': 'SEED_031927_triad',
-        'colors': '#031927, #D11E8F, #A0FF1E, #E4EAF5, #EBECFF',
+        'colors': '#031927, #F099D1, #B0C78D, #9FA3AB, #A5A5B3',
     },
     {
         'title': 'SEED_3E517A_analogic-complement',
-        'colors': '#3E517A, #FFE6AA, #F7D690, #B164C4, #DE6EB6',
+        'colors': '#3E517A, #FFE6AA, #F7D690, #B164C4, #DECCD6',
     },
     {
         'title': 'SEED_3E517A_quad',
-        'colors': '#3E517A, #C473B6, #B89D63, #73E388, #6B91E3',
+        'colors': '#3E517A, #9BC0CC, #B89D63, #81FF99, #668AD9',
     },
     {
         'title': 'SEED_3E517A_triad',
@@ -141,7 +141,7 @@ color_schemes = [
     },
     {
         'title': 'SEED_693668_triad',
-        'colors':'#693668, #ADAD66, #69BBBD, #D66ED4, #FFA8FF',
+        'colors':'#542B53, #CCCC78, #69BBBD, #D66ED4, #FBFF7A',
     },
     {
         'title': 'SEED_85FFC7_analogic-complement',
@@ -169,7 +169,7 @@ color_schemes = [
     },
     {
         'title': 'SEED_B08EA2_quad',
-        'colors': '#755F6C, #9E9B80, #86A894, #8C90B2, #BB93AA',
+        'colors': '#755F6C, #9E9B80, #86A894, #8C90B2, #FFC8E8',
     },
     {
         'title': 'SEED_B08EA2_triad',
@@ -193,7 +193,23 @@ fonts = [
     {
         'title': 'Oswald',
         'font_url': '<link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">'
-    }
+    },
+    {
+        'title': 'Roboto Condensed',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Merriweather',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Noto Sans',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">'
+    },
+    {
+        'title': 'Ubuntu',
+        'font_url': '<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">'
+    },
 ]
 
 service_bg_photos = [
@@ -436,6 +452,7 @@ class Command(BaseCommand):
         mixer.blend(Post, title='Часто задаваемые вопросы')
         mixer.blend(Post, url_code='OK', title='Оценка квалификации в области сварки')
         mixer.blend(Post, url_code='CENTER_MVC', title='Обучение в МВЦ НАКС')
+        mixer.blend(Post, url_code='PROFSTANDARTI', title='Профстандарты в сварке')
 
 
         for i in range(len(partners)):
