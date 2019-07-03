@@ -474,7 +474,6 @@ def wait(seconds):
         print(blue('...waiting {} seconds ...'.format(left_seconds)))
         time.sleep(1)
 
-
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
         print(green('***Project folder {} does not exist***'.format(PATH_TO_PROJECT)))
