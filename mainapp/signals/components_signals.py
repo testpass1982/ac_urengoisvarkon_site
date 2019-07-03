@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from colour import Color
 from django.utils.termcolors import colorize
 from django.conf import settings
-import shutil, os
+import shutil, os, subprocess
 
 
 # @receiver(pre_save, sender=Component)
@@ -20,9 +20,14 @@ def copy_and_overwrite(from_path, to_path):
 
 @receiver(post_save, sender=Component)
 def update_styles_on_component_save(sender, instance, **kwargs):
-    assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
-    static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
-    copy_and_overwrite(assets_scss_path, static_root_scss_path)
+    # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
+    # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
+    # copy_and_overwrite(assets_scss_path, static_root_scss_path)
+    try:
+        subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--noinput"])
+    except:
+        print('PASSING COMPONENT')
+        pass
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
@@ -37,10 +42,15 @@ def update_configuration_colors(sender, instance, **kwargs):
                 scheme.save()
         configuration = instance.configuration
         configuration.save()
+        try:
+            subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--noinput"])
+        except:
+            print('PASSING')
+            pass
         # if settings.DEBUG is False:
-        assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
-        static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
-        copy_and_overwrite(assets_scss_path, static_root_scss_path)
+        # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
+        # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
+        # copy_and_overwrite(assets_scss_path, static_root_scss_path)
         # for r, d, f in os.walk(assets_path):
         #     for file in f:
         #         if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
