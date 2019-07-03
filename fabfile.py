@@ -336,6 +336,9 @@ def deploy_static():
         ***********************
     """))
 
+def local_collectstatic():
+    local('{python} manage.py collectstatic --noinput'.format(python=p))
+
 def remote_collectstatic():
     # manage.py collectstatic --noinput
     if exists('{path}/static_root/'.format(path=PATH_TO_PROJECT)):

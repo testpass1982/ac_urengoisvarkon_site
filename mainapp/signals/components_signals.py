@@ -26,20 +26,25 @@ def update_configuration_colors(sender, instance, **kwargs):
                 scheme.save()
         configuration = instance.configuration
         configuration.save()
-        static_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
-        assets_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
-        if settings.DEBUG is True:
-            for r, d, f in os.walk(assets_path):
-                for file in f:
-                    if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
-                        # /home/popov/ac_template_site/static_root/scss/components/info-block-v1/component.css
-                        src_path = os.path.join(r, file)
-                        dst_path = src_path.replace('assets', 'static_root')
-                        if os.path.isfile(dst_path):
-                            print('it is here', file)
-                            os.remove(dst_path)
-                            shutil.copy(src_path, dst_path)
-                            print('replaced')
+        # subprocess.run(['source', '/home/popov/django2/bin/activate'])
+        subprocess.run(['fab', 'local_collectstatic'])
+        # subprocess.run(['deactivate'])
+        # static_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
+        # assets_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
+        # if settings.DEBUG is True:
+        #     for r, d, f in os.walk(assets_path):
+        #         for file in f:
+        #             if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
+        #                 # /home/popov/ac_template_site/static_root/scss/components/info-block-v1/component.css
+        #                 src_path = os.path.join(r, file)
+        #                 dst_path = src_path.replace('assets', 'static_root')
+        #                 if os.path.isfile(dst_path):
+        #                     print('it is here', file)
+        #                     os.remove(dst_path)
+        #                     shutil.copy(src_path, dst_path)
+        #                     print('replaced')
+        #                 if not os.path.isfile(dst_path):
+        #                     shutil.copy(src_path, dst_path)
 
         # src_file = os.path.join(settings.BASE_DIR, 'assets', 'scss', '_variables.scss')
         # dst_file = os.path.join(settings.BASE_DIR, 'static_root', 'scss', '_variables.scss')
