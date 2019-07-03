@@ -6,12 +6,23 @@ from django.shortcuts import get_object_or_404
 from colour import Color
 from django.utils.termcolors import colorize
 from django.conf import settings
-import shutil, os, subprocess
+import shutil, os
 
 
 # @receiver(pre_save, sender=Component)
 # def my_callback(sender, **kwargs):
 #     print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
+
+def copy_and_overwrite(from_path, to_path):
+    if os.path.exists(to_path):
+        shutil.rmtree(to_path)
+    shutil.copytree(from_path, to_path)
+
+@receiver(post_save, sender=Component)
+def update_styles_on_component_save(sender, instance, **kwargs):
+    assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
+    static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
+    copy_and_overwrite(assets_scss_path, static_root_scss_path)
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
@@ -26,19 +37,21 @@ def update_configuration_colors(sender, instance, **kwargs):
                 scheme.save()
         configuration = instance.configuration
         configuration.save()
-        if settings.DEBUG is False:
-            assets_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
-            for r, d, f in os.walk(assets_path):
-                for file in f:
-                    if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
-                        # /home/popov/ac_template_site/static_root/scss/components/info-block-v1/component.css
-                        src_path = os.path.join(r, file)
-                        dst_path = src_path.replace('assets', 'static_root')
-                        if os.path.isfile(dst_path):
-                            os.remove(dst_path)
-                            shutil.copy(src_path, dst_path)
-                        if not os.path.isfile(dst_path):
-                            shutil.copy(src_path, dst_path)
+        # if settings.DEBUG is False:
+        assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
+        static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
+        copy_and_overwrite(assets_scss_path, static_root_scss_path)
+        # for r, d, f in os.walk(assets_path):
+        #     for file in f:
+        #         if file in ['component.css', 'component.css.map', 'style.css', 'style.css.map']:
+        #             # /home/popov/ac_template_site/static_root/scss/components/info-block-v1/component.css
+        #             src_path = os.path.join(r, file)
+        #             dst_path = src_path.replace('assets', 'static_root')
+        #             if os.path.isfile(dst_path):
+        #                 os.remove(dst_path)
+        #                 shutil.copy(src_path, dst_path)
+        #             if not os.path.isfile(dst_path):
+        #                 shutil.copy(src_path, dst_path)
 
         # src_file = os.path.join(settings.BASE_DIR, 'assets', 'scss', '_variables.scss')
         # dst_file = os.path.join(settings.BASE_DIR, 'static_root', 'scss', '_variables.scss')
