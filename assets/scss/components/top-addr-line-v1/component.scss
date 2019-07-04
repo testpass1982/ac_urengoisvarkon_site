@@ -63,3 +63,18 @@
 .bolded {
     font-weight: bold;
 }
+
+.centers_bg {
+    margin: 10px 0px 10px;
+    border: dashed 1px $primary;
+    background-color: rgba($highlightLight, .5);
+    transition: background-color 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba($highlightLight, .8);
+        -webkit-box-shadow: 9px 9px 13px -8px rgba($primaryDark, 0.5);
+        -moz-box-shadow: 9px 9px 13px -8px rgba($primaryDark, 0.5);
+        box-shadow: 9px 9px 13px -8px rgba($primaryDark, 0.5);
+    }
+}

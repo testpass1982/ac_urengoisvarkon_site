@@ -18,14 +18,14 @@
 
             </div>
             <div class="col">
-              <img class="img-fluid py-1" src="{% static 'img/logo_naks.png' %}" alt="">
+              <a href="http://naks.ru" target="_blank"><img class="img-fluid py-1" src="{% static 'img/logo_naks.png' %}" alt=""></a>
             </div>
           </div>
 
       </div>
       </div>
       <div class="col-xl-4">
-          <div class="container-fluid text-md-center p-2 p-xl-1">
+          <div class="centers_bg container-fluid text-md-center p-2 p-xl-1">
           <p class="bolded primary_colored text m-2">Шифры наших центров в реестре НАКС</p>
                   {% if profile.org_acsp_code %}
                   <a class="btn btn-link btn-sm" href="{{profile.org_acsp_reestr_link}}">

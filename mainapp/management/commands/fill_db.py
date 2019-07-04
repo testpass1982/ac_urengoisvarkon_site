@@ -230,6 +230,11 @@ def set_random_component(components, configuration):
                 return
         random_component = random.choice(components_array)
         random_component.configuration = configuration
+        random_component.number = random.randint(50, 100) if any([
+                    random_component.component_type == 'top_addr_line',
+                    random_component.component_type == 'main_menu',
+                    random_component.component_type == 'helper_block',
+                ]) else 500
         random_component.save()
     else:
         return
