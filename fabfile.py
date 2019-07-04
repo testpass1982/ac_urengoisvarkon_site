@@ -484,8 +484,7 @@ def local_push():
             print('NOTHING TO COMMIT')
             pass
         else:
-            local('git add .')
-            local('git commit -m "Fabric deploy: {m}"'.format(m=time.ctime()))
+            local('git commit -a -m "fabric deploy"')
             local('git push -u origin master')
 
 def deploy():
