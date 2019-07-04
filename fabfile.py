@@ -482,10 +482,9 @@ def local_push():
     for line in output.splitlines():
         if any(['нечего коммитить' in line, 'nothing to commit' in line]):
             print('NOTHING TO COMMIT')
-            pass
-        # else:
-        #     local('git commit -a -m "fabric deploy"')
-        #     local('git push -u origin master')
+            return
+    local('git commit -a -m "fabric deploy"')
+    local('git push -u origin master')
 
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
