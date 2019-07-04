@@ -481,7 +481,7 @@ def local_push():
     output = local("git status", capture=True)
     for line in output.splitlines():
         if any(['нечего коммитить' in line, 'nothing to commit' in line]):
-            print('NOTHING TO COMMIT')
+            print('WORKING TREE CLEAN')
             return
     local('git commit -a -m "fabric deploy"')
     local('git push -u origin master')
