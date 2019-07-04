@@ -478,7 +478,9 @@ def wait(seconds):
         time.sleep(1)
 
 def local_push():
-    output = local("git status")
+    output = local("git status", capture=True)
+    for line in output.splitlines():
+        print('OUTPUT', line)
 
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
