@@ -1,4 +1,5 @@
 {
     "project_name": "ac_kursk_site",
-    "domain_name": "kursk.minml.ru"
+    "domain_name": "kursk.minml.ru",
+    "colors": "#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF"
 }

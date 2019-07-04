@@ -7,8 +7,25 @@ from colour import Color
 from django.utils.termcolors import colorize
 from django.conf import settings
 import shutil, os, subprocess
+import json
 
+# {
+#     "project_name": "ac_kursk_site",
+#     "domain_name": "kursk.minml.ru",
+#     "colors": "#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF"
+# }
 
+def update_colors_in_project_file(colors):
+    if colors != settings.COLORS:
+        try:
+            with open('project.json', 'r') as project_json:
+                project_json_data = json.load(project_json)
+            project_json_data['colors'] = colors
+            import pdb; pdb.set_trace()
+            with open('project.json', 'w') as project_json:
+                project_json.write(json.dumps(project_json_data))
+        except Exception as e:
+            print("ERROR", e)
 
 # @receiver(pre_save, sender=Component)
 # def my_callback(sender, **kwargs):
@@ -20,7 +37,7 @@ def delete_all_css_files():
         for file in f:
             if file in ['style.css', 'style.css.map', 'component.css', 'component.css.map']:
                 # print('removing', file)
-                os.remove(r, file)
+                os.remove(os.path.join(r, file))
     return True
 
 def copy_and_overwrite(from_path, to_path):
@@ -32,11 +49,15 @@ def copy_and_overwrite(from_path, to_path):
 def update_styles_on_component_save(sender, instance, **kwargs):
     try:
         delete_all_css_files()
-        compilescss = subprocess.Popen(["python3", "manage.py", "compilescss", "--delete-files"])
+        configuration = instance.configuration
+        configuration.save()
+        compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss", "--delete-files"])
         compilescss.wait()
         collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
-    except:
-        subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
+        collectstatic.wait()
+    except Exception as e:
+        print("COMPONENT EXCEPTION", e)
+        # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
     finally:
         pass
 
@@ -48,17 +69,20 @@ def update_configuration_colors(sender, instance, **kwargs):
             if scheme.configuration:
                 scheme.configuration = None
                 scheme.save()
+        delete_all_css_files()
         configuration = instance.configuration
         configuration.save()
-        try:
-            delete_all_css_files()
-            compilescss = subprocess.Popen(["python3", "manage.py", "compilescss", "--delete-files"])
-            compilescss.wait()
-            collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
-        except:
-            subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
-        finally:
-            pass
+        if instance.colors != settings.COLORS:
+            try:
+                compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss", "--delete-files"])
+                compilescss.wait()
+                collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
+                collectstatic.wait()
+            except Exception as e:
+                print('COLORSCHEME EXCEPTION', e)
+                # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
+            finally:
+                update_colors_in_project_file(instance.colors)
         # if settings.DEBUG is False:
         # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
         # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
@@ -90,6 +114,7 @@ def callback(sender, instance, **kwargs):
     if instance.activated:
         colorscheme = ColorScheme.objects.get(configuration=instance.pk)
         site_colors = [color.strip() for color in colorscheme.colors.split(",")]
+
         site_colors_pseudo_names = ['$primary', '$secondary', '$neutral',
             '$background', '$highlight']
         color_dict = dict(map(lambda *args: args, site_colors_pseudo_names, site_colors))
@@ -116,5 +141,5 @@ def callback(sender, instance, **kwargs):
             for key, value in color_dict.items():
                 data.append("{}: {};\n".format(key, value))
             color_set_file.writelines(data)
-            # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
+                # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
 

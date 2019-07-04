@@ -49,6 +49,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '19=%5c1709k9kllx65po)__kf&et-(^6mpl4x7d7o95q@2@zk('
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['*']
@@ -63,6 +64,12 @@ ALLOWED_HOSTS = ['*']
 #         email_folder_path = os.path.join(os.getcwd(), 'media', 'email_out')
 #         if not os.path.exists(email_folder_path):
 #             os.mkdir(email_folder_path)
+
+try:
+    with open('project.json', 'r') as project_json:
+        COLORS = json.load(project_json)["colors"]
+except Exception as e:
+    print('ERROR PROJECT FILE', e)
 
 # Application definition
 
