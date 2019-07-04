@@ -15,21 +15,39 @@ import json
 #     "colors": "#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF"
 # }
 
-def update_colors_in_project_file(colors):
-    if colors != settings.COLORS:
-        try:
-            with open('project.json', 'r') as project_json:
-                project_json_data = json.load(project_json)
-            project_json_data['colors'] = colors
-            import pdb; pdb.set_trace()
-            with open('project.json', 'w') as project_json:
-                project_json.write(json.dumps(project_json_data))
-        except Exception as e:
-            print("ERROR", e)
-
 # @receiver(pre_save, sender=Component)
 # def my_callback(sender, **kwargs):
 #     print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
+def update_sass_variables(color_scheme_pk):
+    colorscheme = ColorScheme.objects.get(pk=color_scheme_pk)
+    site_colors = [color.strip() for color in colorscheme.colors.split(",")]
+
+    site_colors_pseudo_names = ['$primary', '$secondary', '$neutral',
+        '$background', '$highlight']
+    color_dict = dict(map(lambda *args: args, site_colors_pseudo_names, site_colors))
+    for colr in site_colors:
+        colr_obj = Color(colr)
+        if colr_obj.luminance >= 0.2:
+            darker_luminance = colr_obj.luminance - 0.2
+        else:
+            darker_luminance = 0
+        if colr_obj.luminance <=0.8:
+            lighter_luminance = colr_obj.luminance + 0.2
+        else:
+            lighter_luminance = 1
+        darker_color = Color(colr, luminance=darker_luminance)
+        color_dict.update(
+            {'{}Dark'.format(site_colors_pseudo_names[site_colors.index(colr)]): darker_color.hex_l}
+        )
+        lighter_color = Color(colr, luminance=lighter_luminance)
+        color_dict.update(
+            {'{}Light'.format(site_colors_pseudo_names[site_colors.index(colr)]): lighter_color.hex_l}
+        )
+    with open(colorscheme.configuration.color_set_path, 'w') as color_set_file:
+        data = []
+        for key, value in color_dict.items():
+            data.append("{}: {};\n".format(key, value))
+        color_set_file.writelines(data)
 
 def delete_all_css_files():
     assets_path = os.path.join(settings.BASE_DIR, 'assets')
@@ -47,19 +65,20 @@ def copy_and_overwrite(from_path, to_path):
 
 @receiver(post_save, sender=Component)
 def update_styles_on_component_save(sender, instance, **kwargs):
-    try:
-        delete_all_css_files()
-        configuration = instance.configuration
-        configuration.save()
-        compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss", "--delete-files"])
-        compilescss.wait()
-        collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
-        collectstatic.wait()
-    except Exception as e:
-        print("COMPONENT EXCEPTION", e)
-        # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
-    finally:
-        pass
+    if not instance.configuration:
+        try:
+            delete_all_css_files()
+            configuration = instance.configuration
+            configuration.save()
+            compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss"])
+            compilescss.wait()
+            collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
+            collectstatic.wait()
+        except Exception as e:
+            print("COMPONENT EXCEPTION", e)
+            # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
+        finally:
+            pass
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
@@ -69,12 +88,14 @@ def update_configuration_colors(sender, instance, **kwargs):
             if scheme.configuration:
                 scheme.configuration = None
                 scheme.save()
-        delete_all_css_files()
         configuration = instance.configuration
         configuration.save()
-        if instance.colors != settings.COLORS:
+            # import pdb; pdb.set_trace()
+        if instance.colors != configuration.current_color_set:
             try:
-                compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss", "--delete-files"])
+                delete_all_css_files()
+                update_sass_variables(instance.pk)
+                compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss"])
                 compilescss.wait()
                 collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
                 collectstatic.wait()
@@ -82,7 +103,9 @@ def update_configuration_colors(sender, instance, **kwargs):
                 print('COLORSCHEME EXCEPTION', e)
                 # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
             finally:
-                update_colors_in_project_file(instance.colors)
+                configuration.current_color_set = instance.colors
+                configuration.save()
+
         # if settings.DEBUG is False:
         # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
         # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
@@ -112,34 +135,6 @@ def callback(sender, instance, **kwargs):
     # print(sender.color_set.__get__(instance))
     # components = Component.objects.filter(configuration=instance.pk)
     if instance.activated:
-        colorscheme = ColorScheme.objects.get(configuration=instance.pk)
-        site_colors = [color.strip() for color in colorscheme.colors.split(",")]
-
-        site_colors_pseudo_names = ['$primary', '$secondary', '$neutral',
-            '$background', '$highlight']
-        color_dict = dict(map(lambda *args: args, site_colors_pseudo_names, site_colors))
-        for colr in site_colors:
-            colr_obj = Color(colr)
-            if colr_obj.luminance >= 0.2:
-                darker_luminance = colr_obj.luminance - 0.2
-            else:
-                darker_luminance = 0
-            if colr_obj.luminance <=0.8:
-                lighter_luminance = colr_obj.luminance + 0.2
-            else:
-                lighter_luminance = 1
-            darker_color = Color(colr, luminance=darker_luminance)
-            color_dict.update(
-                {'{}Dark'.format(site_colors_pseudo_names[site_colors.index(colr)]): darker_color.hex_l}
-            )
-            lighter_color = Color(colr, luminance=lighter_luminance)
-            color_dict.update(
-                {'{}Light'.format(site_colors_pseudo_names[site_colors.index(colr)]): lighter_color.hex_l}
-            )
-        with open(instance.color_set_path, 'w') as color_set_file:
-            data = []
-            for key, value in color_dict.items():
-                data.append("{}: {};\n".format(key, value))
-            color_set_file.writelines(data)
-                # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
+        print('configuration instance activated')
+    # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
 

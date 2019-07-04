@@ -459,6 +459,8 @@ class SiteConfiguration(models.Model):
         blank=True,
         default='assets/scss/_variables.scss'
     )
+    current_color_set = models.CharField(u'Текущие цвета',
+        default='#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF', max_length=50)
     font = models.ForeignKey(Font, null=True, blank=True, on_delete=models.SET_NULL)
     activated = models.BooleanField(u'Активировать', default=False)
 

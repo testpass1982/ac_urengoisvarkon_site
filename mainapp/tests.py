@@ -59,13 +59,14 @@ class SiteTest(TestCase):
         )
         cls.site_configuration = SiteConfiguration.objects.create(
             title='Конфигурация 1',
+            current_color_set="#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF",
             site_type='1',
             activated=False,
             font=cls.font
             )
         color_scheme = ColorScheme.objects.create(
             title='SEED_B08EA2_analogic-complement',
-            colors='#20384D, #98B5A4, #FFFF8C, #B1A08D, #FBFFCC',
+            colors='#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF',
             configuration=cls.site_configuration
         )
         cls.site_configuration.activated = True

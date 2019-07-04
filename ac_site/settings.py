@@ -65,11 +65,11 @@ ALLOWED_HOSTS = ['*']
 #         if not os.path.exists(email_folder_path):
 #             os.mkdir(email_folder_path)
 
-try:
-    with open('project.json', 'r') as project_json:
-        COLORS = json.load(project_json)["colors"]
-except Exception as e:
-    print('ERROR PROJECT FILE', e)
+# try:
+#     with open('project.json', 'r') as project_json:
+#         COLORS = json.load(project_json)["colors"]
+# except Exception as e:
+#     print('ERROR PROJECT FILE', e)
 
 # Application definition
 
