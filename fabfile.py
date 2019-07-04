@@ -480,7 +480,13 @@ def wait(seconds):
 def local_push():
     output = local("git status", capture=True)
     for line in output.splitlines():
-        print('OUTPUT', line)
+        if any(['нечего коммитить' in line, 'nothing to commit' in line]):
+            print('NOTHING TO COMMIT')
+            return
+        else:
+            local('git add .')
+            local('git commit -m "Fabric deploy: {m}"'.format(m=time.ctime()))
+            local('git push -u origin master')
 
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
