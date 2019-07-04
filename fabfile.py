@@ -482,10 +482,10 @@ def local_push():
     for line in output.splitlines():
         if any(['нечего коммитить' in line, 'nothing to commit' in line]):
             print('NOTHING TO COMMIT')
-            return
+            pass
         else:
             local('git add .')
-            local('git commit -m "Fabric deploy: {m}"'.format(m=time.ctime))
+            local('git commit -m "Fabric deploy: {m}"'.format(m=time.ctime()))
             local('git push -u origin master')
 
 def deploy():
