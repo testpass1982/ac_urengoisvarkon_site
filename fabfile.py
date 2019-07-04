@@ -477,6 +477,9 @@ def wait(seconds):
         print(blue('...waiting {} seconds ...'.format(left_seconds)))
         time.sleep(1)
 
+def local_push():
+    output = local("git status")
+
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
         print(green('***Project folder {} does not exist***'.format(PATH_TO_PROJECT)))
@@ -489,6 +492,7 @@ def deploy():
             """))
             wait(3)
             test()
+            local_push()
             clone()
             rename_template_folder()
             remote_migrate()

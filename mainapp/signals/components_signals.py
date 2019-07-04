@@ -14,6 +14,15 @@ import shutil, os, subprocess
 # def my_callback(sender, **kwargs):
 #     print('------------->PRE_SAVE SIGNAL RICIEVED from {}'.format(sender))
 
+def delete_all_css_files():
+    assets_path = os.path.join(settings.BASE_DIR, 'assets')
+    for r, d, f in os.walk(assets_path):
+        for file in f:
+            if file in ['style.css', 'style.css.map', 'component.css', 'component.css.map']:
+                # print('removing', file)
+                os.remove(r, file)
+    return True
+
 def copy_and_overwrite(from_path, to_path):
     if os.path.exists(to_path):
         shutil.rmtree(to_path)
@@ -21,21 +30,19 @@ def copy_and_overwrite(from_path, to_path):
 
 @receiver(post_save, sender=Component)
 def update_styles_on_component_save(sender, instance, **kwargs):
-    # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')
-    # static_root_scss_path = os.path.join(settings.BASE_DIR, 'static_root', 'scss')
-    # copy_and_overwrite(assets_scss_path, static_root_scss_path)
     try:
-        subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--clear", "--noinput"])
+        delete_all_css_files()
+        compilescss = subprocess.Popen(["python3", "manage.py", "compilescss", "--delete-files"])
+        compilescss.wait()
+        collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
     except:
-        print('PASSING COMPONENT')
+        subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
+    finally:
         pass
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
-    # print('------------->post_save reciever: {}'.format(instance))
     if instance.configuration:
-        #check other schemes
-        #save configuration to update scss variables
         other_schemes = ColorScheme.objects.all().exclude(pk=instance.pk)
         for scheme in other_schemes:
             if scheme.configuration:
@@ -44,9 +51,13 @@ def update_configuration_colors(sender, instance, **kwargs):
         configuration = instance.configuration
         configuration.save()
         try:
-            subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--clear", "--noinput"])
+            delete_all_css_files()
+            compilescss = subprocess.Popen(["python3", "manage.py", "compilescss", "--delete-files"])
+            compilescss.wait()
+            collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
         except:
-            print('PASSING')
+            subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
+        finally:
             pass
         # if settings.DEBUG is False:
         # assets_scss_path = os.path.join(settings.BASE_DIR, 'assets', 'scss')

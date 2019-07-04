@@ -46,20 +46,71 @@ def measure_time(func):
     return _time_it
 
 class SiteTest(TestCase):
-
     @classmethod
     def setUpClass(cls):
-        print('CWD', os.getcwd())
+        # print('CWD', os.getcwd())
+        cls.project_name = settings.PROJECT_NAME
         email_folder_path = os.path.join(os.getcwd(), 'media', 'email_out')
         if not os.path.exists(email_folder_path):
             os.mkdir(email_folder_path)
-        # WORKING_LOCAL = False
+        cls.font = Font.objects.create(
+            title='Montserrat',
+            font_url='<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">'
+        )
+        cls.site_configuration = SiteConfiguration.objects.create(
+            title='Конфигурация 1',
+            site_type='1',
+            activated=False,
+            font=cls.font
+            )
+        color_scheme = ColorScheme.objects.create(
+            title='SEED_B08EA2_analogic-complement',
+            colors='#20384D, #98B5A4, #FFFF8C, #B1A08D, #FBFFCC',
+            configuration=cls.site_configuration
+        )
+        cls.site_configuration.activated = True
+        cls.site_configuration.save()
+        component_data = {
+            "relative_scss_path": "scss/components/main-menu-v1/component.scss",
+            "title": "main-menu-v1",
+            "component_type": "main_menu",
+            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-menu-v1/component.html".format(cls.project_name),
+            "relative_js_path": "js/main-menu-v1/",
+            "js_path": "",
+            "relative_html_path":
+            "mainapp/components/main-menu-v1/component.html",
+            "code": "main-menu-v1",
+            "scss_path": "/home/popov/{}/assets/scss/components/main-menu-v1/component.scss".format(cls.project_name)
+        }
+        component_data.update({'configuration': cls.site_configuration})
+        slider_component_data = {
+            "relative_html_path": "mainapp/components/main-page-slider-v1/component.html",
+            "relative_scss_path": "scss/components/main-page-slider-v1/component.scss",
+            "relative_js_path": "js/main-page-slider-v1/",
+            "scss_path": "/home/popov/{}/assets/scss/components/main-page-slider-v1/component.scss".format(cls.project_name),
+            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v1/component.html".format(cls.project_name),
+            "code": "main-page-slider-v1",
+            "js_path": "",
+            "component_type": "main_banner",
+            "title": "main-page-slider-v1",
+            "configuration": cls.site_configuration,
+        }
+        cls.slider_component = Component.objects.create(**slider_component_data)
+        cls.component = Component.objects.create(**component_data)
 
-        # if WORKING_LOCAL is True:
-        #         PROJECT_NAME = 'ac_template_site'
-        # else:
-        #     with open("project.json") as project_file:
-        #         PROJECT_NAME = json.load(project_file)['project_name']
+        cls.post_form_component_data = {
+                "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v3/component.html".format(cls.project_name),
+                "relative_js_path": "js/main-page-slider-v3/",
+                "component_type": "main_banner",
+                "title": "main-page-slider-v3",
+                "scss_path": "/home/popov/{}/assets/scss/components/main-page-slider-v3/component.scss".format(cls.project_name),
+                "js_path": "",
+                "code": "main-page-slider-v3",
+                "relative_html_path": "mainapp/components/main-page-slider-v3/component.html",
+                "relative_scss_path": "scss/components/main-page-slider-v3/component.scss",
+                "configuration": cls.site_configuration
+            }
+        cls.post_form_component = Component.objects.create(**component_data)
 
     @classmethod
     def tearDownClass(cls):
@@ -80,51 +131,7 @@ class SiteTest(TestCase):
     @measure_time
     def setUp(self):
         self.factory = RequestFactory()
-        self.project_name = settings.PROJECT_NAME
-        self.font = Font.objects.create(
-            title='Montserrat',
-            font_url='<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">'
-        )
-        self.site_configuration = SiteConfiguration.objects.create(
-            title='Конфигурация 1',
-            site_type='1',
-            activated=False,
-            font=self.font
-            )
-        color_scheme = ColorScheme.objects.create(
-            title='SEED_B08EA2_analogic-complement',
-            colors='#20384D, #98B5A4, #FFFF8C, #B1A08D, #FBFFCC',
-            configuration=self.site_configuration
-        )
-        self.site_configuration.activated = True
-        self.site_configuration.save()
-        component_data = {
-            "relative_scss_path": "scss/components/main-menu-v1/component.scss",
-            "title": "main-menu-v1",
-            "component_type": "main_menu",
-            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-menu-v1/component.html".format(self.project_name),
-            "relative_js_path": "js/main-menu-v1/",
-            "js_path": "",
-            "relative_html_path":
-            "mainapp/components/main-menu-v1/component.html",
-            "code": "main-menu-v1",
-            "scss_path": "/home/popov/{}/assets/scss/components/main-menu-v1/component.scss".format(self.project_name)
-        }
-        component_data.update({'configuration': self.site_configuration})
-        slider_component_data = {
-            "relative_html_path": "mainapp/components/main-page-slider-v1/component.html",
-            "relative_scss_path": "scss/components/main-page-slider-v1/component.scss",
-            "relative_js_path": "js/main-page-slider-v1/",
-            "scss_path": "/home/popov/{}/assets/scss/components/main-page-slider-v1/component.scss".format(self.project_name),
-            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v1/component.html".format(self.project_name),
-            "code": "main-page-slider-v1",
-            "js_path": "",
-            "component_type": "main_banner",
-            "title": "main-page-slider-v1",
-            "configuration": self.site_configuration,
-        }
-        self.slider_component = Component.objects.create(**slider_component_data)
-        self.component = Component.objects.create(**component_data)
+
         # self.addCleanup(os.remove, os.path.join(f"{settings.MEDIA_ROOT}", "email_out"))
 
     @measure_time
@@ -163,19 +170,7 @@ class SiteTest(TestCase):
     def test_can_post_form_from_main_page(self):
         for f in os.listdir(os.path.join(settings.MEDIA_ROOT, "email_out")):
             os.remove(os.path.join(settings.MEDIA_ROOT, "email_out", f))
-        component_data = {
-            "html_path": "/home/popov/{}/mainapp/templates/mainapp/components/main-page-slider-v3/component.html".format(self.project_name),
-            "relative_js_path": "js/main-page-slider-v3/",
-            "component_type": "main_banner",
-            "title": "main-page-slider-v3",
-            "scss_path": "/home/popov/{}/assets/scss/components/main-page-slider-v3/component.scss".format(self.project_name),
-            "js_path": "",
-            "code": "main-page-slider-v3",
-            "relative_html_path": "mainapp/components/main-page-slider-v3/component.html",
-            "relative_scss_path": "scss/components/main-page-slider-v3/component.scss",
-            "configuration": self.site_configuration
-            }
-        component = Component.objects.create(**component_data)
+
         self.assertTrue(CaptchaStore.objects.count() == 0)
         factory_request = self.factory.get('/')
         factory_response = mainapp.index(factory_request)
