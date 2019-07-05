@@ -461,6 +461,11 @@ class SiteConfiguration(models.Model):
     )
     current_color_set = models.CharField(u'Текущие цвета',
         default='#151A18, #E3C4D2, #D6ABBF, #D2E0FF, #968EAF', max_length=50)
+    current_component_set = models.CharField(
+        u'Текущий набор компонентов',
+        max_length=300, blank=True,
+        null=True,
+        default='main-menu-v1 main-page-slider-v1 main-page-slider-v3 main-page-content-v1')
     font = models.ForeignKey(Font, null=True, blank=True, on_delete=models.SET_NULL)
     activated = models.BooleanField(u'Активировать', default=False)
 
@@ -470,6 +475,11 @@ class SiteConfiguration(models.Model):
 
     def __str__(self):
         return self.title
+
+    def update_current_component_set(self):
+        if len(Component.objects.all()) > 0:
+            self.current_component_set = " ".join([c.title for c in Component.objects.filter(configuration=self.pk)])
+            self.save()
 
 class Component(models.Model):
     COMPONENT_TYPE_CHOICES = (

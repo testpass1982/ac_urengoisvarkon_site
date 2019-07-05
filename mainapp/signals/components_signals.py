@@ -8,6 +8,11 @@ from django.utils.termcolors import colorize
 from django.conf import settings
 import shutil, os, subprocess
 import json
+from django.template import Context, Template
+from mainapp.classes import SiteComponent
+from django.test import RequestFactory
+from mainapp.views import index
+# from sass_processor.processor import sass_processor
 
 # {
 #     "project_name": "ac_kursk_site",
@@ -65,23 +70,27 @@ def copy_and_overwrite(from_path, to_path):
 
 @receiver(post_save, sender=Component)
 def update_styles_on_component_save(sender, instance, **kwargs):
-    if not instance.configuration:
+    if instance.configuration and instance.title not in instance.configuration.current_component_set:
         try:
             delete_all_css_files()
-            configuration = instance.configuration
-            configuration.save()
-            compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss"])
-            compilescss.wait()
+            request = RequestFactory()
+            factory_response = index(request.get('/'))
             collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
             collectstatic.wait()
         except Exception as e:
             print("COMPONENT EXCEPTION", e)
             # subprocess.Popen(["python3", "manage.py", "collectstatic", "--noinput", "--ignore=*.scss"])
         finally:
-            pass
+            instance.configuration.update_current_component_set()
+
+    if not instance.configuration and instance.title in SiteConfiguration.objects.filter(activated=True).first().current_component_set:
+        configuration = SiteConfiguration.objects.filter(activated=True).first()
+        configuration.update_current_component_set()
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
+    # /home/popov/ac_template_site/assets/scss/components/helper-block-v1/component.scss
+    # /home/popov/ac_template_site/static/scss/component.scss
     if instance.configuration:
         other_schemes = ColorScheme.objects.all().exclude(pk=instance.pk)
         for scheme in other_schemes:
@@ -93,10 +102,10 @@ def update_configuration_colors(sender, instance, **kwargs):
             # import pdb; pdb.set_trace()
         if instance.colors != configuration.current_color_set:
             try:
-                delete_all_css_files()
                 update_sass_variables(instance.pk)
-                compilescss = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "compilescss"])
-                compilescss.wait()
+                delete_all_css_files()
+                request = RequestFactory()
+                factory_response = index(request.get('/'))
                 collectstatic = subprocess.Popen(["/home/popov/django2/bin/python3", "manage.py", "collectstatic", "--ignore=*.scss", "--noinput"])
                 collectstatic.wait()
             except Exception as e:
@@ -129,11 +138,8 @@ def update_configuration_colors(sender, instance, **kwargs):
         # print('POST_SAVE SIGNAL -> CONFIGURATION {} UPDATED'.format(configuration))
 
 # @receiver(pre_save, sender=SiteConfiguration)
-@receiver(post_save, sender=SiteConfiguration)
+@receiver(pre_save, sender=SiteConfiguration)
 def callback(sender, instance, **kwargs):
-    # print('---->callback configuration')
-    # print(sender.color_set.__get__(instance))
-    # components = Component.objects.filter(configuration=instance.pk)
     if instance.activated:
         print('configuration instance activated')
     # print(colorize('COLORSCHEME VARIABLES UPDATED', bg='blue'))
