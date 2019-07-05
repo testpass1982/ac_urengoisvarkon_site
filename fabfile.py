@@ -45,7 +45,6 @@ REMOTE_COMPONENTS_FOLDER = 'mainapp/templates/mainapp/components'
 #                         if working_local_variable[1] == 'False':
 #                             print(green('ERROR: SET WORKING LOCAL TO TRUE'))
 #                             sys.exit()
-
 try:
     with open("project.json") as project_file:
         project_data = json.load(project_file)
