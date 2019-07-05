@@ -83,9 +83,19 @@ def update_styles_on_component_save(sender, instance, **kwargs):
         finally:
             instance.configuration.update_current_component_set()
 
-    if not instance.configuration and instance.title in SiteConfiguration.objects.filter(activated=True).first().current_component_set:
-        configuration = SiteConfiguration.objects.filter(activated=True).first()
-        configuration.update_current_component_set()
+    try:
+        activated_configuration = SiteConfiguration.objects.filter(activated=True).first()
+        if not instance.configuration and instance.title in activated_configuration.current_component_set:
+            try:
+                configuration = SiteConfiguration.objects.filter(activated=True).first()
+                configuration.update_current_component_set()
+            except Exception as e:
+                print('ERROR UPDATING SITE CONFIGURATION', e)
+            finally:
+                pass
+    except Exception as e:
+            print('ERROR: NO SITE CONFIGURATION')
+            pass
 
 @receiver(post_save, sender=ColorScheme)
 def update_configuration_colors(sender, instance, **kwargs):
