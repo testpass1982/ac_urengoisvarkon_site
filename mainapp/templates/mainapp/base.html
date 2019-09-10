@@ -84,8 +84,9 @@
   {% endblock content %}
 
 
-
-  {% include 'mainapp/includes/partners.html' %}
+  {% if partners|length > 1 %}
+    {% include 'mainapp/includes/partners.html' %}
+  {% endif %}
 
     {% for site_comp in site.components %}
       {% if site_comp.component.component_type == 'advertising_block' %}

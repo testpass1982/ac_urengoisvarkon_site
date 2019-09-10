@@ -53,12 +53,10 @@ def profile_import(request):
 
 
 def site_configuration(request):
-    # import pdb; pdb.set_trace()
     try:
         site = SiteConfiguration.objects.filter(activated=True)
         bd_components = Component.objects.filter(configuration=site[0].pk).order_by('number')
         site_components = [SiteComponent(component) for component in bd_components]
-        # import pdb; pdb.set_trace()
         return {
                 'site': {
                     'components': site_components,
