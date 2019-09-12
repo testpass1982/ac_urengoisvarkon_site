@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
 from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
-from .models import Profstandard, DocumentCategory, SiteConfiguration
+from .models import Profstandard, DocumentCategory, SiteConfiguration, ComponentParameter
 from .models import Font
 from .models import Partner, Component, ColorScheme, OrderService
 from .models import SlideBackgrounds
@@ -222,6 +222,19 @@ class ServiceAdmin(admin.ModelAdmin):
 from django.db import models
 from django.forms import TextInput
 
+
+class ComponentParameterInline(admin.StackedInline):
+    model = ComponentParameter
+    extra = 0
+    fields = [
+        'id', "parameters",
+    ]
+    # def formfield_for_dbfield(self, db_field, **kwargs):
+    # # This method will turn all TextFields into giant TextFields
+    #     if isinstance(db_field, models.TextField):
+    #         return forms.CharField(widget=forms.Textarea(attrs={'cols': 130, 'rows':30}))
+    #     return super(ComponentParameterInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 @admin.register(Component)
 class ComponentAdmin(admin.ModelAdmin):
     list_display = ['title', 'id', 'number', 'configuration']
@@ -229,6 +242,8 @@ class ComponentAdmin(admin.ModelAdmin):
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
         # models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},
     }
+
+    inlines = [ComponentParameterInline]
 
 @admin.register(ColorScheme)
 class ColorSchemeAdmin(admin.ModelAdmin):
@@ -247,20 +262,12 @@ class OrderServiceAdmin(admin.ModelAdmin):
 admin.site.register(Partner)
 admin.site.register(SlideBackgrounds)
 admin.site.register(Font)
-# admin.site.register(Component)
 admin.site.register(Tag)
 admin.site.register(Category)
-# admin.site.register(Contact)
 admin.site.register(Staff)
 admin.site.register(Registry)
-# admin.site.register(Menu)
 admin.site.register(SidePanel)
 admin.site.register(Attestat)
-# admin.site.register(Service)
 admin.site.register(Profile)
 admin.site.register(Profstandard)
 admin.site.register(DocumentCategory)
-# admin.site.register(SiteConfiguration)
-# admin.site.register(CenterPhotos)
-# admin.site.register(WeldOrg)
-# admin.site.register(Welder)

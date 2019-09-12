@@ -2,8 +2,9 @@ from django.test.runner import DiscoverRunner
 from django.conf import settings
 from django.template import Context, Template
 from django.utils.safestring import mark_safe
+from .models import ComponentParameter, Component
 from django.conf import settings
-import os
+import os, json
 import argparse
 
 class MyDiscoverRunner(DiscoverRunner):
@@ -33,8 +34,15 @@ class SiteComponent:
     def __init__(self, component, context=None):
         self.component = component
         self.context = Context(context)
-
         self.template = Template(self.get_template_string())
+        self.parameters = {}
+        self.get_component_parameters()
+
+    def get_component_parameters(self):
+        component_parameters = ComponentParameter.objects.filter(component=self.component)
+        if component_parameters.count() > 0:
+            for param in component_parameters:
+                self.parameters.update(json.loads(param.parameters))
 
     def get_template_string(self):
         # print('CWD: ', os.getcwd())
