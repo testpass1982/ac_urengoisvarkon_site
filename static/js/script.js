@@ -351,6 +351,11 @@ $(document).ready(function() {
   //       });
   //   }
   // );
+  $('#order_modal_button').click(function(event){
+    var text = $("#order_modal_button").text();
+    // console.log(text);
+    $("#modal_order_head").text(text);
+  });
 
   $('#order_service_button').click(function(event) {
     event.preventDefault();

@@ -528,6 +528,18 @@ class Component(models.Model):
     def __str__(self):
         return self.title
 
+
+class ComponentParameter(models.Model):
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    parameters = models.CharField(u'Параметры', max_length=500)
+
+    class Meta:
+        verbose_name = 'Параметр компонента'
+        verbose_name_plural = 'Параметры компонентов'
+
+    def __str__(self):
+        return self.parameters
+
 class ColorScheme(models.Model):
     title = models.CharField(u'Название', default='Цветовая схема', max_length=50)
     colors = models.CharField(u'Цвета (через запятую, HEX)', max_length=100)

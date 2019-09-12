@@ -35,8 +35,13 @@
                             </form>
                         </div>
                         <div class="col text-right">
-                            <a href="#" class="btn btn-outline-blue py-2 mb-2 mb-lg-0" data-toggle="modal" data-target="#modal-statement">Оставить
-                                заявки</a>
+                            <a id="order_modal_button" href="#" class="btn btn-outline-blue py-2 mb-2 mb-lg-0" data-toggle="modal" data-target="#modal-statement">
+                            {% if site_comp.parameters.order_button_title %}
+                                {{ site_comp.parameters.order_button_title }}
+                            {% else %}
+                            Оставить заявки
+                            {% endif %}
+                            </a>
                             <a href="https://ac.naks.ru" target="_blank" class="btn btn-blue py-2 mb-2 mb-lg-0"><img src="{% static 'img/img-enter.png' %}" alt="Icon enter"
                                     class="img-fluid mr-2">Войти в систему <strong>ЭДО</strong></a>
                         </div>

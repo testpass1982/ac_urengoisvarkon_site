@@ -53,7 +53,6 @@ def profile_import(request):
 
 
 def site_configuration(request):
-    # import pdb; pdb.set_trace()
     try:
         site = SiteConfiguration.objects.filter(activated=True)
         bd_components = Component.objects.filter(configuration=site[0].pk).order_by('number')

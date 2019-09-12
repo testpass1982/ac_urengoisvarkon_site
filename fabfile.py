@@ -237,6 +237,12 @@ def clone():
 #as user
 def update():
     with cd('{}'.format(PATH_TO_PROJECT)):
+        output = run("git status")
+        for line in output.splitlines():
+            if any(['нечего коммитить' in line, 'nothing to commit' in line]):
+                print('WORKING TREE CLEAN')
+                run("git pull")
+                return
         print(green('UPDATING...'))
         run('git add .')
         run('git commit -m "server commit {}"'.format(time.ctime()))
