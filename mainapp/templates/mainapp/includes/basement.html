@@ -90,7 +90,7 @@
                         {{ profile.org_short_name }}
                     </div>
                                 <div class="basement_mail {% if user.is_authenticated %}editable{% endif %}">
-                                    <a href="mailto:{{profile.org_email}}" title="Написать письмо">{{profile.org_email}}</a>
+                                    <a href="mailto:{{profile.org_email}}" title="Написать письмо">{{profile.org_email|safe}}</a>
                                 </div>
                     <div class="enter_system_edo">
                         <a href="https://ac.naks.ru/" class="enter_system_link" target="_blank">

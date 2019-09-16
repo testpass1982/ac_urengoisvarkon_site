@@ -36,7 +36,7 @@
               {% comment %} {% if doc.category == category.name %} {% endcomment %}
               {% if doc.category == category %}
                 <div class="col-sm-7 col-12">
-                  <a href="{{ doc.document }}" download="">
+                  <a href="{{ doc.document.url }}" download="">
                     <div class="box_doc_file" title="Скачать">
                       <div class="{% if doc.extension == '.doc' %}icon_word{% else %}icon_pdf{% endif %}"></div>
                       <p class="doc_text_name">
