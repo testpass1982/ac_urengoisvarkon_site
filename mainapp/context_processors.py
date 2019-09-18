@@ -89,3 +89,7 @@ def org_staff(request):
         return {
             "staff": Staff.objects.all().order_by('priority')
         }
+    else:
+        return {
+            "staff": None
+        }
