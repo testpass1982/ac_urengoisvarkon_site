@@ -4,9 +4,6 @@ from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Post, PostPhoto, Tag, Category, Document, Article, Message, Contact
-from .models import Registry, Menu, Profile, Service, SiteConfiguration, Component
-from .models import Staff, Component, SlideBackgrounds
 from .forms import PostForm, ArticleForm, DocumentForm, ProfileImportForm, OrderForm
 from .forms import SendMessageForm, SubscribeForm, AskQuestionForm, SearchRegistryForm
 from .adapters import MessageModelAdapter
@@ -16,10 +13,9 @@ from .registry_import import Importer, data_url
 from django.conf import settings
 from django.template.loader import render_to_string
 from .classes import SiteComponent
-from .models import CenterPhotos
-from .models import Partner
 from django.core.mail import send_mail
 from django.urls import resolve
+from .models import *
 
 # Create your views here.
 
@@ -160,13 +156,22 @@ def partners(request):
 def page_details(request, pk=None):
 
     post = get_object_or_404(Post, pk=pk)
+    parameters = PostParameter.objects.filter(post=post).order_by('number')
+    page_parameters = []
+    for param in parameters:
+        json_parameter = json.loads(param.parameter)
+        if json_parameter['include_component']:
+            included_component_name = json_parameter['include_component']
+            component = Component.objects.filter(title=included_component_name).first()
+            page_parameters.append(SiteComponent(component))
 
     side_panel = post.side_panel
     # service = get_object_or_404(Service, pk=pk)
     content = {
         'title': 'Детальный просмотр',
         'post': post,
-        'side_panel': side_panel
+        'side_panel': side_panel,
+        'page_parameters': page_parameters
     }
     return render(request, 'mainapp/page_details.html', content)
 

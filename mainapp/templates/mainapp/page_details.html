@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-xl-3">
                 <div class="headline_bg_inner_page">
-                        {{ post.title }}
+                    {{ post.title }}
                 </div>
                 <button class="back_to_home_page">
                     <a href="{% url 'index' %}" class="link_to_home_page">
@@ -18,36 +18,42 @@
     </div>
 </div>
 <div class="box_content_in_pages">
-        <div class="container">
-                <div class="row">
-                    <div class="col-xl-8">
-                        <div class="box_info_content">
-                            <div class="headline_content_box_content">
-                                {{ post.title }}
-                            </div>
-
-                            {% if 'article_details' not in request.path %}
-                            <div>
-                            {% comment %} {{ request.get_full_path }} {% endcomment %}
-
-                                    <button class="request_page_details">
-                                            <a href="" data-toggle="modal" data-target="#modal-statement" class="request_button_page_details">Подать
-                                              заявку</a>
-                                          </button>
-                            </div>
-                            {% endif %}
-                            <div class="line_center"></div>
-            <div class="content_text_page_details">
-                    {{ post.text|safe }}
-                    {{ post.html|safe }}
-            </div>
-                        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="box_info_content">
+                    <div class="headline_content_box_content">
+                        {{ post.title }}
                     </div>
-                    <div class="col-xl-2">
-                        <h3>{{side_panel.title}}</h3>
-                        {% include 'mainapp/includes/side_panel.html' %}
+
+                    {% if 'article_details' not in request.path %}
+                    <div>
+                        {% comment %} {{ request.get_full_path }} {% endcomment %}
+
+                        <button class="request_page_details">
+                            <a href="" data-toggle="modal" data-target="#modal-statement"
+                                class="request_button_page_details">Подать
+                                заявку</a>
+                        </button>
+                    </div>
+                    {% endif %}
+                    <div class="line_center"></div>
+                    <div class="content_text_page_details">
+                        {{ post.text|safe }}
+                        {{ post.html|safe }}
                     </div>
                 </div>
             </div>
+            <div class="col-xl-2">
+                <h3>{{side_panel.title}}</h3>
+                {% include 'mainapp/includes/side_panel.html' %}
+            </div>
+            <div class="container">
+            {% for parameter in page_parameters %}
+                {% include parameter %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@ from .forms import ProfileImportForm, OrderForm
 import random
 from django.template import Context, Template
 from django.shortcuts import render, get_object_or_404
-from .models import Document
+from .models import Document, Staff
 from django.utils.termcolors import colorize
 from .classes import SiteComponent
 
@@ -78,6 +78,14 @@ def partners(request):
     # import pdb; pdb.set_trace()
     return {'partners': partners}
 
+
 def order_form(request):
     order_form = OrderForm()
     return {'order_form': order_form}
+
+
+def org_staff(request):
+    if Staff.objects.count() > 0:
+        return {
+            "staff": Staff.objects.all().order_by('priority')
+        }

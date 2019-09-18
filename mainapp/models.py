@@ -56,7 +56,18 @@ class ContentMixin(models.Model):
     published_date = models.DateTimeField(
         u'Дата публикации', blank=True, null=True)
     created_date = models.DateTimeField(u'Дата создания', default=timezone.now)
-    text = RichTextUploadingField(verbose_name='Текст')
+    text = RichTextUploadingField(
+        verbose_name='Текст',
+        config_name='default',
+        extra_plugins=['youtube'],
+        external_plugin_resources=[(
+            'youtube',
+            # '/static/ckeditor_plugins/youtube/',
+            '/static_root/ckeditor/ckeditor/plugins/youtube/',
+            # static/ckeditor_plugins/youtube/plugin.js
+            'plugin.js',
+        )]
+    )
     author = models.ForeignKey(
         'auth.User', verbose_name='Автор', on_delete=models.CASCADE)
     publish_on_main_page = models.BooleanField(
@@ -64,6 +75,7 @@ class ContentMixin(models.Model):
 
     class Meta:
         abstract = True
+
 
 class SidePanel(models.Model):
     title = models.CharField(u'Название', max_length=200)
@@ -107,6 +119,12 @@ class Post(ContentMixin):
         return self.title
 
 
+class PostParameter(models.Model):
+    parameter = models.CharField(u'Параметр (json)', max_length=100)
+    number = models.SmallIntegerField(u'Порядок вывода')
+    post = models.ForeignKey(Post, blank=True, null=True, on_delete=models.CASCADE)
+
+
 class Article(ContentMixin):
     '''child of ContentMixin'''
 
@@ -123,6 +141,7 @@ class Article(ContentMixin):
 
     def __str__(self):
         return self.title
+
 
 class DocumentCategory(models.Model):
     name = models.CharField(u'Название категории', max_length=64)
@@ -258,7 +277,7 @@ class Contact(models.Model):
 
 
 class Staff(models.Model):
-    photo = models.ImageField(u'Фотография', blank=True)
+    photo = models.ImageField(u'Фотография', upload_to="uploads/", blank=True)
     name = models.CharField(u'ФИО', max_length=120, blank=False)
     job = models.CharField(u'Должность', max_length=120, blank=False)
     experience = models.CharField(u'Опыт работы', max_length=500, blank=True)

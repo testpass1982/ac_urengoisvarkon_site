@@ -3,15 +3,12 @@ from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 
-from .models import Post, Category, Tag, Document, PostPhoto, Article, Message, Contact
-from .models import Staff, Registry, Menu, SidePanel, Service, Profile, Attestat, CenterPhotos
-from .models import Profstandard, DocumentCategory, SiteConfiguration, ComponentParameter
-from .models import Font
-from .models import Partner, Component, ColorScheme, OrderService
-from .models import SlideBackgrounds
+from .models import *
 # from .models import WeldData
 # from .domain_model import WeldOrg, Welder
 # Register your models here.
+
+
 
 
 def get_picture_preview(obj):
@@ -173,6 +170,11 @@ def show_url(obj):
 show_url.allow_tags = True
 
 
+class PostParameterInline(admin.StackedInline):
+    model = PostParameter
+    extra = 0
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     # save_on_top = True
@@ -188,7 +190,7 @@ class PostAdmin(admin.ModelAdmin):
         'title', 'category', 'created_date', 'publish_on_main_page',
         'publish_on_news_page'
     ]
-    inlines = [PostPhotoInline, DocumentInline]
+    inlines = [PostPhotoInline, DocumentInline, PostParameterInline]
 
     def view_on_site(self, obj):
         url = reverse('detailview', kwargs={'content': 'post', 'pk': obj.pk})
@@ -259,12 +261,16 @@ class OrderServiceAdmin(admin.ModelAdmin):
     list_display = ['name', 'phone', 'ready', 'compound']
     fields = ['name', 'phone', 'compound', 'ready']
 
+@admin.register(Staff)
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ['name', 'job', 'priority']
+
 admin.site.register(Partner)
 admin.site.register(SlideBackgrounds)
 admin.site.register(Font)
 admin.site.register(Tag)
 admin.site.register(Category)
-admin.site.register(Staff)
+# admin.site.register(Staff)
 admin.site.register(Registry)
 admin.site.register(SidePanel)
 admin.site.register(Attestat)

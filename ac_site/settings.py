@@ -118,6 +118,7 @@ TEMPLATES = [
                 'mainapp.context_processors.site_configuration',
                 'mainapp.context_processors.partners',
                 'mainapp.context_processors.order_form',
+                'mainapp.context_processors.org_staff',
             ],
         },
     },
@@ -176,6 +177,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static_root/'
+# STATIC_URL = '/static/'
 SASS_PROCESSOR_ENABLED = True
 SASS_PROCESSOR_AUTO_INCLUDE = False
 SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
@@ -225,14 +227,15 @@ CKEDITOR_CONFIGS = {
              '-', 'Table',
              '-', 'Image',
              '-', 'Source',
-             '-', 'NumberedList', 'BulletedList'
+             '-', 'NumberedList', 'BulletedList',
              ],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock',
              '-', 'Font', 'FontSize', 'TextColor',
              '-', 'Outdent', 'Indent',
              '-', 'HorizontalRule',
-             '-', 'Blockquote'
-             ]
+             '-', 'Blockquote',
+             ],
+             ['Youtube',],
         ],
         'skin': 'moono',
         'forcePasteAsPlainText': True,
@@ -244,11 +247,15 @@ CKEDITOR_CONFIGS = {
                       {'name': 'Монолитный элемент', 'element': 'span',
                        'attributes': {'style': 'white-space: nowrap;'}},
                       {'name': 'Адаптивная таблица', 'element': 'div', 'attributes': {'class': 'table-responsive'}}],
-        'fontSize_sizes': '14/14px;15/15px;16/16px;17/17px;18/18px;19/19px;20/20px;'
-        '21/21px;22/22px;23/23px;24/24px;25/25px;26/26px;27/27px;28/28px;36/36px;48/48px;72/72px;1/1px;',
+        'fontSize_sizes': '14/14px;15/15px;16/16px;17/17px;18/18px;19/19px;20/20px;',
+        # 'extraPlugins': ','.join([
+        #     'youtube',
+        # ]),
+        # 'external_plugin_resources': ['/static_root/ckeditor/ckeditor/plugins/youtube/'],
+        # 'extraPlugins': 'youtube',
     }
 }
-
+#/home/popov/ac_template_site/static_root/ckeditor/ckeditor/plugins
 
 ####################################
 ###  DJANGO-RESIZED CONFIGURATION ##
