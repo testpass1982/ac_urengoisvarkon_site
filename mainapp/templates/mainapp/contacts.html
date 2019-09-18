@@ -28,7 +28,7 @@
                     Телефон: {{ profile.org_main_phone }}
                 </div>
                 <div class="headline_text_contacts {% if user.is_authenticated %}editable{% endif %}">
-                    Email: {{ profile.org_email }}
+                    Email: {{ profile.org_email|safe }}
                 </div>
             </div>
             <div class="col-xl-6">

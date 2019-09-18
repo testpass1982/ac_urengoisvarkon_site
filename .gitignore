@@ -83,5 +83,6 @@ collected_static.zip
 # *.png
 **/migrations/**
 media/upload/*
+media/uploads/
 media/documents/*
 log/**
