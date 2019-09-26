@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-xl-6">
                 <p id="contacts_" class="headline_contacti {% if user.is_authenticated %}editable{% endif %}">
-                    {{ profile.org_short_name }}
+                    {{ profile.org_full_name }}
                 </p>
                 <div class="headline_text_contacts {% if user.is_authenticated %}editable{% endif %}">
                     Телефон: {{ profile.org_main_phone }}

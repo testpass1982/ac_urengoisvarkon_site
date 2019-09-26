@@ -357,6 +357,12 @@ $(document).ready(function() {
     $("#modal_order_head").text(text);
   });
 
+  $('#slider_modal').click(function(event){
+    var text = $("#slider_modal").text();
+    console.log('clicked', text);
+    $("#modal_order_head").text(text);
+  });
+
   $('#order_service_button').click(function(event) {
     event.preventDefault();
     order = $('#order_form').serializeArray();
