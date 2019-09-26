@@ -3,7 +3,7 @@
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-6 col-lg-6">
           <div class="head__text__adres">
-            <img src="{% static 'img/geo_icon_transparent.png' %}" style="width:20px;" alt=""> {{ profile.org_address }}
+            <img src="{% static 'img/geo_icon_transparent.png' %}" style="width:20px;" alt=""> {{ profile.org_address|safe }}
             <p class="adres__on__map">
               <a href="{% url 'contacts' %}#contacts_">На карте</a>
             </p>
