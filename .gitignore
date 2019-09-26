@@ -87,3 +87,4 @@ media/upload/*
 media/uploads/
 media/documents/*
 log/**
+_variables.scss
