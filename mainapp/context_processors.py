@@ -1,5 +1,5 @@
 from .models import Document
-from .models import Profile, Service, Post, SiteConfiguration, Component, Partner
+from .models import Profile, Service, Post, SiteConfiguration, Component, Partner, Attestat
 from .forms import ProfileImportForm, OrderForm
 import random
 from django.template import Context, Template
@@ -93,3 +93,15 @@ def org_staff(request):
         return {
             "staff": None
         }
+
+
+def attestats(request):
+    if Attestat.objects.count() > 0:
+        return {
+            "attestats": Attestat.objects.all().order_by('number')
+        }
+    else:
+        return {
+            "attestats": None
+        }
+

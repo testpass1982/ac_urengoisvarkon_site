@@ -119,6 +119,7 @@ TEMPLATES = [
                 'mainapp.context_processors.partners',
                 'mainapp.context_processors.order_form',
                 'mainapp.context_processors.org_staff',
+                'mainapp.context_processors.attestats',
             ],
         },
     },

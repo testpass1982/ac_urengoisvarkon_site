@@ -62,7 +62,8 @@
 
 <!--include components order by number in admin panel -->
   {% for site_comp in site.components %}
-    {% if site_comp.component.component_type == 'top_addr_line' or site_comp.component.component_type == 'main_menu' or site_comp.component.component_type == 'inner_head'%}
+    {% comment %} {% if site_comp.component.component_type == 'top_addr_line' or site_comp.component.component_type == 'main_menu' or site_comp.component.component_type == 'inner_head'%} {% endcomment %}
+    {% if site_comp.component.component_type in 'top_addr_line main_menu inner_head'%}
       {% include site_comp %}
     {% endif %}
   {% endfor %}
@@ -84,15 +85,16 @@
   {% endblock content %}
 
 
-  {% if partners|length > 1 %}
-    {% include 'mainapp/includes/partners.html' %}
-  {% endif %}
 
     {% for site_comp in site.components %}
-      {% if site_comp.component.component_type == 'advertising_block' %}
+      {% if site_comp.component.component_type in 'advertising_block attestats' %}
         {% include site_comp %}
       {% endif %}
     {% endfor %}
+
+  {% if partners|length > 1 %}
+    {% include 'mainapp/includes/partners.html' %}
+  {% endif %}
 
   <!-- Include Modal -->
   {% include 'mainapp/includes/basement.html' %}

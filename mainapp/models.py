@@ -502,6 +502,7 @@ class SiteConfiguration(models.Model):
 
 class Component(models.Model):
     COMPONENT_TYPE_CHOICES = (
+        ('attestats', 'Аттестаты соответствия'),
         ('top_addr_line', 'Верхняя линия с адресом'),
         ('main_menu', 'Главное меню сайта'),
         ('secondary_menu', 'Второстепенное меню'),
