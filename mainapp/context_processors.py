@@ -43,8 +43,17 @@ def profile_chunks(request):
 
 
 def services(request):
-    all_services = Service.objects.all().order_by('number')
+
+    services = Service.objects.all().order_by('number')
+    all_services = []
+    for s in services:
+        if s.parent is None:
+            all_services.append({'title': s.title, 'pk': s.pk, 'descendants': Service.objects.filter(parent=s)})
+        else:
+            continue
+    # import pdb; pdb.set_trace()
     return {'all_services': all_services}
+
 
 
 def profile_import(request):
