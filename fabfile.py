@@ -564,8 +564,8 @@ def deploy():
         confirm = prompt("Update? your answer y/n:")
         if confirm == 'y':
             test()
-            upload_lock_files()
             update()
+            upload_lock_files()
             rebuild_components()
             remote_migrate()
             app_migrate('mainapp')

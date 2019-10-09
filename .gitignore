@@ -89,3 +89,4 @@ media/documents/*
 log/**
 _variables.scss
 installed.lock
+project.json
