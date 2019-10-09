@@ -476,11 +476,13 @@ def clean():
     else:
         print(green('***CLEANING CANCELED***'))
 
+
 def wait(seconds):
     for i in range(seconds):
         left_seconds = seconds - i
         print(blue('...waiting {} seconds ...'.format(left_seconds)))
         time.sleep(1)
+
 
 def local_push():
     output = local("git status", capture=True)
@@ -490,6 +492,32 @@ def local_push():
             return
     local('git commit -a -m "fabric deploy"')
     local('git push -u origin master')
+
+
+def change_project_name():
+    print('project name', env.project_name)
+
+
+def server_commit():
+    print('commiting server changes')
+    with cd('{}'.format(PATH_TO_PROJECT)):
+        output = run("git status")
+        for line in output.splitlines():
+            if any(['нечего коммитить' in line, 'nothing to commit' in line]):
+                print('WORKING TREE CLEAN')
+                return
+        print(green('COMMITING...'))
+        run('git add .')
+        run('git commit -m "server commit after update {}"'.format(time.ctime()))
+    print(green(
+"""
+***************************
+**SERVER COMMIT COMPLETE***
+***************************
+"""
+    ))
+
+
 
 def deploy():
     if not exists('{path_to_project}'.format(path_to_project=PATH_TO_PROJECT)):
@@ -536,9 +564,12 @@ def deploy():
         confirm = prompt("Update? your answer y/n:")
         if confirm == 'y':
             test()
+            upload_lock_files()
             update()
+            rebuild_components()
             remote_migrate()
             app_migrate('mainapp')
+            server_commit()
             remote_test()
             # deploy_static()
             # change  secret_key
