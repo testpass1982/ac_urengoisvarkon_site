@@ -219,7 +219,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'number']
+    list_display = ['title', 'number', 'parent']
 
 from django.db import models
 from django.forms import TextInput
