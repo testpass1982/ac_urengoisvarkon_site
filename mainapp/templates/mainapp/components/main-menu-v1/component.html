@@ -40,14 +40,16 @@
 	                                    Услуги
 	                                </a>
 	                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
 	                                    {% for service in all_services %}
-											<a class="dropdown-item{% if service.descendants|length > 0 %} submenu{% endif %}"
+
+											<a data-pk="{{ service.pk }}" class="dropdown-item{% if service.descendants|length > 0 %} sub-dropdown-right{% endif %}"
 												href="{% url 'service_details' service.pk %}">{{ service.title }}</a>
+
+
 												{% if service.descendants|length > 0 %}
-													<div class="dropdown-menu d-none d-lg-block" style="margin-top: -20px;">
+													<div data-pk="{{service.pk}}" class="sub-dropdown-menu dropdown-menu">
 													{% for d in service.descendants %}
-														<a class="dropdown-item"
+														<a class="sub-menu-item dropdown-item"
 															href="{% url 'service_details' d.pk %}">{{ d.title }}</a>
 													{% endfor %}
 													</div>

@@ -143,6 +143,14 @@ $(document).ready(function() {
   $('.counter').addClass('animated fadeInDownBig');
   $('h2').addClass('animated fadeIn');
 
+  $('.sub-dropdown-right').hover(
+    (event) => {
+      var id = $(event.target).closest('a').data('pk');
+      $('.sub-dropdown-menu').each((index, element)=>{
+        $(element).data('pk') != id ? $(element).hide() : $(element).show();
+      });
+    }
+  );
 
   // Выбрать несколько элементов
 

@@ -62,8 +62,8 @@ class ContentMixin(models.Model):
         extra_plugins=['youtube'],
         external_plugin_resources=[(
             'youtube',
-            # '/static/ckeditor_plugins/youtube/',
-            '/static_root/ckeditor/ckeditor/plugins/youtube/',
+            'plugins/youtube/',
+            # '/static_root/ckeditor/ckeditor/plugins/youtube/',
             # static/ckeditor_plugins/youtube/plugin.js
             'plugin.js',
         )]
