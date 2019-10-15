@@ -371,6 +371,7 @@ class Profile(models.Model):
     org_secondary_phone_text = models.CharField(u'Подпись под вторым телефоном в хедере, например "Бухгалтерия"', max_length=30, blank=True, null=True, default=None)
     org_phones = models.TextField(u'Телефоны', blank=True, null=True, default=None)
     org_email = models.TextField(u'Адрес электронной почты', blank=True, null=True, default=None)
+    org_order_email = models.CharField(u'Адреса для подключения формы заявки', max_length=100, blank=True, null=True, default=None)
     org_header_emails = models.TextField(u'Адреса электронной почты (для хедера)', blank=True, null=True, default=None)
     org_header_phones = models.TextField(u'Телефоны (для хедера)', blank=True, null=True, default=None)
     org_address = models.TextField(u'Адрес местоположения организации', null=True, blank=True, default=None)
