@@ -53,10 +53,10 @@ def accept_order(request):
 
             if '8000' not in current_absolute_url:
                 if Profile.objects.first() is not None:
-                    admin_email_address = Profile.objects.first().org_order_email
+                    admin_email_address = Profile.objects.first().org_order_email.split(" ")
                 else:
                     admin_email_address = 'popov@naks.ru'
-                email_address_arr += ['it@naks.ru', admin_email_address]
+                email_address_arr += admin_email_address
             # 4seconds economy to send_email every time i make tests
             if not instance.name == 'tolik_make_tests':
                 send_mail(
