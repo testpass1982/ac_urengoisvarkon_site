@@ -537,7 +537,7 @@ def deploy():
             remote_migrate()
             create_superuser()
             app_migrate('mainapp')
-            upload_lock_files()
+            #upload_lock_files()
             rebuild_components()
             fill_db_with_demo_data()
             make_configs()
