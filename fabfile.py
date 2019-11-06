@@ -148,6 +148,7 @@ def git_remove_lock_and_styles():
         s/# _variables.scss/_variables.scss/g' .gitignore")
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo before update"')
+    print('removed lock_files and styles')
 
 
 def git_add_lock_files_and_styles():
@@ -565,8 +566,8 @@ def deploy():
             remote_migrate()
             create_superuser()
             app_migrate('mainapp')
-            # upload_lock_files()
-            # rebuild_components()
+            upload_lock_files()
+            rebuild_components()
             fill_db_with_demo_data()
             make_configs()
             copy_systemd_config()
@@ -595,8 +596,8 @@ def deploy():
             git_remove_lock_and_styles()
             local_push()
             remote_update()
-            upload_lock_files()
-            rebuild_components()
+            # upload_lock_files()
+            # rebuild_components()
             remote_migrate()
             app_migrate('mainapp')
             server_commit()
