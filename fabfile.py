@@ -148,7 +148,6 @@ def git_remove_lock_and_styles():
         s/# _variables.scss/_variables.scss/g' .gitignore")
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo before update"')
-    # .gitignore
 
 
 def git_add_lock_files_and_styles():
