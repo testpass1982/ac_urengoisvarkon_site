@@ -602,13 +602,14 @@ def deploy():
             app_migrate('mainapp')
             server_commit()
             remote_test()
+            remote_collectstatic()
             # deploy_static()
             # change  secret_key
             # change debug mode
             # change allowed hosts
-            sudo('systemctl restart {}.service'.format(env.project_name))
-            sudo('systemctl show {}.service --no-page'.format(env.project_name))
-            sudo('nginx -s reload')
+            # sudo('systemctl restart {}.service'.format(env.project_name))
+            # sudo('systemctl show {}.service --no-page'.format(env.project_name))
+            # sudo('nginx -s reload')
             local('{} functional_tests.py {}'.format(p, env.domain_name))
         else:
             print(green('***UPDATE CANCELLED***'))
