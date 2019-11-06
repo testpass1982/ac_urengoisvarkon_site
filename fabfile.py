@@ -147,8 +147,8 @@ def git_remove_lock_and_styles():
     #             s/USERNAME/{}/g' \
     #         nginx_config_template > {}_nginx".format(
     #     env.project_name, env.domain_name, env.user, env.project_name))
-    local("sed -i 's/installed.lock/# installed.lock/g; \
-            s/_variables.scss/# _variables.scss/g' .gitignore")
+    local("sed -i 's/# installed.lock/installed.lock/g; \
+        s/# _variables.scss/_variables.scss/g' .gitignore")
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo"')
     # .gitignore
