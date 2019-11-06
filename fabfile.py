@@ -158,12 +158,15 @@ def git_remove_lock_and_styles():
 
 
 def git_add_lock_files_and_styles():
-    with cd(CWD):
-        output = local("git status", capture=True)
-        for line in output.splitlines():
-            print('line', line)
-    # local("sed -i 's/installed.lock/# installed.lock/g; \
-    # s/_variables.scss/# _variables.scss/g' .gitignore")
+    output = local("git ls-files *.lock", capture=True)+local("git ls-files *variables.scss", capture=True)
+    for line in output.splitlines():
+        if (len(line) > 0):
+            print('lock files in repo:', line)
+            return
+    local("sed -i 's/# installed.lock/installed.lock/g; \
+    s/# _variables.scss/_variables.scss/g' .gitignore")
+    local('git add .')
+    local('git commit -m "add lock files in repo"')
 
 
 def rebuild_components():
