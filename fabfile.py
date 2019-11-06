@@ -138,7 +138,7 @@ def upload_lock_files():
 
 
 def remove_lock_files_and_styles_from_repo():
-    local('git rm --cached installed.lock')
+    local('git rm --cached *installed.lock')
     local('git rm --cached *variables.scss')
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo"')
