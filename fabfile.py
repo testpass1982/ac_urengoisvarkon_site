@@ -379,12 +379,6 @@ def remote_collectstatic():
         run('rm -rf {path}/static_root/'.format(path=PATH_TO_PROJECT))
     with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
-            run('{python} manage.py shell'.format(python=p))
-            run('from django.test import RequestFactory')
-            run('from mainapp.views import index')
-            run('request = RequestFactory()')
-            run('factory_response = index(request.get("/"))')
-            run('quit()')
             run('{python} manage.py collectstatic --noinput'.format(
                 python=p))
     sudo('systemctl restart {config}.service'.format(config=env.project_name))
@@ -608,6 +602,7 @@ def deploy():
             app_migrate('mainapp')
             server_commit()
             remote_test()
+            local('{} functional_tests.py {}'.format(p, env.domain_name))
             remote_collectstatic()
             # deploy_static()
             # change  secret_key
@@ -616,6 +611,5 @@ def deploy():
             # sudo('systemctl restart {}.service'.format(env.project_name))
             # sudo('systemctl show {}.service --no-page'.format(env.project_name))
             # sudo('nginx -s reload')
-            local('{} functional_tests.py {}'.format(p, env.domain_name))
         else:
             print(green('***UPDATE CANCELLED***'))
