@@ -150,7 +150,7 @@ def git_remove_lock_and_styles():
     local("sed -i 's/# installed.lock/installed.lock/g; \
         s/# _variables.scss/_variables.scss/g' .gitignore")
     local('git add .')
-    local('git commit -m "remove lock files and scss variables from repo"')
+    local('git commit -m "remove lock files and scss variables from repo before update"')
     # .gitignore
 
 def rebuild_components():
