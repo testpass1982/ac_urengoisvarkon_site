@@ -137,9 +137,9 @@ def upload_lock_files():
     restore_lock_files()
 
 
-def remove_lock_files_and_styles_from_repo():
-    # local('git rm --cached *installed.lock')
-    # local('git rm --cached *variables.scss')
+def git_remove_lock_and_styles():
+    local('git rm --cached *installed.lock')
+    local('git rm --cached *variables.scss')
     # sed("/home/popov/ac_template_site/.gitignore", "_variables.scss", "# _variables.scss")
     # sed(CWD+'.gitignore', "installed.lock", "# installed.lock")
     # local("sed 's/PROJECT_NAME/{}/g; \
@@ -147,7 +147,8 @@ def remove_lock_files_and_styles_from_repo():
     #             s/USERNAME/{}/g' \
     #         nginx_config_template > {}_nginx".format(
     #     env.project_name, env.domain_name, env.user, env.project_name))
-    local("sed -i 's/installed.lock/# installed.lock/g; s/_variables.scss/# _variables.scss/g' .gitignore")
+    local("sed -i 's/installed.lock/# installed.lock/g; \
+            s/_variables.scss/# _variables.scss/g' .gitignore")
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo"')
     # .gitignore
