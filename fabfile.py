@@ -160,7 +160,7 @@ def git_remove_lock_and_styles():
 def git_add_lock_files_and_styles():
     output = local("git ls-files *.lock", capture=True)+local("git ls-files *variables.scss", capture=True)
     for line in output.splitlines():
-        if (len(line) > 0):
+        if (len(line) > 0) and any(['lock' in line, 'variables' in line]):
             print('lock files in repo:', line)
             return
     local("sed -i 's/# installed.lock/installed.lock/g; \
