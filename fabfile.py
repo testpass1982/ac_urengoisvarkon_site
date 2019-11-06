@@ -138,20 +138,33 @@ def upload_lock_files():
 
 
 def git_remove_lock_and_styles():
-    local('git rm --cached *installed.lock')
-    local('git rm --cached *variables.scss')
-    # sed("/home/popov/ac_template_site/.gitignore", "_variables.scss", "# _variables.scss")
-    # sed(CWD+'.gitignore', "installed.lock", "# installed.lock")
-    # local("sed 's/PROJECT_NAME/{}/g; \
-    #             s/DOMAIN_NAME/{}/g; \
-    #             s/USERNAME/{}/g' \
-    #         nginx_config_template > {}_nginx".format(
-    #     env.project_name, env.domain_name, env.user, env.project_name))
-    local("sed -i 's/# installed.lock/installed.lock/g; \
-        s/# _variables.scss/_variables.scss/g' .gitignore")
-    local('git add .')
-    local('git commit -m "remove lock files and scss variables from repo before update"')
-    # .gitignore
+    try:
+        local('git rm --cached *installed.lock')
+        local('git rm --cached *variables.scss')
+        # sed("/home/popov/ac_template_site/.gitignore", "_variables.scss", "# _variables.scss")
+        # sed(CWD+'.gitignore', "installed.lock", "# installed.lock")
+        # local("sed 's/PROJECT_NAME/{}/g; \
+        #             s/DOMAIN_NAME/{}/g; \
+        #             s/USERNAME/{}/g' \
+        #         nginx_config_template > {}_nginx".format(
+        #     env.project_name, env.domain_name, env.user, env.project_name))
+        local("sed -i 's/# installed.lock/installed.lock/g; \
+            s/# _variables.scss/_variables.scss/g' .gitignore")
+        local('git add .')
+        local('git commit -m "remove lock files and scss variables from repo before update"')
+        # .gitignore
+    except Exception as e:
+        print('ERROR REMOVING LOCK FILES', e)
+
+
+def git_add_lock_files_and_styles():
+    with cd(CWD):
+        output = local("git status", capture=True)
+        for line in output.splitlines():
+            print('line', line)
+    # local("sed -i 's/installed.lock/# installed.lock/g; \
+    # s/_variables.scss/# _variables.scss/g' .gitignore")
+
 
 def rebuild_components():
     with cd('{}'.format(PATH_TO_PROJECT)):
@@ -159,6 +172,7 @@ def rebuild_components():
             # run('pwd')
             run('{python} manage.py install_components'.format(python=p))
             run('deactivate')
+
 
 @runs_once
 def remote_migrate():
