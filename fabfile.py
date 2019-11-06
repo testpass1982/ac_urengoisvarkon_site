@@ -557,8 +557,8 @@ def deploy():
                 ************************
             """))
             wait(3)
-            test()
             git_add_lock_files_and_styles()
+            test()
             local_push()
             clone()
             rename_template_folder()
