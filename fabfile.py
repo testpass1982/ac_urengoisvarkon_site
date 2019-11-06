@@ -142,8 +142,8 @@ def remove_lock_files_and_styles_from_repo():
     local('git rm --cached *variables.scss')
     local('git add .')
     local('git commit -m "remove lock files and scss variables from repo"')
-    sed(CWD+'.gitignore', "_variables.scss", "# _variables.scss")
-    sed(CWD+'.gitignore', "installed.lock", "# installed.lock")
+    sed(CWD+'/.gitignore', "_variables.scss", "# _variables.scss")
+    sed(CWD+'/.gitignore', "installed.lock", "# installed.lock")
 
 def rebuild_components():
     with cd('{}'.format(PATH_TO_PROJECT)):
