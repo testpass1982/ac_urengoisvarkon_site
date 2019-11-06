@@ -558,6 +558,7 @@ def deploy():
             """))
             wait(3)
             test()
+            git_add_lock_files_and_styles()
             local_push()
             clone()
             rename_template_folder()
@@ -591,6 +592,7 @@ def deploy():
         confirm = prompt("Update? your answer y/n:")
         if confirm == 'y':
             test()
+            git_remove_lock_and_styles()
             update()
             upload_lock_files()
             rebuild_components()
