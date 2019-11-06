@@ -26,6 +26,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '&uss8nuw*!$_mkfmf3f1d@1in178%ediigonqpzx%iwrgg)@&n'
 
+#check updating sites
+
 """
 Django settings for ac_site project.
 

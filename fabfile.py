@@ -262,7 +262,7 @@ def clone():
 
 
 #as user
-def update():
+def remote_update():
     with cd('{}'.format(PATH_TO_PROJECT)):
         output = run("git status")
         for line in output.splitlines():
@@ -593,7 +593,8 @@ def deploy():
         if confirm == 'y':
             test()
             git_remove_lock_and_styles()
-            update()
+            local_push()
+            remote_update()
             upload_lock_files()
             rebuild_components()
             remote_migrate()
