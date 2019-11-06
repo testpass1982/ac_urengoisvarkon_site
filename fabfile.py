@@ -379,7 +379,7 @@ def remote_collectstatic():
         run('rm -rf {path}/static_root/'.format(path=PATH_TO_PROJECT))
     with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
-            run('{python} manage.py shell').format(python=p)
+            run('{python} manage.py shell'.format(python=p))
             run('from django.test import RequestFactory')
             run('from mainapp.views import index')
             run('request = RequestFactory()')
