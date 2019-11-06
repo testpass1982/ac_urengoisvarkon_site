@@ -87,6 +87,6 @@ media/upload/*
 media/uploads/
 media/documents/*
 log/**
-# _variables.scss
-# installed.lock
+_variables.scss
+installed.lock
 project.json
