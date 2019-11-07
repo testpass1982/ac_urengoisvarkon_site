@@ -52,7 +52,7 @@ class ContentMixin(models.Model):
     url_code = models.CharField(u'Код ссылки', max_length=30, blank=True, default='НЕ УКАЗАН')
     short_description = models.CharField(
         u'Краткое описание', max_length=200, blank=True)
-    tags = models.ManyToManyField(Tag, verbose_name='Тэги')
+    tags = models.ManyToManyField(Tag, verbose_name='Тэги', blank=True)
     published_date = models.DateTimeField(
         u'Дата публикации', blank=True, null=True)
     created_date = models.DateTimeField(u'Дата создания', default=timezone.now)
@@ -92,7 +92,7 @@ class SidePanel(models.Model):
 class Post(ContentMixin):
     '''child of contentmixin'''
     category = models.ForeignKey(
-        Category, verbose_name='Категория', on_delete=models.CASCADE)
+        Category, verbose_name='Категория', on_delete=models.CASCADE, blank=True)
     publish_on_main_page = models.NullBooleanField(u'Опубликовать на главной', default=False)
     publish_on_news_page = models.BooleanField(
         verbose_name="Опубликовать в ленте новостей", default=False)

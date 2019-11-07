@@ -369,6 +369,11 @@ def deploy_static():
         ***********************
     """))
 
+
+def put_youtube_plugin():
+    pass
+
+
 def local_collectstatic():
     local('{python} manage.py collectstatic --noinput'.format(python=p))
 
