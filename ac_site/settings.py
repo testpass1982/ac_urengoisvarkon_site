@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&uss8nuw*!$_mkfmf3f1d@1in178%ediigonqpzx%iwrgg)@&n'
 
 # check updating sites
-
+# check rebase
 """
 Django settings for ac_site project.
 
