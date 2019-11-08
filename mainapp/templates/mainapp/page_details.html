@@ -44,9 +44,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2">
+            <div class="col-xl-4">
                 <h3>{{side_panel.title}}</h3>
                 {% include 'mainapp/includes/side_panel.html' %}
+                 {% if images %}
+                    <p class="p-2">Фото для публикации:</p>
+                    {% for image in images %}
+                    <a href="{{ image.image.url }}" target="blank"><img class="news-details-atteched-image" src="{{ image.image.url }}"
+                            alt="{{image.title}}"></a>
+                    {% endfor %}
+                    {% else %}
+                    <div class="alert alert-warning">Фотографии для данной публикации отсутствуют</div>
+                {% endif %}
             </div>
             <div class="container">
             {% for parameter in page_parameters %}
