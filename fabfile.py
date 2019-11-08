@@ -379,9 +379,9 @@ def local_collectstatic():
 
 def remote_collectstatic():
     # manage.py collectstatic --noinput
-    if exists('{path}/static_root/'.format(path=PATH_TO_PROJECT)):
+    # if exists('{path}/static_root/'.format(path=PATH_TO_PROJECT)):
         # import pdb; pdb.set_trace()
-        run('rm -rf {path}/static_root/'.format(path=PATH_TO_PROJECT))
+        # run('rm -rf {path}/static_root/'.format(path=PATH_TO_PROJECT))
     with cd('{}'.format(PATH_TO_PROJECT)):
         with prefix(env.activate):
             run('{python} manage.py collectstatic --noinput'.format(
@@ -613,8 +613,8 @@ def deploy():
             # change  secret_key
             # change debug mode
             # change allowed hosts
-            # sudo('systemctl restart {}.service'.format(env.project_name))
-            # sudo('systemctl show {}.service --no-page'.format(env.project_name))
-            # sudo('nginx -s reload')
+            sudo('systemctl restart {}.service'.format(env.project_name))
+            sudo('systemctl show {}.service --no-page'.format(env.project_name))
+            sudo('nginx -s reload')
         else:
             print(green('***UPDATE CANCELLED***'))

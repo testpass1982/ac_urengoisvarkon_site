@@ -359,6 +359,9 @@ class Service(models.Model):
 class Profile(models.Model):
     """class for templating organization"""
     org_logotype = models.ImageField(u'Логотип организации', upload_to='upload/', blank=True, null=True, default=None)
+    org_footer_logotype = models.ImageField(
+        u'Логотип для футера (необязательно)',
+        upload_to='upload/', blank=True, null=True, default=None)
     org_short_name = models.CharField(u'Краткое название организации', max_length=100, blank=True, null=True, default=None)
     org_full_name = models.CharField(u'Полное название организации', max_length=300, blank=True, null=True, default=None)
     org_intro = models.TextField(u'Текст для главной страницы', blank=True, null=True, default=None)
