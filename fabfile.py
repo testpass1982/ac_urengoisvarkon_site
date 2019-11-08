@@ -600,12 +600,12 @@ def deploy():
             test()
             git_remove_lock_and_styles()
             local_push()
+            server_commit()
             remote_update()
             # upload_lock_files()
             # rebuild_components()
             remote_migrate()
             app_migrate('mainapp')
-            server_commit()
             remote_test()
             local('{} functional_tests.py {}'.format(p, env.domain_name))
             remote_collectstatic()
@@ -613,6 +613,7 @@ def deploy():
             # change  secret_key
             # change debug mode
             # change allowed hosts
+            server_commit()
             sudo('systemctl restart {}.service'.format(env.project_name))
             sudo('systemctl show {}.service --no-page'.format(env.project_name))
             sudo('nginx -s reload')
