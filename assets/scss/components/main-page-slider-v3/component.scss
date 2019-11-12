@@ -66,11 +66,13 @@
 .btn-outline-primary {
 	border: solid 1px $primary;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-	color: $primaryDark;
+	color: $primary;
+	background-color: $highlight;
 	&:hover {
 		background-color: rgba($secondary, .5);
 		color: $primaryDark;
 		border: solid 1px $primaryLight;
+		background-color: $highlightLight;
 	}
 }
 
