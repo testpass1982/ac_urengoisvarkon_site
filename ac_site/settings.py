@@ -221,7 +221,9 @@ CKEDITOR_IMAGE_BACKEND = "pillow"
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': [
+        # 'toolbar': 'full',
+        'toolbar':
+        [
             ['Undo', 'Redo',
              '-', 'Bold', 'Italic', 'Underline',
              '-', 'Link', 'Unlink', 'Anchor',
@@ -230,27 +232,42 @@ CKEDITOR_CONFIGS = {
              '-', 'Table',
              '-', 'Image',
              '-', 'Source',
-             '-', 'NumberedList', 'BulletedList',
+             '-', 'NumberedList', 'BulletedList'
              ],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock',
              '-', 'Font', 'FontSize', 'TextColor',
              '-', 'Outdent', 'Indent',
              '-', 'HorizontalRule',
-             '-', 'Blockquote',
+             '-', 'Blockquote'
              ],
-             ['Youtube',],
+             ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
         ],
-        'skin': 'moono',
-        'forcePasteAsPlainText': True,
+        'pasteFromWord': True,
+        'pasteFilter': 'semantic-content',
+        # 'pasteFromWordCleanupFile': 'plugins/pastefromword/filter/default.js',
+        # 'pasteFromWordRemoveStyle': True,
+        # 'pasteFromWordNumberedHeadingToList': True,
+        # 'pasteFromWordPromptCleanup': False,
+        'extraPlugins': ','.join(
+            [
+               'pastefromword',
+               'clipboard',
+            ]
+        ),
+        # 'skin': 'moono',
+        'allowedContent': True,
+        # 'forcePasteAsPlainText': True,
         'format_tags': 'p;h1;h2;h3;pre',
-        'contentsCss': ['/static_root/css/ckeditor_init.css', ],
+        # 'contentsCss': ['/static/css/ckeditor_init.css', ],
         'stylesSet': [{'name': 'Строчный код', 'element': 'code'},
                       {'name': 'Скрыть для мобильных', 'element': 'span',
                        'attributes': {'class': 'hide_for_mobile'}},
                       {'name': 'Монолитный элемент', 'element': 'span',
                        'attributes': {'style': 'white-space: nowrap;'}},
                       {'name': 'Адаптивная таблица', 'element': 'div', 'attributes': {'class': 'table-responsive'}}],
-        'fontSize_sizes': '14/14px;15/15px;16/16px;17/17px;18/18px;19/19px;20/20px;',
+        'fontSize_sizes': '14/14px;15/15px;16/16px;17/17px;18/18px;19/19px;20/20px;'
+        '21/21px;22/22px;23/23px;24/24px;25/25px;26/26px;27/27px;28/28px;36/36px;48/48px;72/72px;1/1px;',
+        "removePlugins": "stylesheetparser",
     }
 }
 
