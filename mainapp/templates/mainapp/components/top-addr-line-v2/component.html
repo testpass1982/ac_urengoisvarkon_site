@@ -6,8 +6,14 @@
             <img src="{% static 'img/geo_icon_transparent.png' %}" style="width:20px;" alt=""> {{ profile.org_address|safe }}
             <p class="adres__on__map">
               <a href="{% url 'contacts' %}#contacts_">На карте</a>
+              <span class="ml-2 badge badge-info">
+                {% if site_comp.parameters.work_time %}
+                                      {{ site_comp.parameters.work_time }}
+                {% endif %}
+              </span>
             </p>
           </div>
+
 
         </div>
         <div class="col-xs-12 col-sm-6 col-lg-6">
