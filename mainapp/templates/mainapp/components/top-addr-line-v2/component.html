@@ -6,11 +6,11 @@
             <img src="{% static 'img/geo_icon_transparent.png' %}" style="width:20px;" alt=""> {{ profile.org_address|safe }}
             <p class="adres__on__map">
               <a href="{% url 'contacts' %}#contacts_">На карте</a>
-              <span class="ml-2 badge badge-info">
                 {% if site_comp.parameters.work_time %}
-                                      {{ site_comp.parameters.work_time }}
+                  <span class="ml-2 badge badge-info">
+                                          {{ site_comp.parameters.work_time }}
+                  </span>
                 {% endif %}
-              </span>
             </p>
           </div>
 
