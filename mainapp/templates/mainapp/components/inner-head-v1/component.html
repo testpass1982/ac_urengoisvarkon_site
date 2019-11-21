@@ -11,7 +11,10 @@
 
   {% endif %}
   <div class="row align-items-center">
-    <div class="col-sm-6 col-md-6 col-lg-3 col-xl-4">
+    <div class="col-sm-6 col-md-6 col-lg-3 col-xl-4 d-flex align-items-center justify-content-around">
+    {% if site_comp.parameters.logo_title %}
+      <h3>{{ site_comp.parameters.logo_title }}</h3>
+    {% endif %}
       <div class="logo_box_head">
         <a href="{% url 'index' %}">
           <img class="img-fluid" src="
