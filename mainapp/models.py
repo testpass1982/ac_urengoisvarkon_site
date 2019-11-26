@@ -379,6 +379,7 @@ class Profile(models.Model):
     org_header_phones = models.TextField(u'Телефоны (для хедера)', blank=True, null=True, default=None)
     org_address = models.TextField(u'Адрес местоположения организации', null=True, blank=True, default=None)
     org_address_map_link = models.CharField(u'Ссылка на карту', blank=True, null=True, default=None, max_length=500)
+    org_work_time = models.CharField(u'Время работы организации', null=True, blank=True, default=None, max_length=100)
     org_csp_code = models.CharField(u'шифр ЦСП (необязательно)', max_length=20, null=True, blank=True)
     org_csp_reestr_link = models.URLField(u'Ссылка на реестр ЦСП', blank=True, null=True)
     org_acsp_code = models.CharField(u'шифр АЦСП (необязательно)', max_length=20, null=True, blank=True)
