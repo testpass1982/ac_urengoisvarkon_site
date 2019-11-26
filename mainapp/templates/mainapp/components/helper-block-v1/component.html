@@ -1,3 +1,4 @@
+{% load link_holders %}
 <div class="bg_info_box">
     <div class="container p-1">
         <div class="row justify-content-center align-items-center">
@@ -55,6 +56,10 @@
                         {% if profile.org_cok_code %}
                         <a href="{{profile.org_cok_reestr_link}}">
                             {{profile.org_cok_code}}</a>
+                        {% endif %}
+                        {% if profile.add_ap_list %}
+                        <a class="profstandarti_link" href="{% link_holder 'AP_LIST' %}">
+                            {% title_holder 'AP_LIST' %}</a>
                         {% endif %}
                     </div>
                 </div>
