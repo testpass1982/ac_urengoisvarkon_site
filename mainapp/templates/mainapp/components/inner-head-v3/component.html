@@ -4,10 +4,31 @@
             <div class="row align-items-center">
                 <div class="col-sm-5 col-xl-4">
                     <div class="d-flex align-items-center">
-                        <a href="{% url 'index' %}">
-                            <img class="{% if not profile.org_logotype %}header-logo {% endif %}img-fluid pr-3" src="{% if profile.org_logotype %}{{ profile.org_logotype.url }}{% else %}http://place-hold.it/200x80{% endif %}" alt="Logotip_company">
-                        </a>
+
+                            <div{% if site_comp.parameters.logo_title %} class="w-50"{% endif %}>
+                                <a href="{% url 'index' %}">
+                                    <img class="{% if not profile.org_logotype %}header-logo {% endif %}img-fluid pr-3" src="{% if profile.org_logotype %}{{ profile.org_logotype.url }}{% else %}http://place-hold.it/200x80{% endif %}" alt="Logotip_company">
+                                </a>
+                            </div>
+
+
+                            {% if site_comp.parameters.logo_title %}
+                                <h2 class="w-50">{{ site_comp.parameters.logo_title }}</h2>
+                            {% endif %}
+
                     </div>
+                    {% comment %} <div class="row align-items-center">
+                        <div class="col-6">
+                            <a href="{% url 'index' %}">
+                                <img class="{% if not profile.org_logotype %}header-logo {% endif %}img-fluid pr-3" src="{% if profile.org_logotype %}{{ profile.org_logotype.url }}{% else %}http://place-hold.it/200x80{% endif %}" alt="Logotip_company">
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            {% if site_comp.parameters.logo_title %}
+                                <h2>{{ site_comp.parameters.logo_title }}</h2>
+                            {% endif %}
+                        </div>
+                    </div> {% endcomment %}
                 </div>
                 <div class="col-sm-7 col-xl-4">
                     <div class="row">
