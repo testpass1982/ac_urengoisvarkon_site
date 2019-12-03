@@ -50,7 +50,7 @@
                  {% if images %}
                     <p class="p-2">Фото для публикации:</p>
                     {% for image in images %}
-                    <a href="{{ image.image.url }}" target="blank"><img class="news-details-atteched-image" src="{{ image.image.url }}"
+                    <a href="{{ image.image.url }}" target="blank"><img class="news-details-atteched-image img-fluid" src="{{ image.image.url }}"
                             alt="{{image.title}}"></a>
                     {% endfor %}
                     {% else %}
