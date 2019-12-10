@@ -216,10 +216,17 @@ def profstandarti(request):
     }
     return render(request, 'mainapp/profstandarti.html', content)
 def contacts(request):
+
     content = {
         'title': 'Контакты',
         'contacts': Contact.objects.all().order_by('number')
     }
+    if Post.objects.filter(url_code='WALKTHROUGH').count() > 0:
+        walkthrough = Post.objects.get(url_code="WALKTHROUGH")
+        content.update({
+            'walktrough': walkthrough
+        })
+        # import pdb; pdb.set_trace()
     return render(request, 'mainapp/contacts.html', content)
 def all_news(request):
     content = {

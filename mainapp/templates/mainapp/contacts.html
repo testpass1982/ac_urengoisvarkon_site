@@ -37,6 +37,12 @@
                 </p>
                 <div class="headline_text_contacts {% if user.is_authenticated %}editable{% endif %}">
                     {{ profile.org_address }}
+                    {% if walktrough %}
+                    oeuou
+                    <p>
+                        <a href="{% url 'details' walktrough.pk %}">{{ walktrough.title }}</a>
+                    </p>
+                    {% endif %}
                 </div>
             </div>
         </div>
