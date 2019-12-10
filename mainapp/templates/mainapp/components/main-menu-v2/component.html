@@ -53,7 +53,15 @@
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                     {% for service in all_services %}
-                      <a class="dropdown-item {% if user.is_authenticated %}editable{% endif %}" href="{% url 'service_details' service.pk %}">{{ service.title }}</a>
+                      <a data-pk="{{ service.pk }}" class="dropdown-item{% if service.descendants|length > 0 %} sub-dropdown-right{% endif %}" href="{% url 'service_details' service.pk %}">{{ service.title }}</a>
+                            {% if service.descendants|length > 0 %}
+                            <div data-pk="{{service.pk}}" class="sub-dropdown-menu dropdown-menu">
+                            {% for d in service.descendants %}
+                              <a class="sub-menu-item dropdown-item"
+                                href="{% url 'service_details' d.pk %}">{{ d.title }}</a>
+                            {% endfor %}
+                            </div>
+                          {% endif %}
                     {% endfor %}
 
                   </div>
