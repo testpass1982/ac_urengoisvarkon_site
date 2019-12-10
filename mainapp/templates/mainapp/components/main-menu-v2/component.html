@@ -29,6 +29,16 @@
                   </a>
                 </li>
 
+                {% if site_comp.parameters.proyti %}
+
+	                            <li class="nav-item active">
+	                                <a class="nav-link" href="{% link_holder 'PROYTI' %}">{% title_holder 'PROYTI' %}
+	                                    <span class="sr-only">(current)</span>
+	                                </a>
+	                            </li>
+
+								{% endif %}
+
                 <!-- Dropdown -->
                 <li class="nav-item active">
                   <a class="nav-link {% if user.is_authenticated %}editable{% endif %}" href="{% link_holder 'CENTER_INFO' %}">{% title_holder 'CENTER_INFO' %}
