@@ -3,7 +3,7 @@
 
     <div class="container p-3">
       {% if site_comp.parameters.work_time %}
-      <div class="row align-items-center">
+      <div class="row align-items-center"{% if site_comp.parameters.bgc %} style="background-color:#{{site_comp.parameters.bgc}}"{% endif %}>
         <div class="col-xs-12 col-lg-4">
           <div class="head__text__adres">
             <img src="{% static 'img/geo_icon_transparent.png' %}" style="width:20px;" alt=""> {{ profile.org_address|safe }}
