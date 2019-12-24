@@ -10,7 +10,7 @@
       <div class="row justify-content-center">
         <div class="col-xl-12">
           <p class="headline_bg_content {% if user.is_authenticated %}editable{% endif %}">
-            {{ profile.org_short_name }}
+            {{ profile.org_short_name|safe }}
           </p>
           <p class="head_bg_text_small_two {% if user.is_authenticated %}editable{% endif %}">
             {{ profile.org_intro }}

@@ -17,9 +17,11 @@
                                     <a class="naks-link" href="http://www.naks.ru/" class="" target="_blank">www.naks.ru</a>
                                 </div>
                             </div>
+
                             <div class="col-sm-6 d-lg-none">
-                                <h3 class="mb-4">{{ profile.org_short_name }}</h3>
+                                <h3 class="mb-4">{{ profile.org_short_name|safe }}</h3>
                             </div>
+
                         </div>
                         <div class="mb-4">
                             <h3 class="d-none d-lg-block mb-4">{{ profile.org_short_name }}</h3>
