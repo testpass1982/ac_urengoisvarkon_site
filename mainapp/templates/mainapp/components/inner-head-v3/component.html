@@ -11,10 +11,11 @@
                                 </a>
                             </div>
 
-
+                            {% autoescape off %}
                             {% if site_comp.parameters.logo_title %}
                                 <h3 class="w-50">{{ site_comp.parameters.logo_title }}</h3>
                             {% endif %}
+                            {% endautoescape %}
 
                     </div>
                     {% comment %} <div class="row align-items-center">
