@@ -2,8 +2,10 @@
 <div class="container">
     <div class="info__block">
 
+        {% if not site_comp.parameters.no_info_title %}
             <div class="section__header d-inline-block py-3">Информация</div>
             <div class="line__section"></div>
+        {% endif %}
 
         <div class="row algin-items-stretch">
           <div class="col-xs-12 col-xl-4 col-md-6 col-lg-12 mb-2 mb-xl-0">
