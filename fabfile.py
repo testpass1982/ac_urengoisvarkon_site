@@ -123,11 +123,16 @@ def upload_lock_files():
                 path_to_project=PATH_TO_PROJECT)):
                 with open(os.path.join(r, file), 'r', encoding='utf-8') as lock_file:
                     component_name = json.load(lock_file)['title']
-                run('rm {path_to_project}/{remote_components_folder}/{component_name}/installed.lock'.format(
-                    path_to_project=PATH_TO_PROJECT,
-                    remote_components_folder=REMOTE_COMPONENTS_FOLDER,
-                    component_name=component_name
-                ))
+                    if exists('{path_to_project}/{remote_components_folder}/{component_name}/installed.lock'.format(
+                        path_to_project=PATH_TO_PROJECT,
+                        remote_components_folder=REMOTE_COMPONENTS_FOLDER,
+                        component_name=component_name
+                    )):
+                        run('rm {path_to_project}/{remote_components_folder}/{component_name}/installed.lock'.format(
+                            path_to_project=PATH_TO_PROJECT,
+                            remote_components_folder=REMOTE_COMPONENTS_FOLDER,
+                            component_name=component_name
+                        ))
                 put('{}'.format(os.path.join(r, file)),
                     '{path_to_project}/{remote_components_folder}/{component_name}/'.format(
                     path_to_project=PATH_TO_PROJECT,
