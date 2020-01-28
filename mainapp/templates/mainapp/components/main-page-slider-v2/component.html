@@ -9,11 +9,11 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-12">
-          <p class="headline_bg_content {% if user.is_authenticated %}editable{% endif %}">
+          <p class="headline_bg_content">
             {{ profile.org_short_name|safe }}
           </p>
-          <p class="head_bg_text_small_two {% if user.is_authenticated %}editable{% endif %}">
-            {{ profile.org_intro }}
+          <p class="head_bg_text_small_two">
+            {{ profile.org_intro|safe }}
           </p>
           <div class="head_bg_box_button">
             <button class="request">
