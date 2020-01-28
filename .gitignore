@@ -69,6 +69,7 @@ db.sqlite3
 static_root/
 static_root_backup/
 secret.json
+project.json
 collected_static.zip
 *.service
 *_nginx
@@ -87,6 +88,6 @@ media/upload/*
 media/uploads/
 media/documents/*
 log/**
-_variables.scss
-installed.lock
+# _variables.scss
+# installed.lock
 # project.json
