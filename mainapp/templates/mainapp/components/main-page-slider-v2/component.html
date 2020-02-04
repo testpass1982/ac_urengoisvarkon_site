@@ -9,13 +9,13 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-12">
-          <p class="headline_bg_content">
+          <p class="headline_bg_content" {% if site_comp.parameters.font_color %}style="color:{{site_comp.parameters.font_color}};"{% endif %}>
             {{ profile.org_short_name|safe }}
           </p>
-          <p class="head_bg_text_small_two">
+          <p class="head_bg_text_small_two" {% if site_comp.parameters.font_color %}style="color:{{site_comp.parameters.font_color}};"{% endif %}>
             {{ profile.org_intro|safe }}
           </p>
-          <div class="head_bg_box_button">
+          <div class="head_bg_box_button" {% if site_comp.parameters.font_color %}style="color:{{site_comp.parameters.font_color}};"{% endif %}>
             <button class="request">
               <a href="" data-toggle="modal" data-target="#modal-statement" class="request_button">Подать
                 заявку</a>
