@@ -16,10 +16,13 @@
             {{ profile.org_intro|safe }}
           </p>
           <div class="head_bg_box_button" {% if site_comp.parameters.font_color %}style="color:{{site_comp.parameters.font_color}};"{% endif %}>
+
+            {% if not site_comp.parameters.disable_order_button %}
             <button class="request">
               <a href="" data-toggle="modal" data-target="#modal-statement" class="request_button">Подать
                 заявку</a>
             </button>
+            {% endif %}
 
           </div>
 
