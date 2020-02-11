@@ -69,6 +69,14 @@
 	                                </div>
 	                            </li>
 
+								{% if site_comp.parameters.grafik %}
+	                            <li class="nav-item active">
+	                                <a class="nav-link" href="{% link_holder 'GRAFIK' %}">{% title_holder 'GRAFIK' %}
+	                                    <span class="sr-only">(current)</span>
+	                                </a>
+	                            </li>
+								{% endif %}
+
 	                            <li class="nav-item active">
 	                                <a class="nav-link" href="{% url 'doc' %}">Разрешительные документы
 	                                    <span class="sr-only">(current)</span>
