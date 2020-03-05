@@ -25,18 +25,20 @@ def accept_order(request):
         data = {
             "name": request.POST.get('name'),
             "phone": request.POST.get('phone'),
+            "email": request.POST.get('email'),
             "captcha_1": request.POST.get('captcha_1'),
             "captcha_0": request.POST.get('captcha_0'),
             }
-        order_variants = ['attst', 'attso', 'attsvsp', 'attlab', 'attsm']
+        all_services = Service.objects.all()
+        order_variants = [srvc.pseudo for srvc in all_services]
         if any([request.POST.get(order_item) for order_item in order_variants]):
             order_compound = {
-                "Аттестация технологий": 'attst' in request.POST,
-                "Аттестация оборудования": 'attso' in request.POST,
-                "Аттестация персонала": 'attso' in request.POST,
-                "Аттестация лаборатории": 'attlab' in request.POST,
-                "Аттестация материалов": 'attsm' in request.POST,
+                # "Аттестация технологий": 'attst' in request.POST,
             }
+            for srvc in all_services:
+                order_compound.update({
+                    srvc.title: srvc.pseudo in request.POST
+                })
             data.update({"compound": "{}".format(order_compound)})
         else:
             order_compound = {'Ничего не заявлено': True}
@@ -63,9 +65,13 @@ def accept_order(request):
                     'Заполнена заявка на сайте',
     """
     Заполнена заявка на сайте {url}
-    Имя: {name}, Телефон: {phone},
+    Имя: {name}, Телефон: {phone}, Email: {email}
     Заявлено: {order_string}
-    """.format(url=current_absolute_url, name=instance.name, phone=instance.phone, order_string=", ".join(order_arr)),
+    """.format(url=current_absolute_url,
+               name=instance.name,
+               phone=instance.phone,
+               email=instance.email,
+               order_string=", ".join(order_arr)),
                     settings.EMAIL_HOST_USER,
                     email_address_arr
                 )

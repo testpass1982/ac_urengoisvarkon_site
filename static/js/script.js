@@ -187,115 +187,6 @@ $(document).ready(function() {
   $("#phone").mask("+7 (999) 999 - 99 - 99", { completed: function () {} });
   $("#id_phone").mask("+7 (999) 999 - 99 - 99", { completed: function () {} });
 
-  // //jQuery plugin
-  // (function ($) {
-
-  //   $.fn.uploader = function (options) {
-  //     var settings = $.extend({
-  //       MessageAreaText: "Вы не выбрали файл.",
-  //       // MessageAreaTextWithFiles: "Загруженные файлы:",
-  //       DefaultErrorMessage: "Невозможно открыть этот файл.",
-  //       BadTypeErrorMessage: "Не верный формат файла!",
-  //       acceptedFileTypes: ['pdf', 'jpg', 'doc', 'docx']
-  //     }, options);
-
-  //     var uploadId = 1;
-  //     //update the messaging
-  //     $('.file-uploader__message-area p').text(options.MessageAreaText || settings.MessageAreaText);
-
-  //     //create and add the file list and the hidden input list
-  //     var fileList = $('<ul class="file-list"></ul>');
-  //     var hiddenInputs = $('<div class="hidden-inputs hidden"></div>');
-  //     $('.file-uploader__message-area').after(fileList);
-  //     $('.file-list').after(hiddenInputs);
-
-  //     //when choosing a file, add the name to the list and copy the file input into the hidden inputs
-  //     $('.file-chooser__input').on('change', function () {
-  //       var file = $('.file-chooser__input').val();
-  //       var fileName = (file.match(/([^\\\/]+)$/)[0]);
-
-  //       //clear any error condition
-  //       $('.file-chooser').removeClass('error');
-  //       $('.error-message').remove();
-
-  //       //validate the file
-  //       var check = checkFile(fileName);
-  //       if (check === "valid") {
-
-  //         // move the 'real' one to hidden list
-  //         $('.hidden-inputs').append($('.file-chooser__input'));
-
-  //         //insert a clone after the hiddens (copy the event handlers too)
-  //         $('.file-chooser').append($('.file-chooser__input').clone({ withDataAndEvents: true }));
-
-  //         //add the name and a remove button to the file-list
-  //         $('.file-list').append('<li style="display: none;"><span class="file-list__name">' + fileName + '</span><button class="removal-button" data-uploadid="' + uploadId + '"></title></button></li>');
-  //         $('.file-list').find("li:last").show(800);
-
-  //         //removal button handler
-  //         $('.removal-button').on('click', function (e) {
-  //           e.preventDefault();
-
-  //           //remove the corresponding hidden input
-  //           $('.hidden-inputs input[data-uploadid="' + $(this).data('uploadid') + '"]').remove();
-
-  //           //remove the name from file-list that corresponds to the button clicked
-  //           $(this).parent().hide("puff").delay(10).queue(function () { $(this).remove(); });
-
-  //           //if the list is now empty, change the text back
-  //           if ($('.file-list li').length === 0) {
-  //             $('.file-uploader__message-area').text(options.MessageAreaText || settings.MessageAreaText);
-  //           }
-  //         });
-
-  //         //so the event handler works on the new "real" one
-  //         $('.hidden-inputs .file-chooser__input').removeClass('file-chooser__input').attr('data-uploadId', uploadId);
-
-  //         //update the message area
-  //         $('.file-uploader__message-area').text(options.MessageAreaTextWithFiles || settings.MessageAreaTextWithFiles);
-
-  //         uploadId++;
-
-  //       } else {
-  //         //indicate that the file is not ok
-  //         $('.file-chooser').addClass("error");
-  //         var errorText = options.DefaultErrorMessage || settings.DefaultErrorMessage;
-
-  //         if (check === "badFileName") {
-  //           errorText = options.BadTypeErrorMessage || settings.BadTypeErrorMessage;
-  //         }
-
-  //         $('.file-chooser__input').after('<p class="error-message">' + errorText + '</p>');
-  //       }
-  //     });
-
-  //     var checkFile = function (fileName) {
-  //       var accepted = "invalid",
-  //         acceptedFileTypes = this.acceptedFileTypes || settings.acceptedFileTypes,
-  //         regex;
-
-  //       for (var i = 0; i < acceptedFileTypes.length; i++) {
-  //         regex = new RegExp("\\." + acceptedFileTypes[i] + "$", "i");
-
-  //         if (regex.test(fileName)) {
-  //           accepted = "valid";
-  //           break;
-  //         } else {
-  //           accepted = "badFileName";
-  //         }
-  //       }
-
-  //       return accepted;
-  //     };
-  //   };
-  // }(jQuery));
-
-  // //init
-  // $(document).ready(function () {
-  //   $('.fileUploader').uploader({
-  //     MessageAreaText: "Прикрепить файлы"
-  //   });
-  // });
 
   $('#toggle_panel').click(function(event){
     event.preventDefault();
@@ -307,69 +198,19 @@ $(document).ready(function() {
     }
   });
 
-  // $('.button__to__send_zayavka__formmodal').click(
-  //   function(event) {
-  //     event.preventDefault();
-  //     let data = $('#ask_question_form').serializeArray();
-  //     $.post("", data)
-  //       .done(response=>{
-  //         if (response['question_id']) {
-  //           var id = response['question_id']
-  //           $('.modal-title:visible').text('Спасибо!')
-  //           $('.modal__title__small__text:visible').hide();
-  //           $('.modal-body:visible').html(`
-  //           <h3 class="text text-info">
-  //             Обращение зарегистрировано, идентификатор вопроса ${id}
-  //           </h3>
-  //           <p class="text text-primary py-3">
-  //             В ближайшее время с Вами свяжется наш специалист
-  //           </p>
-  //           `);
-  //           $('.modal-footer:visible').hide();
-  //         }
-
-  //         if (response['errors']) {
-  //             // console.log(response['errors'], typeof response['errors'])
-  //             for (let key in response['errors']) {
-  //               console.log(
-  //                 key, ":", response['errors'][key]
-  //                 );
-  //               let form = $("#ask_question_form");
-  //               let element = form.find(`input[name="${key}"]`);
-
-  //               // element.after(`<small class="text-danger">${response['errors'][key]}</small>`);
-  //               element.addClass('is-invalid border border-danger');
-  //               element.after(`<div class="invalid-feedback">${response['errors'][key]}</div>`);
-  //               if (key == 'captcha') {
-  //                 let captcha_div = $('#captcha_check');
-  //                 captcha_div.addClass('border border-danger');
-  //                 captcha_div.css("border-radius", "3px");
-  //                 $('#captcha_error_message').html(`
-  //                 <p class="text text-danger">
-  //                   ${response['errors'][key]}
-  //                 </p>
-  //                 `
-  //                 );
-  //               }
-  //             }
-  //           }
-  //       })
-  //       .fail(response=>{
-  //         console.log('FAIL', response);
-  //       });
-  //   }
-  // );
-  // $('#order_modal_button').click(function(event){
-  //   var text = $("#order_modal_button").text();
-  //   // console.log(text);
-  //   $("#modal_order_head").text(text);
-  // });
 
   $('#slider_modal').click(function(event){
     var text = $("#slider_modal").text();
     console.log('clicked', text);
     $("#modal_order_head").text(text);
   });
+
+  $('#refresh_captcha').click(function () {
+    $.getJSON("/captcha/refresh/", function (result) {
+        $('.captcha').attr('src', result['image_url']);
+        $('#id_captcha_0').val(result['key'])
+    });
+});
 
   $('#order_service_button').click(function(event) {
     event.preventDefault();
@@ -381,7 +222,7 @@ $(document).ready(function() {
         }
       });
     // console.table(order);
-    console.log(order)
+    console.log("ORDER", order)
     $.post('/accept_order/', order)
       .done(response=>{
           if (response['order_id']) {

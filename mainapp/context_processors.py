@@ -48,7 +48,12 @@ def services(request):
     all_services = []
     for s in services:
         if s.parent is None:
-            all_services.append({'title': s.title, 'pk': s.pk, 'descendants': Service.objects.filter(parent=s)})
+            all_services.append({
+                'title': s.title,
+                'pk': s.pk,
+                'descendants': Service.objects.filter(parent=s),
+                'pseudo': s.pseudo,
+                })
         else:
             continue
     # import pdb; pdb.set_trace()

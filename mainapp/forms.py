@@ -121,16 +121,20 @@ class OrderForm(forms.ModelForm):
     captcha = CaptchaField()
     class Meta:
         model = OrderService
-        fields = ['name', 'phone', 'compound']
+        fields = ['name', 'phone', 'email', 'compound']
         widgets = {
                 'name': forms.TextInput({
                 'placeholder': "Ваше имя",
                 'class': 'form-control form-control-sm',
                 }),
                 'phone': forms.TextInput({
-                    'placeholder': '',
+                    'placeholder': 'Ваш телефон',
                     'class': 'form-control form-control-sm',
                     'type': 'text',
                 }),
-                # <input type="text" class="form-control form-control-sm" placeholder=""  type="text" id="phone2" required="">
+                'email': forms.TextInput({
+                    'placeholder': 'Ваш адрес эл. почты',
+                    'class': 'form-control form-control-sm',
+                    'type': 'text',
+                }),
             }

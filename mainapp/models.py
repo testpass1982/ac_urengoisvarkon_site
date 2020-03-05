@@ -599,6 +599,7 @@ class OrderService(models.Model):
     name = models.CharField(u'Имя контакта', max_length=50)
     pseudo = models.CharField(u'Псевдоним', max_length=30, default='pseudo')
     phone = models.CharField(u'Телефон контакта', max_length=50)
+    email = models.EmailField(u'Адрес эл почты')
     compound = models.CharField(u'Состав заявки', max_length=300, default=None, blank=True, null=True)
     ready = models.BooleanField(u'Вопрос решен', default=False, blank=True, null=True)
 

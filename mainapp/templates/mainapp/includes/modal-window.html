@@ -26,20 +26,22 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="id_name" class="col-form-label col-form-label-sm">Имя</label>
-                                {% comment %} <input type="text" class="form-control form-control-sm" id="" required="">
-                                {% endcomment %}
                                 {{ order_form.name }}
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="" class="col-form-label col-form-label-sm">Номер телефона</label>
-                                {% comment %} <input type="text" class="form-control form-control-sm" placeholder=""
-                                    type="text" id="phone" required=""> {% endcomment %}
+                                <label for="id_phone" class="col-form-label col-form-label-sm">Номер телефона</label>
                                 {{ order_form.phone }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="id_email" class="col-form-label col-form-label-sm">E-mail</label>
+                                {{ order_form.email }}
                             </div>
                         </div>
                         <div class="col-xl-9">
@@ -77,6 +79,7 @@
                         <div id="order_captcha_check">
                             {{ order_form.captcha }}
                             <div id="order_captcha_message"></div>
+                            <small><a id="refresh_captcha" href="#" class="d-block captcha_refresh">Заменить картинку</a></small>
                         </div>
                     </div>
                 </div>
