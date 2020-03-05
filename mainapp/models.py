@@ -342,6 +342,7 @@ class Service(models.Model):
             сортируются в соответствии с порядком сортировки
         """)
     short_description = models.CharField(u'Краткое описание услуги', max_length=200, blank=True, null=True, default=None)
+    pseudo = models.CharField(u'Псевдоним', max_length=30, default='pseudo')
     html = RichTextUploadingField(u'Описание услуги')
     number = models.SmallIntegerField(u'Порядок сортировки', blank=True, null=True, default=None)
     bg_photo = models.ImageField(u'Картинка для главной', upload_to="upload/", null=True, blank=True, default=None)
@@ -596,6 +597,7 @@ class Partner(models.Model):
 
 class OrderService(models.Model):
     name = models.CharField(u'Имя контакта', max_length=50)
+    pseudo = models.CharField(u'Псевдоним', max_length=30, default='pseudo')
     phone = models.CharField(u'Телефон контакта', max_length=50)
     compound = models.CharField(u'Состав заявки', max_length=300, default=None, blank=True, null=True)
     ready = models.BooleanField(u'Вопрос решен', default=False, blank=True, null=True)
@@ -610,7 +612,7 @@ class OrderService(models.Model):
 class SlideBackgrounds(models.Model):
     title = models.CharField(
         u'Название',
-        default='Слайдер_{}'.format(timezone.now()),
+        default='Слайдер',
         max_length=50
     )
     image = StdImageField(

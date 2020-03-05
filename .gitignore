@@ -87,6 +87,8 @@ collected_static.zip
 media/upload/*
 media/uploads/
 media/documents/*
+*media/*
+*media_template/
 log/**
 _variables.scss
 installed.lock

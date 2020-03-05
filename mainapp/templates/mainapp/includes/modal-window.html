@@ -6,7 +6,7 @@
 
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_order_head">
-                Оставить заявку <br> на аттестацию
+                Оставить заявку <br> на наши услуги
                 </h5>
                 <div class="row">
                     <div class="col col-sm-10 col-xl-6">
@@ -43,10 +43,16 @@
                             </div>
                         </div>
                         <div class="col-xl-9">
-                            <div class="form-group ">
+                            <div class="form-group">
                                 <label for="" class="col-form-label col-form-label-sm">Вид заявки(-ок)</label>
                                 <div class="choose__item">
                                     <ul class="items">
+                                        {% if all_services %}
+                                            {% for service in all_services %}
+                                                <li data-selected="0" data-guid="3" data-order="{{ service.pseudo }}">{{ service.title }}</li>
+                                            {% endfor %}
+
+                                        {% else %}
                                         <li data-selected="0" data-guid="3" data-order="attsvsp">Аттестация персонала
                                             сварочного производства</li>
                                         <li data-selected="0" data-guid="3" data-order="attsm">Аттестация сварочных
@@ -57,6 +63,7 @@
                                             технологий</li>
                                         <li data-selected="0" data-guid="3" data-order="attlab">Лаборатория
                                             неразрушающего контроля</li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>

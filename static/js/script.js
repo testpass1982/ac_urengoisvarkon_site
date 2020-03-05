@@ -184,8 +184,8 @@ $(document).ready(function() {
     var $value = $(this).parent().next();
     $value.addClass("added").text($(this).val().replace(/C:\\fakepath\\/i, ''));
   });
-  $("#phone").mask("+7 (999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
-  $("#id_phone").mask("+7 (999) 999 - 99 - 99", { completed: function () { alert("Да, этой мой номер"); } });
+  $("#phone").mask("+7 (999) 999 - 99 - 99", { completed: function () {} });
+  $("#id_phone").mask("+7 (999) 999 - 99 - 99", { completed: function () {} });
 
   // //jQuery plugin
   // (function ($) {
@@ -359,11 +359,11 @@ $(document).ready(function() {
   //       });
   //   }
   // );
-  $('#order_modal_button').click(function(event){
-    var text = $("#order_modal_button").text();
-    // console.log(text);
-    $("#modal_order_head").text(text);
-  });
+  // $('#order_modal_button').click(function(event){
+  //   var text = $("#order_modal_button").text();
+  //   // console.log(text);
+  //   $("#modal_order_head").text(text);
+  // });
 
   $('#slider_modal').click(function(event){
     var text = $("#slider_modal").text();
