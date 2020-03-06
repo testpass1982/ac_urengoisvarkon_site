@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import mainapp.views as mainapp
+import qualsection.views as qualsection
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path('', mainapp.index, name='index'),
     path('details_news/<slug:pk>', mainapp.details_news, name='details_news'),
     path('political/', mainapp.political, name='political'),
@@ -43,6 +44,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('test_component/<slug:pk>', mainapp.test_component, name='test_component'),
     path('accept_order/', mainapp.accept_order, name="accept_order"),
+    path('qual/', qualsection.main, name='qual'),
     path('captcha/', include('captcha.urls')),
 ]
 

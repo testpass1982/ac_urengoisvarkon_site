@@ -21,7 +21,6 @@ from .models import *
 
 def accept_order(request):
     if request.method == 'POST':
-        # print('REQUEST POST', request.POST)
         data = {
             "name": request.POST.get('name'),
             "phone": request.POST.get('phone'),

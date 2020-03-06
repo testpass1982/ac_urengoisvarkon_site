@@ -217,11 +217,9 @@ $(document).ready(function() {
     order = $('#order_form').serializeArray();
     $('.choose__item ul li').each(function() {
         if ($(this).hasClass('selected')) {
-          // console.log('DATA', $(this).data('order'));
           order.push({"name": $(this).data('order'), "value": "selected"});
         }
       });
-    // console.table(order);
     console.log("ORDER", order)
     $.post('/accept_order/', order)
       .done(response=>{

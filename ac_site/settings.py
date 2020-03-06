@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+    'qualsection',
     'ckeditor',
     'ckeditor_uploader',
     'sass_processor',

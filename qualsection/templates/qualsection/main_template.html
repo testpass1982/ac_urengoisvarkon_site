@@ -1,0 +1,97 @@
+{% extends 'mainapp/base.html' %}{% load static %}
+
+{% block content %}
+
+<div class="bg_header_inner_page" id="page_top">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="headline_bg_inner_page">
+                    Информация о независимой оценке квалификации
+                </div>
+                <p class="subtitle_inner_page_text">
+                    Центр оценки квалификации на базе {{ cok_place.org_name }}
+                </p>
+                <button class="back_to_home_page">
+                    <a href="{% url 'index' %}" class="link_to_home_page">
+                        <img src="{% static 'img/back_to_page.png' %}" class="img_back_to_page" alt="">На главную
+                    </a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+    <section class="col-10">
+        <p class="h5 mt-3">Полное наименование, место нахождения, контакты</p>
+        <ul class="list-group my-4">
+            <li class="list-group-item"><strong class="mr-2">
+                Полное наименование:</strong> {{ cok_place.org_name }}</li>
+            <li class="list-group-item"><strong class="mr-2">
+                Место нахождения ЦОК:</strong> {{ cok_place.org_addr }}</li>
+            <li class="list-group-item"><strong class="mr-2">
+                Адрес для почтовых отправлений:</strong> {{ cok_contacts.post_addr }}</li>
+            <li class="list-group-item"><strong class="mr-2">
+                Адрес(а) электронной почты:</strong> {{ cok_contacts.email }}</li>
+            <li class="list-group-item"><strong class="mr-2">
+                Адрес официального сайта ЦОК:</strong> <a href="{{ cok_contacts.site_url }}">
+                    {{ cok_contacts.site_url }}</a></li>
+            <li class="list-group-item"><strong class="mr-2">
+                Адрес официального сайта Совета по профессиональным
+                квалификациям в области сварки (СПКС):</strong>
+                    <a target="_blank" href="{{ cok_contacts.spks_site_url }}">
+                        {{ cok_contacts.spks_site_url }}</a></li>
+        </ul>
+    </section>
+
+    <section class="col-10 my-4">
+        <p class="h5 my-3">
+            Наименования квалификаций и требования к квалификациям, на соответствие
+            которым Центр проводит независимую оценку квалификации
+        </p>
+
+        <div class="accordion" id="accordionProfquals">
+        {% for el in profqualifications %}
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#ps_{{ el.profstandard.pk }}" aria-expanded="true" aria-controls="ps_{{ el.profstandard.pk }}">
+                        Профессиональный стандарт: {{ el.profstandard.title }}
+                    </button>
+                </h2>
+                </div>
+
+                <div id="ps_{{ el.profstandard.pk }}" class="collapse{% if forloop.counter0 == 0 %} show{% endif %}" aria-labelledby="headingOne" data-parent="#accordionProfquals">
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                            <th scope="col" class="text-center align-middle"><small>Номер в реестре сведений о проведении независимой оценки квалификации</small></th>
+                            <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
+                            <th scope="col" class="text-center align-middle"><small>Перечень документов, необходимых для прохождения профессионального экзамена по соответствующей квалификации</small></th>
+                            <th scope="col" class="text-center align-middle"><small>Срок действия свидетельства (лет)</small></th>
+                            <th scope="col" class="text-center align-middle"><small>Наименование профессии рабочего, должности руководителя, специалиста и служащего в соответствии с ЕТКС, ЕКС с указанием разряда работы, профессии/категории должности/класса профессии</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for q in el.qualifications %}
+                            <tr>
+                                <th scope="row">{{ q.qual_code }}</th>
+                                <td>{{ q.title }}</td>
+                                <td>Otto</td>
+                                <td>{{ q.period }}</td>
+                                <td>{{ q.professions|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    </div>
+{% endblock  %}
