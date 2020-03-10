@@ -369,11 +369,11 @@ class Profile(models.Model):
     org_intro = models.TextField(u'Текст для главной страницы', blank=True, null=True, default=None)
     org_history = models.TextField(u'История организаици', blank=True, null=True, default=None)
     # phone1 for header
-    org_main_phone = models.CharField(u'Главный телефон организации (используется в хедере)', max_length=30, blank=True, null=True, default=None)
-    org_main_phone_text = models.CharField(u'Подпись под телефоном в хедере, например "Многоканальный"', max_length=30, blank=True, null=True, default=None)
+    org_main_phone = models.CharField(u'Главный телефон организации (используется в хедере)', max_length=200, blank=True, null=True, default=None)
+    org_main_phone_text = models.CharField(u'Подпись под телефоном в хедере, например "Многоканальный"', max_length=200, blank=True, null=True, default=None)
     # phone2 for header
-    org_secondary_phone = models.CharField(u'Второй телефон организации (используется в хедере)', max_length=30, blank=True, null=True, default=None)
-    org_secondary_phone_text = models.CharField(u'Подпись под вторым телефоном в хедере, например "Бухгалтерия"', max_length=30, blank=True, null=True, default=None)
+    org_secondary_phone = models.CharField(u'Второй телефон организации (используется в хедере)', max_length=200, blank=True, null=True, default=None)
+    org_secondary_phone_text = models.CharField(u'Подпись под вторым телефоном в хедере, например "Бухгалтерия"', max_length=200, blank=True, null=True, default=None)
     org_phones = models.TextField(u'Телефоны', blank=True, null=True, default=None)
     org_email = models.TextField(u'Адрес электронной почты', blank=True, null=True, default=None)
     org_order_email = models.CharField(u'Адреса для подключения формы заявки', max_length=100, blank=True, null=True, default=None)

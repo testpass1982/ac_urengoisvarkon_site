@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="bg_header_inner_page" id="page_top">
+<div class="bg_header_inner_page mb-4" id="page_top">
     <div class="container">
         <div class="row">
             <div class="col-xl-4">
@@ -23,7 +23,7 @@
 </div>
 
     <div class="container">
-    <section class="col-10">
+    <section class="col-lg-10">
         <p class="h5 mt-3">Полное наименование, место нахождения, контакты</p>
         <ul class="list-group my-4">
             <li class="list-group-item"><strong class="mr-2">
@@ -45,51 +45,191 @@
         </ul>
     </section>
 
-    <section class="col-10 my-4">
+    <section class="col-lg-10 my-4">
         <p class="h5 my-3">
             Наименования квалификаций и требования к квалификациям, на соответствие
             которым Центр проводит независимую оценку квалификации
         </p>
 
         <div class="accordion" id="accordionProfquals">
-        {% for el in profqualifications %}
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#ps_{{ el.profstandard.pk }}" aria-expanded="true" aria-controls="ps_{{ el.profstandard.pk }}">
-                        Профессиональный стандарт: {{ el.profstandard.title }}
-                    </button>
-                </h2>
-                </div>
+            {% for el in profqualifications %}
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <a href="#" class="text-wrap" data-toggle="collapse" data-target="#ps_{{ el.profstandard.pk }}" aria-expanded="true" aria-controls="ps_{{ el.profstandard.pk }}">
+                            Профессиональный стандарт: {{ el.profstandard.title }}
+                        </a>
+                    </div>
 
-                <div id="ps_{{ el.profstandard.pk }}" class="collapse{% if forloop.counter0 == 0 %} show{% endif %}" aria-labelledby="headingOne" data-parent="#accordionProfquals">
-                <div class="card-body">
-                    <table class="table">
-                        <thead class="thead-light">
-                            <tr>
-                            <th scope="col" class="text-center align-middle"><small>Номер в реестре сведений о проведении независимой оценки квалификации</small></th>
-                            <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
-                            <th scope="col" class="text-center align-middle"><small>Перечень документов, необходимых для прохождения профессионального экзамена по соответствующей квалификации</small></th>
-                            <th scope="col" class="text-center align-middle"><small>Срок действия свидетельства (лет)</small></th>
-                            <th scope="col" class="text-center align-middle"><small>Наименование профессии рабочего, должности руководителя, специалиста и служащего в соответствии с ЕТКС, ЕКС с указанием разряда работы, профессии/категории должности/класса профессии</small></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for q in el.qualifications %}
-                            <tr>
-                                <th scope="row">{{ q.qual_code }}</th>
-                                <td>{{ q.title }}</td>
-                                <td>Otto</td>
-                                <td>{{ q.period }}</td>
-                                <td>{{ q.professions|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        </table>
+                    <div id="ps_{{ el.profstandard.pk }}" class="collapse{% if forloop.counter0 == 0 %} show{% endif %}" aria-labelledby="headingOne" data-parent="#accordionProfquals">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                    <th scope="col" class="text-center align-middle"><small>Номер в реестре сведений о проведении независимой оценки квалификации</small></th>
+                                    <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
+                                    <th scope="col" class="text-center align-middle"><small>Перечень документов, необходимых для прохождения профессионального экзамена по соответствующей квалификации</small></th>
+                                    <th scope="col" class="text-center align-middle"><small>Срок действия свидетельства (лет)</small></th>
+                                    <th scope="col" class="text-center align-middle"><small>Наименование профессии рабочего, должности руководителя, специалиста и служащего в соответствии с ЕТКС, ЕКС с указанием разряда работы, профессии/категории должности/класса профессии</small></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for q in el.qualifications %}
+                                    <tr>
+                                        <th scope="row">{{ q.qual_code }}</th>
+                                        <td>{{ q.title }}</td>
+                                        <td>
+
+                                            {% for d in q.documents.all %}
+                                                <p>
+                                                    {{ d.title }}
+                                                    {% if d.example %}
+                                                        (<a href="{{d.example.url}}" target="_blank">Скачать образец</a>)
+                                                    {% endif %}
+                                                </p>
+                                            {% endfor %}
+
+                                        </td>
+                                        <td>{{ q.period }}</td>
+                                        <td>{{ q.professions|safe }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        </div>
+                        </div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+
+    <section class="col-lg-10 my-4">
+        <p class="h5 my-3">
+            Адреса мест проведения профессионального экзамена
+        </p>
+         <div class="table-responsive">
+             <table class="table">
+                <tbody>
+                    {% for exam_place in cok_exam_places %}
+                        <tr>
+                        <th scope="row">{{ exam_place.title }}</th>
+                        <td>{{ exam_place.address }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         </div>
+    </section>
+    <section class="col-lg-10 my-4">
+        <p class="h5 my-3">
+            Примеры заданий, входящих в состав оценочных средств, используемых Центром при проведении профессионального экзамен
+        </p>
+
+        <div class="accordion" id="qualDocumentsExamples">
+            {% for el in qualDocumentsExamples %}
+                <div class="card">
+                    <div class="card-header" id="headingExamplesOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#examples_{{ el.profstandard.pk }}" aria-expanded="true" aria-controls="ps_{{ el.profstandard.pk }}">
+                            Профессиональный стандарт: {{ el.profstandard.title }}
+                        </button>
+                    </h2>
                     </div>
-                    </div>
+
+                    <div id="examples_{{ el.profstandard.pk }}" class="collapse" aria-labelledby="headingExamplesOne" data-parent="#qualDocumentsExamples">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
+                                    <th scope="col" class="text-center align-middle"><small>Пример задания</small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for q in el.qualifications %}
+                                <tr>
+                                    <th scope="row">{{ q.qual_code }} {{ q.title }} </th>
+                                    <td>
+
+                                        {% for d in q.documents.all %}
+                                            <p>
+                                                {{ d.title }}
+                                                {% if d.example %}
+                                                    (<a href="{{d.example.url}}" target="_blank">Скачать образец</a>)
+                                                {% endif %}
+                                            </p>
+                                        {% endfor %}
+
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="col-lg-10 my-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Образец заявления соискателя для проведения независимой оценки</h5>
+                <p class="card-text">This is another card with title and supporting text below. This card has some additional content to make it slightly taller overall.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
-        {% endfor %}
+        </div>
+    </section>
+    <section class="col-lg-10 my-4">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Правила проведения Центром оценки квалификаций независимой оценки квалификации</h5>
+            <p class="card-text">This is another card with title and supporting text below. This card has some additional content to make it slightly taller overall.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-10 my-4">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Реестр сведений о проведении независимой оценки квалификации</h5>
+            <p class="card-text">This is another card with title and supporting text below. This card has some additional content to make it slightly taller overall.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </section>
+    <section class="col-lg-10 my-4">
+        <p class="h5 my-3">
+            Сведения об апелляционной комиссии по рассмотрению жалоб, связанных с результатами прохождения профессионального экзамена и выдачей свидетельства о квалификации
+        </p>
+
+        <div class="table-responsive">
+            <table class="table">
+                {% comment %} <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                    </tr>
+                </thead> {% endcomment %}
+                <tbody>
+                    <tr>
+                    <th scope="row">Почтовый адрес</th>
+                    <td>109469, город Москва, улица Марьинский парк, дом 23, корпус 3</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Адрес электронной почты</th>
+                    <td>spks@naks.ru</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Номер контактного телефона</th>
+                    <td>+7 (499) 784-72-83, 784-77-00</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 

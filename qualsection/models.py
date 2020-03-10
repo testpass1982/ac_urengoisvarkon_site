@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 class CokPlaceInfo(models.Model):
@@ -41,6 +43,22 @@ class CokProfstandard(models.Model):
     def __str__(self):
         return self.title
 
+class CokDocument(models.Model):
+    title = models.CharField(u'Наименование документа', max_length=300)
+    # qualification = models.ForeignKey(CokQualification, null=True, on_delete=models.SET_NULL)
+    example = models.FileField(u'Образец документа', upload_to='cok-documents/', null=True, blank=True)
+    task_example = models.NullBooleanField(u'Является примером задания')
+    pseudo = models.CharField(u'Псевдоним', default='', max_length=20, blank=True)
+    number = models.SmallIntegerField(u'Порядок вывода', default=500)
+    published_date = models.DateField(u'Дата публикации', null=True, blank=True, default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Документ ЦОК'
+        verbose_name_plural = 'Документы ЦОК'
+
+    def __str__(self):
+        return self.title
+
 
 class CokQualification(models.Model):
     profstandard = models.ForeignKey(CokProfstandard, null=True, on_delete=models.SET_NULL)
@@ -48,8 +66,10 @@ class CokQualification(models.Model):
     title = models.CharField(u'Наименование квалификации', max_length=200)
     period = models.SmallIntegerField(u'Срок действия св-ва(лет)')
     professions = models.TextField(u'Наименования профессий с разрядами ЕТКС')
+    documents = models.ManyToManyField(CokDocument, blank=True)
     pseudo = models.CharField(u'Псевдоним', max_length=20, null=True, blank=True)
     number = models.SmallIntegerField(u'Порядок вывода', default=500)
+    active = models.BooleanField(u'Активность', default=False)
 
     class Meta:
         verbose_name = 'Квалификация'
@@ -60,23 +80,9 @@ class CokQualification(models.Model):
 
 
 
-class CokDocument(models.Model):
-    title = models.CharField(u'Наименование документа', max_length=50)
-    qualification = models.ForeignKey(CokQualification, null=True, on_delete=models.SET_NULL)
-    example = models.FileField(u'Образец документа', upload_to='cok-documents/', null=True, blank=True)
-    pseudo = models.CharField(u'Псевдоним', max_length=20, null=True, blank=True)
-    number = models.SmallIntegerField(u'Порядок вывода', default=500)
-
-    class Meta:
-        verbose_name = 'Документ ЦОК'
-        verbose_name_plural = 'Документы ЦОК'
-
-    def __str__(self):
-        return self.title
-
-
 class CokQualExamPlace(models.Model):
     title = models.CharField(u'Наименование', max_length=300)
+    address = models.CharField(u'Адрес', max_length=500)
     number = models.SmallIntegerField(u'Порядок вывода', default=500)
 
     class Meta:
