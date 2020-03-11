@@ -44,7 +44,7 @@ class CokProfstandard(models.Model):
         return self.title
 
 class CokDocument(models.Model):
-    title = models.CharField(u'Наименование документа', max_length=300)
+    title = models.TextField(u'Наименование документа', max_length=500)
     # qualification = models.ForeignKey(CokQualification, null=True, on_delete=models.SET_NULL)
     example = models.FileField(u'Образец документа', upload_to='cok-documents/', null=True, blank=True)
     task_example = models.NullBooleanField(u'Является примером задания')
