@@ -64,7 +64,7 @@ class CokQualification(models.Model):
     profstandard = models.ForeignKey(CokProfstandard, null=True, on_delete=models.SET_NULL)
     qual_code = models.CharField(u'Номер в реестре', max_length=20)
     title = models.CharField(u'Наименование квалификации', max_length=200)
-    period = models.SmallIntegerField(u'Срок действия св-ва(лет)')
+    period = models.SmallIntegerField(u'Срок действия св-ва(лет)', default=3)
     professions = models.TextField(u'Наименования профессий с разрядами ЕТКС')
     documents = models.ManyToManyField(CokDocument, blank=True)
     pseudo = models.CharField(u'Псевдоним', max_length=20, null=True, blank=True)
