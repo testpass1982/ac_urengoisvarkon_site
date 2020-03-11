@@ -8,7 +8,7 @@ class CokQualificationInline(admin.TabularInline):
 
 @admin.register(CokQualification)
 class CokQualificationAdmin(admin.ModelAdmin):
-    list_display = ['title', 'pseudo', 'number', 'get_documents_number', 'active']
+    list_display = ['title', 'qual_code', 'pseudo', 'number', 'get_documents_number', 'active']
 
 
     def get_documents_number(self, obj):
