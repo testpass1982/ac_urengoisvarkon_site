@@ -24,8 +24,8 @@
 
     <div class="container">
     <section class="col-lg-10">
-        <p class="h5 mt-3">Полное наименование, место нахождения, контакты</p>
-        <ul class="list-group my-4">
+        <p class="h5 mt-5">Полное наименование, место нахождения, контакты центра оценки квалификации</p>
+        <ul class="list-group my-5">
             <li class="list-group-item"><strong class="mr-2">
                 Полное наименование:</strong> {{ cok_place.org_name }}</li>
             <li class="list-group-item"><strong class="mr-2">
@@ -43,9 +43,17 @@
                     <a target="_blank" href="{{ cok_contacts.spks_site_url }}">
                         {{ cok_contacts.spks_site_url }}</a></li>
         </ul>
+
+        <div class="card border-dark mb-3" style="max-width: 30rem;">
+            <div class="card-header">Номер контактного телефона</div>
+            <div class="card-body text-dark">
+                <h5 class="card-title">{{ cok_contacts.cok_phones }}</h5>
+                <p class="card-text">По любым вопросам проведения оценки квалификации в нашем ЦОК</p>
+            </div>
+            </div>
     </section>
 
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <p class="h5 my-3">
             Наименования квалификаций и требования к квалификациям, на соответствие
             которым Центр проводит независимую оценку квалификации
@@ -105,7 +113,7 @@
     </section>
 
 
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <p class="h5 my-3">
             Адреса мест проведения профессионального экзамена
         </p>
@@ -122,9 +130,9 @@
             </table>
          </div>
     </section>
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <p class="h5 my-3">
-            Примеры заданий, входящих в состав оценочных средств, используемых Центром при проведении профессионального экзамен
+            Примеры заданий, входящих в состав оценочных средств, используемых центром при проведении профессионального экзамена
         </p>
 
         <div class="accordion" id="qualDocumentsExamples">
@@ -174,31 +182,34 @@
             {% endfor %}
         </div>
     </section>
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Образец заявления соискателя для проведения независимой оценки</h5>
-                <p class="card-text">
-
-                </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <div class="card-text">
+                            Форма заявления: <a href="{{ cok_zayavki.zayavka_1.example.url }}" class="mx-2 btn btn-primary btn-sm">Скачать</a>
+                            Пример заполнения заявки: <a href="{{ cok_zayavki.zayavka_2.example.url }}" class="ml-2 btn btn-primary btn-sm">Скачать</a>
+                </div>
             </div>
         </div>
     </section>
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <div class="card">
             <div class="card-body">
-            <h5 class="card-title">Правила проведения Центром оценки квалификаций независимой оценки квалификации</h5>
-            <p class="card-text">This is another card with title and supporting text below. This card has some additional content to make it slightly taller overall.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <h5 class="card-title">Правила проведения независимой оценки квалификации</h5>
+            <p class="card-text">
+                Оценка квалификации в нашем ЦОКе осуществляется в соответствии с Постановлением Правительства РФ от 16 ноября 2016 г. № 1204 “Об утверждении Правил проведения центром оценки квалификаций независимой оценки квалификации в форме профессионального экзамена”
+            </p>
+            <a href="{{ pravila.example.url }}" target="_blank" class="btn btn-primary btn-sm">Скачать</a>
             </div>
         </div>
     </section>
-    <section class="col-lg-10 my-4">
+    <section class="col-lg-10 my-5">
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">Реестр сведений о проведении независимой оценки квалификации</h5>
             <p class="card-text">Реестр доступен на сайте НОК НАРК: <a href="https://nok-nark.ru/" target="_blank">nok-nark.ru</a></p>
+            <small class="text-muted">Результаты профессионального экзамена публикуются в реестре в течение 10-15 календарных дней</small>
 
             </div>
         </div>
