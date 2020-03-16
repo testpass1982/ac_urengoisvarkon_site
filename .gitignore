@@ -90,6 +90,6 @@ media/documents/*
 *media/*
 *media_template/
 log/**
-_variables.scss
-installed.lock
+# _variables.scss
+# installed.lock
 # project.json

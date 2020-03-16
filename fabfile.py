@@ -58,12 +58,12 @@ except FileNotFoundError:
     print('***ERROR: no project file***')
 
 PATH_TO_PROJECT = '{}/{}'.format(env.path_to_projects, env.project_name)
-
+DEPLOY_SERVER = env.deploy_server
 
 #check if os is not windows
 if os.name != 'nt':
     env.use_ssh_config = True
-    env.hosts = ['server']
+    env.hosts = [DEPLOY_SERVER]
 
 def test_connection():
     # get_secret()
