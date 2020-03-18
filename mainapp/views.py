@@ -148,10 +148,13 @@ def reestr(request):
 def doc(request):
     from .models import DocumentCategory
 
+    doc_chunk = Chunk.objects.filter(code='DOCS_PAGE').first()
+
     content={
         "title": "Документы",
         'docs': Document.objects.all(),
-        'categories': DocumentCategory.objects.all()
+        'categories': DocumentCategory.objects.all(),
+        'doc_chunk': doc_chunk
     }
     return render(request, 'mainapp/doc.html', content)
 
