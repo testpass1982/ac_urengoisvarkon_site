@@ -1,5 +1,6 @@
 from .models import Document
 from .models import Profile, Service, Post, SiteConfiguration, Component, Partner, Attestat
+from qualsection.models import CokPlaceInfo
 from .forms import ProfileImportForm, OrderForm
 import random
 from django.template import Context, Template
@@ -72,12 +73,14 @@ def site_configuration(request):
         bd_components = Component.objects.filter(configuration=site[0].pk).order_by('number')
         site_components = [SiteComponent(component) for component in bd_components]
         contact_page_component = Component.objects.filter(component_type='contact_page')
+        qualsection = CokPlaceInfo.objects.count()
         # import pdb; pdb.set_trace()
         conf = {
                 'site': {
                     'components': site_components,
                     'font_url': site[0].font.font_url,
                     'font_family': site[0].font.title,
+                    'qualsection': qualsection,
                     }
                 }
         if contact_page_component:
