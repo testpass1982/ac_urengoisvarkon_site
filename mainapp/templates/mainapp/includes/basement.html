@@ -115,9 +115,15 @@
                         </p>
                     </div>
                     <div class="col-xl-3 col-md-4">
+                    {% if site.confid_doc %}
+                        <div class="political_konf" target="_blank">
+                            <a href="{{site.confid_doc.document.url}}">{{site.confid_doc.title}}</a>
+                        </div>
+                    {% else %}
                         <div class="political_konf" target="_blank">
                             <a href="{% link_holder 'PRIVACY_POLICY' %} ">{% title_holder 'PRIVACY_POLICY' %}</a>
                         </div>
+                    {% endif %}
 
                     </div>
 

@@ -74,6 +74,7 @@ def site_configuration(request):
         site_components = [SiteComponent(component) for component in bd_components]
         contact_page_component = Component.objects.filter(component_type='contact_page')
         qualsection = CokPlaceInfo.objects.count()
+        confid_doc = Document.objects.filter(url_code='PRIVACY_POLICY').first()
         # import pdb; pdb.set_trace()
         conf = {
                 'site': {
@@ -81,6 +82,7 @@ def site_configuration(request):
                     'font_url': site[0].font.font_url,
                     'font_family': site[0].font.title,
                     'qualsection': qualsection,
+                    'confid_doc': confid_doc
                     }
                 }
         if contact_page_component:
