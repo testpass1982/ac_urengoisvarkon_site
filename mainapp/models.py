@@ -99,6 +99,8 @@ class Post(ContentMixin):
     publish_in_basement = models.BooleanField(u'Опубликовать в подвале на главной', default=False)
     side_panel = models.ForeignKey(SidePanel, verbose_name='Боковая панель', blank=True,
                                     null=True, default=None, on_delete=models.SET_NULL)
+    disable_order_button = models.BooleanField(u'Отключить кнопку подачи заявки', default=False)
+
 
     class Meta:
         ordering = ['created_date']
