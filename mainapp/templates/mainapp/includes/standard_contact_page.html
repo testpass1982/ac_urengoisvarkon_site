@@ -62,11 +62,22 @@
                         <div class="bg_neutralLight_colored alert alert-secondary">
                             <h5 class="contact_head">{{contact.title}}</h5>
                             <hr>
-                            <p>{{ contact.description}}</p>
+                            <p>{{ contact.description }}</p>
                             <ul class="contacts_list">
-                                <li><i class="fas fa-phone"></i> {{contact.phone}}</li>
-                                <li><i class="fas fa-envelope"></i> <a href="mailto:{{contact.email}}"
-                                        id="">{{contact.email}}</a>
+                                <li>
+                                {% if site.configuration.phone_icon %}
+                                    <img class="mr-1" src="{% static site.configuration.phone_icon %}" style="max-width:20px;" alt="Телефон"> {{ contact.phone }}
+                                {% else %}
+                                    <i class="fas fa-phone"></i> {{ contact.phone }}
+                                {% endif %}
+                                </li>
+                                <li>
+                                {% if site.configuration.person_icon %}
+                                    <img class="mr-1" src="{% static site.configuration.person_icon %}" style="max-width:20px;" alt="Адрес электронной почты">
+                                {% else %}
+                                    <i class="fas fa-envelope"></i>
+                                {% endif %}
+                                    <a href="mailto:{{contact.email}}" id="">{{contact.email}}</a>
                                 </li>
                             </ul>
                         </div>

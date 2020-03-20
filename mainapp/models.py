@@ -351,6 +351,7 @@ class Service(models.Model):
     documents = models.ManyToManyField(Document, blank=True)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     disable_order_button = models.BooleanField(u'Отключить кнопку подачи заявки', default=False)
+    alternative_url = models.CharField(u'Ссылка на другой раздел (не обязательно)', blank=True, null=True, max_length=100)
 
 
     class Meta:
@@ -497,6 +498,8 @@ class SiteConfiguration(models.Model):
         null=True,
         default='main-menu-v1 main-page-slider-v1 main-page-slider-v3 main-page-content-v1')
     font = models.ForeignKey(Font, null=True, blank=True, on_delete=models.SET_NULL)
+    phone_icon = models.CharField(u'Имя файла с иконкой телефона', default='',null=True, blank=True, max_length=50)
+    person_icon = models.CharField(u'Имя файла с иконкой человека', default='', null=True, blank=True, max_length=50)
     activated = models.BooleanField(u'Активировать', default=False)
 
     class Meta:

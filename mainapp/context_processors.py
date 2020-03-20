@@ -78,6 +78,7 @@ def site_configuration(request):
         # import pdb; pdb.set_trace()
         conf = {
                 'site': {
+                    'configuration': site[0],
                     'components': site_components,
                     'font_url': site[0].font.font_url,
                     'font_family': site[0].font.title,
@@ -85,6 +86,7 @@ def site_configuration(request):
                     'confid_doc': confid_doc
                     }
                 }
+        # import pdb; pdb.set_trace()
         if contact_page_component:
             conf['site']['contact_page'] = SiteComponent(contact_page_component.first())
         # import pdb; pdb.set_trace()
