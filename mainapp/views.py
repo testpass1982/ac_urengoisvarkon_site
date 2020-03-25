@@ -201,6 +201,8 @@ def service_details(request, pk=None):
         'post': service,
         'images': images,
     }
+    if service.alternative_url == 'qual':
+        return HttpResponseRedirect(reverse('qual'))
     return render(request, 'mainapp/page_details.html', content)
 
 def cok(request):
@@ -225,6 +227,8 @@ def profstandarti(request):
         'profstandards': profstandards,
     }
     return render(request, 'mainapp/profstandarti.html', content)
+
+
 def contacts(request):
 
     content = {
@@ -238,6 +242,8 @@ def contacts(request):
         })
         # import pdb; pdb.set_trace()
     return render(request, 'mainapp/contacts.html', content)
+
+
 def all_news(request):
     content = {
         'title': 'All news',

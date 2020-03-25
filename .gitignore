@@ -78,10 +78,10 @@ collected_static.zip
 *component.css
 *component.css.map
 # *.jpg
-*.pdf
+# *.pdf
 # *.jpeg
 # *.doc
-*.docx
+# *.docx
 # *.png
 **/migrations/**
 media/upload/*
