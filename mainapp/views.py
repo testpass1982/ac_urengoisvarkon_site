@@ -195,9 +195,11 @@ def article_details(request, pk=None):
 
 def service_details(request, pk=None):
     service = get_object_or_404(Service, pk=pk)
+    images = ServicePhoto.objects.filter(service=service).order_by('position')
     content = {
         'title': 'Детальный просмотр',
         'post': service,
+        'images': images,
     }
     return render(request, 'mainapp/page_details.html', content)
 

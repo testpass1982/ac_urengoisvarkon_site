@@ -360,6 +360,27 @@ class Service(models.Model):
     def __str__(self):
         return self.title
 
+
+class ServicePhoto(models.Model):
+    """model to load photos to content page"""
+    service = models.ForeignKey(Service, verbose_name=u'услуга',
+                             related_name='images',
+                             on_delete=models.SET_NULL,
+                             null=True)
+    image = models.ImageField(u'изображение', upload_to="upload/")
+    title = models.CharField(u'название', max_length=64,
+                             blank=True, default=get_image_filename)
+    position = models.PositiveIntegerField(u'Позиция', default=0)
+
+    class Meta:
+        verbose_name = "Фото для услуги"
+        verbose_name_plural = "Фотографии для услуг"
+        ordering = ['position']
+
+    def __str__(self):
+        return '{} - {}'.format(self.service, self.image)
+
+
 class Profile(models.Model):
     """class for templating organization"""
     org_logotype = models.ImageField(u'Логотип организации', upload_to='upload/', blank=True, null=True, default=None)

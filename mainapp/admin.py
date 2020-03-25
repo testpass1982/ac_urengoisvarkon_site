@@ -217,9 +217,14 @@ class CenterPhotoAdmin(admin.ModelAdmin):
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['title', 'number']
 
+class ServicePhotoInline(admin.StackedInline):
+    model = ServicePhoto
+    extra = 0
+
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'number', 'pseudo', 'parent']
+    inlines = [ServicePhotoInline]
 
 from django.db import models
 from django.forms import TextInput
