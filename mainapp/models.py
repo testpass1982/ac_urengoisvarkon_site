@@ -184,6 +184,9 @@ class Document(models.Model):
                              null=True)
     publish_on_main_page = models.BooleanField(
         verbose_name="Опубиковать на главной", default=False)
+    publish_in_basement = models.BooleanField(
+        verbose_name="Опубликовать в подвале", default=False
+    )
 
     class Meta:
         verbose_name = "Документ"

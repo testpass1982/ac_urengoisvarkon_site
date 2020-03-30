@@ -37,6 +37,15 @@ def basement_news(request):
     except Exception as e:
         print('ERROR', e)
 
+def basement_docs(request):
+    try:
+        basement_docs = Document.objects.filter(
+            publish_in_basement=True
+        ).order_by('-created_date')
+        return {'basement_docs': basement_docs}
+    except Exception as e:
+        print('DOCUMENTS ERROR', e)
+
 
 def profile_chunks(request):
     profile = Profile.objects.first()
