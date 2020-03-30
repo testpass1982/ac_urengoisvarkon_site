@@ -28,7 +28,7 @@ def accept_order(request):
             "captcha_1": request.POST.get('captcha_1'),
             "captcha_0": request.POST.get('captcha_0'),
             }
-        all_services = Service.objects.all()
+        all_services = Service.objects.all().exclude(pseudo="pseudo")
         order_variants = [srvc.pseudo for srvc in all_services]
         if any([request.POST.get(order_item) for order_item in order_variants]):
             order_compound = {

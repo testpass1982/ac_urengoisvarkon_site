@@ -45,7 +45,7 @@ def profile_chunks(request):
 
 def services(request):
 
-    services = Service.objects.all().order_by('number')
+    services = Service.objects.all().exclude(pseudo="pseudo").order_by('number')
     all_services = []
     for s in services:
         if s.parent is None:
