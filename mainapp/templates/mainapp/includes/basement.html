@@ -156,3 +156,7 @@
             </div>
         </div>
     </div>
+
+{% if profile.counterjs %}
+    {{ profile.counterjs|safe }}
+{% endif %}

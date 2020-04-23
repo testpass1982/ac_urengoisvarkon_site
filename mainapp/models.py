@@ -423,6 +423,7 @@ class Profile(models.Model):
     org_cok_reestr_link = models.URLField(u'Ссылка на реестр ЦОК', blank=True, null=True)
     add_ap_list = models.BooleanField(u'Добавить ссылку на список пунктов', default=False)
     add_schedule = models.BooleanField(u'Добавить ссылку на график аттестации', default=False)
+    counterjs = models.TextField(u'Код счетчика', blank=True, null=True, default=None, max_length=1500)
     number = models.SmallIntegerField(u'Порядок сортировки', null=True, blank=True)
     class Meta:
         verbose_name = 'Профиль организации'
