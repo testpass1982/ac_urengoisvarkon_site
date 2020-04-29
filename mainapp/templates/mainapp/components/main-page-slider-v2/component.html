@@ -19,7 +19,7 @@
 
             {% if not site_comp.parameters.disable_order_button %}
             <button class="request">
-              <a href="" data-toggle="modal" data-target="#modal-statement" class="request_button">Подать
+              <a href="" data-toggle="modal" data-target="#modal-statement" data-counterID="{{ profile.counter_ID }}" data-targetName={{ profile.counter_js_goal1 }} class="request_button">Подать
                 заявку</a>
             </button>
             {% endif %}

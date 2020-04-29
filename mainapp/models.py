@@ -424,6 +424,9 @@ class Profile(models.Model):
     add_ap_list = models.BooleanField(u'Добавить ссылку на список пунктов', default=False)
     add_schedule = models.BooleanField(u'Добавить ссылку на график аттестации', default=False)
     counterjs = models.TextField(u'Код счетчика', blank=True, null=True, default=None, max_length=1500)
+    counter_ID = models.CharField(u'ID счетчика Яндекс.Метрики', blank=True, null=True, max_length=20)
+    counter_js_goal1 = models.CharField(u'JS код счетчика (1)', max_length=500, null=True, blank=True)
+    counter_js_goal2 = models.CharField(u'JS код счетчика (2)', max_length=500, null=True, blank=True)
     number = models.SmallIntegerField(u'Порядок сортировки', null=True, blank=True)
     class Meta:
         verbose_name = 'Профиль организации'
