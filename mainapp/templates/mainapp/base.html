@@ -47,6 +47,9 @@
     </style>
   {% endif %}
 
+  {% if profile.counterjs %}
+    {{ profile.counterjs|safe }}
+
   <!-- HEADER -->
 </head>
 
