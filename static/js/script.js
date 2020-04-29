@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   $('.request_button').click(function(event) {
     if ($(event.target).data('target') == "#modal-statement") {
-      ym(parseInt($(event.target).data("counterID")), 'reachGoal', $(event.target).data("targetName"));
+      ym(parseInt($(event.target).data("counterid")), 'reachGoal', $(event.target).data("targetname"));
       console.log('request_clicked, metrika target data sent', parseInt($(event.target).data("counterid")), $(event.target).data("targetname"));
     }
   });
