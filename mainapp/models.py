@@ -665,3 +665,12 @@ class SlideBackgrounds(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Phone(models.Model):
+    number = models.CharField(u'Номер телефона', max_length=20)
+    title = models.CharField(u'Название телефона (например, бухгалтерия)', max_length=30, null=True, blank=True)
+    sort = models.SmallIntegerField(u'Сортировка')
+
+    def __str__(self):
+        return self.number

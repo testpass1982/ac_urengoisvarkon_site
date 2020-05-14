@@ -1,5 +1,6 @@
 from .models import Document
 from .models import Profile, Service, Post, SiteConfiguration, Component, Partner, Attestat
+from .models import Phone
 from qualsection.models import CokPlaceInfo
 from .forms import ProfileImportForm, OrderForm
 import random
@@ -49,7 +50,10 @@ def basement_docs(request):
 
 def profile_chunks(request):
     profile = Profile.objects.first()
-    return {'profile': profile}
+    profile_obj = {'profile': profile}
+    if Phone.objects.count() > 0:
+        profile_obj.update({'phones': Phone.objects.all().order_by('sort')})
+    return profile_obj
 
 
 def services(request):
