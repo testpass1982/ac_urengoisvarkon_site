@@ -64,6 +64,10 @@ DEPLOY_SERVER = env.deploy_server
 if os.name != 'nt':
     env.use_ssh_config = True
     env.hosts = [DEPLOY_SERVER]
+else:
+    env.hosts = [DEPLOY_SERVER]
+    env.user = env.server_user
+    env.password = env.server_password
 
 def test_connection():
     # get_secret()
