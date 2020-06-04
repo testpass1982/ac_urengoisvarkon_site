@@ -61,13 +61,11 @@ PATH_TO_PROJECT = '{}/{}'.format(env.path_to_projects, env.project_name)
 DEPLOY_SERVER = env.deploy_server
 
 #check if os is not windows
+env.hosts = [DEPLOY_SERVER]
+env.user = env.server_user
+env.password = env.server_password
 if os.name != 'nt':
     env.use_ssh_config = True
-    env.hosts = [DEPLOY_SERVER]
-else:
-    env.hosts = [DEPLOY_SERVER]
-    env.user = env.server_user
-    env.password = env.server_password
 
 def test_connection():
     # get_secret()
