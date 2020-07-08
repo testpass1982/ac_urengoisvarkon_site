@@ -10,7 +10,7 @@ from .models import Document, Staff
 from django.utils.termcolors import colorize
 from .classes import SiteComponent
 from django.contrib.gis.geoip2 import GeoIP2
-# from pprint import pprint
+from pprint import pprint
 
 
 def random_documents(request):
@@ -84,6 +84,11 @@ def detect_city_by_ip(request):
         visitor_ip = request.META.get('REMOTE_ADDR')
     g = GeoIP2()
     result = g.city(visitor_ip)
+    # location = g.city(ip)
+    # location_country = location["country_name"]
+    # location_city = location["city"]
+    # print('---visitor ip data:')
+    # pprint(result)
     return {'visitor_ip_data': result}
 
 
