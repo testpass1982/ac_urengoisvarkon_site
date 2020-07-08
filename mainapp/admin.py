@@ -270,7 +270,10 @@ class OrderServiceAdmin(admin.ModelAdmin):
 class StaffAdmin(admin.ModelAdmin):
     list_display = ['name', 'job', 'priority']
 
-admin.site.register(Phone)
+@admin.register(Phone)
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ['number', 'title', 'region', 'sort']
+
 admin.site.register(Partner)
 admin.site.register(SlideBackgrounds)
 admin.site.register(Font)
