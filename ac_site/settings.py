@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'sass_processor',
     'captcha',
     'stdimage',
+    'geoip2',
 ]
 
 FILE_UPLOAD_PERMISSIONS = 0o644
@@ -127,6 +128,7 @@ TEMPLATES = [
                 'mainapp.context_processors.order_form',
                 'mainapp.context_processors.org_staff',
                 'mainapp.context_processors.attestats',
+                'mainapp.context_processors.detect_city_by_ip',
             ],
         },
     },
@@ -305,3 +307,5 @@ with open(os.path.join(home, 'send_mail_secret.json'), 'r') as f:
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
+### detect visitor city by ip ###
+GEOIP_PATH =os.path.join(home, 'geoip')
