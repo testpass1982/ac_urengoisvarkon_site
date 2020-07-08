@@ -104,7 +104,13 @@
 
                 <div class="col-sm-6 col-md-6 offset-xl-1 col-xl-3">
                     <div class="basement_number {% if user.is_authenticated %}editable{% endif %}">
+                    {% if phones %}
+                        {% for phone in phones %}
+                            <a href="tel:{{phone.number}}" onclick="ym({{profile.counter_ID}},'reachGoal','{{profile.counter_js_goal2}}'); return true;">{{phone.number}} {% if phone.title %}{{phone.title}}{% endif %}</a>
+                        {% endfor %}
+                    {% else %}
                         <a href="tel:{{profile.org_main_phone}}">{{ profile.org_main_phone }}</a>
+                    {% endif %}
                     </div>
                     <div class="basement_number_text">
                         {{ profile.org_short_name }}
