@@ -46,7 +46,7 @@
           <div class="head_number">
             {% if phones %}
               {% for phone in phones %}
-                <a href="tel:{{phone.number}}" onclick="ym({{profile.counter_ID}},'reachGoal','{{profile.counter_js_goal2}}'); return true;" class="number d-block">{{phone.number}} {% if phone.title %}{{phone.title}}{% endif %}</a>
+                <a href="tel:{{phone.number}}" onclick="ym({{profile.counter_ID}},'reachGoal','{{profile.counter_js_goal2}}'); return true;" class="number d-block"{% if visitor_ip_data.city in phone.region or visitor_ip_data.region in phone.region %}style="display: block;"{% elif phone.region == '' %}style="display: block;"{% else %}style="display: none;"{% endif %}>{{phone.number}} {% if phone.title %}{{phone.title}}{% endif %}</a>
               {% endfor %}
             {% else %}
               <a href="tel:{{profile.org_main_phone}}" class="number">{{profile.org_main_phone}}</a>
