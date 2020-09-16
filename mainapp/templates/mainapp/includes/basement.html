@@ -104,7 +104,13 @@
 
                 <div class="col-sm-6 col-md-6 offset-xl-1 col-xl-3">
                     <div class="basement_number {% if user.is_authenticated %}editable{% endif %}">
+                    {% if phones %}
+                        {% for phone in phones %}
+                            <a href="tel:{{phone.number}}" onclick="ym({{profile.counter_ID}},'reachGoal','{{profile.counter_js_goal2}}'); return true;"{% if visitor_ip_data.city in phone.region or visitor_ip_data.region in phone.region %} style="display: block;"{% elif visitor_ip_data.region != 'TVE' and phone.region == 'EE' %} style="display: block;"{% else %} style="display: none;"{% endif %}>{{phone.number}} {% if phone.title %}{{phone.title}}{% endif %}</a>
+                        {% endfor %}
+                    {% else %}
                         <a href="tel:{{profile.org_main_phone}}">{{ profile.org_main_phone }}</a>
+                    {% endif %}
                     </div>
                     <div class="basement_number_text">
                         {{ profile.org_short_name }}
@@ -151,6 +157,11 @@
                                 Разработано в - НАКС Медиа</a>
 
                         </div>
+                        <p>
+                            city: {{ visitor_ip_data.city }}
+                            region {{ visitor_ip_data.region }}
+                            country: {{ visitor_ip_data.country_name }}
+                        </p>
                     </div>
                 </div>
             </div>
