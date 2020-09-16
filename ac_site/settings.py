@@ -128,7 +128,7 @@ TEMPLATES = [
                 'mainapp.context_processors.order_form',
                 'mainapp.context_processors.org_staff',
                 'mainapp.context_processors.attestats',
-                'mainapp.context_processors.detect_city_by_ip',
+                # 'mainapp.context_processors.detect_city_by_ip',
             ],
         },
     },
