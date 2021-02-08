@@ -28,6 +28,8 @@
         <ul class="list-group my-5">
             <li class="list-group-item"><strong class="mr-2">
                 Полное наименование:</strong> {{ cok_place.org_name }}</li>
+            {% if cok_place.cok_code %}<li class="list-group-item"><strong class="mr-2">
+                Шифр ЦОК:</strong> {{ cok_place.cok_code }}</li>{% endif %}
             <li class="list-group-item"><strong class="mr-2">
                 Место нахождения ЦОК:</strong> {{ cok_place.org_addr }}</li>
             <li class="list-group-item"><strong class="mr-2">
@@ -90,9 +92,13 @@
 
                                             {% for d in q.documents.all %}
                                                 <p>
-                                                    {{ d.title }}
+                                                    {% if not d.task_example %}
+                                                        {{ d.title }}
+                                                    {% endif %}
                                                     {% if d.example %}
-                                                        (<a href="{{d.example.url}}" target="_blank">Скачать образец</a>)
+                                                        {% if not d.task_example %}
+                                                            (<a href="{{d.example.url}}" target="_blank">Скачать образец</a>)
+                                                        {% endif %}
                                                     {% endif %}
                                                 </p>
                                             {% endfor %}

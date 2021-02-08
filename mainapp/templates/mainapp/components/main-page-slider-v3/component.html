@@ -60,7 +60,11 @@
                                     data-target="#modal-statement">Оставить заявку онлайн</a>
                             </div>
                         <div class="col-xl-6">
-                        <a href="{% link_holder 'PROFSTANDARTI' %}" class="btn btn-outline-primary py-2">{% title_holder 'PROFSTANDARTI' %} →</a>
+                        {% if site.qualsection >= 1 %}
+                            <a href="{% url 'qual' %}" class="btn btn-outline-primary py-2">Оценка квалификации в области сварки -></a>
+                        {% else %}
+                            <a href="{% link_holder 'PROFSTANDARTI' %}" class="btn btn-outline-primary py-2">{% title_holder 'PROFSTANDARTI' %} →</a>
+                        {% endif %}
                         <hr class="line-header d-block d-lg-none mb-5">
                         </div>
                         </div>
