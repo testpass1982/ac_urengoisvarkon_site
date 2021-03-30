@@ -35,6 +35,30 @@ class CokContact(models.Model):
 class CokProfstandard(models.Model):
     title = models.CharField(u'Название профстандарта', max_length=300)
     number = models.SmallIntegerField(u'Порядок вывода', default=500)
+    ps_html_qual = RichTextUploadingField(
+        verbose_name='Квалификации',
+        null=True,
+        blank=True,
+        config_name='default',
+        extra_plugins=['youtube'],
+        external_plugin_resources=[(
+            'youtube',
+            'plugins/youtube/',
+            'plugin.js',
+        )]
+    )
+    ps_html_tasks = RichTextUploadingField(
+        verbose_name='Задания',
+        null=True,
+        blank=True,
+        config_name='default',
+        extra_plugins=['youtube'],
+        external_plugin_resources=[(
+            'youtube',
+            'plugins/youtube/',
+            'plugin.js',
+        )]
+    )
 
     class Meta:
         verbose_name = 'Профстандарт'
@@ -47,7 +71,7 @@ class CokDocument(models.Model):
     title = models.TextField(u'Наименование документа', max_length=500)
     # qualification = models.ForeignKey(CokQualification, null=True, on_delete=models.SET_NULL)
     example = models.FileField(u'Образец документа', upload_to='cok-documents/', null=True, blank=True)
-    task_example = models.NullBooleanField(u'Является примером задания')
+    task_example = models.BooleanField(u'Является примером задания', null=True, blank=True)
     pseudo = models.CharField(u'Псевдоним', default='', max_length=20, blank=True)
     number = models.SmallIntegerField(u'Порядок вывода', default=500)
     published_date = models.DateField(u'Дата публикации', null=True, blank=True, default=timezone.now)

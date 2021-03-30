@@ -28,8 +28,6 @@
         <ul class="list-group my-5">
             <li class="list-group-item"><strong class="mr-2">
                 Полное наименование:</strong> {{ cok_place.org_name }}</li>
-            {% if cok_place.cok_code %}<li class="list-group-item"><strong class="mr-2">
-                Шифр ЦОК:</strong> {{ cok_place.cok_code }}</li>{% endif %}
             <li class="list-group-item"><strong class="mr-2">
                 Место нахождения ЦОК:</strong> {{ cok_place.org_addr }}</li>
             <li class="list-group-item"><strong class="mr-2">
@@ -72,45 +70,46 @@
 
                     <div id="ps_{{ el.profstandard.pk }}" class="collapse{% if forloop.counter0 == 0 %} show{% endif %}" aria-labelledby="headingOne" data-parent="#accordionProfquals">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                    <th scope="col" class="text-center align-middle"><small>Номер в реестре сведений о проведении независимой оценки квалификации</small></th>
-                                    <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
-                                    <th scope="col" class="text-center align-middle"><small>Перечень документов, необходимых для прохождения профессионального экзамена по соответствующей квалификации</small></th>
-                                    <th scope="col" class="text-center align-middle"><small>Срок действия свидетельства (лет)</small></th>
-                                    <th scope="col" class="text-center align-middle"><small>Наименование профессии рабочего, должности руководителя, специалиста и служащего в соответствии с ЕТКС, ЕКС с указанием разряда работы, профессии/категории должности/класса профессии</small></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for q in el.qualifications %}
-                                    <tr>
-                                        <th scope="row">{{ q.qual_code }}</th>
-                                        <td>{{ q.title }}</td>
-                                        <td>
+                            {% if el.qualifications_html %}
+                                {{ el.qualifications_html|safe }}
+                            {% else %}
+                                                        <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                        <th scope="col" class="text-center align-middle"><small>Номер в реестре сведений о проведении независимой оценки квалификации</small></th>
+                                        <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
+                                        <th scope="col" class="text-center align-middle"><small>Перечень документов, необходимых для прохождения профессионального экзамена по соответствующей квалификации</small></th>
+                                        <th scope="col" class="text-center align-middle"><small>Срок действия свидетельства (лет)</small></th>
+                                        <th scope="col" class="text-center align-middle"><small>Наименование профессии рабочего, должности руководителя, специалиста и служащего в соответствии с ЕТКС, ЕКС с указанием разряда работы, профессии/категории должности/класса профессии</small></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for q in el.qualifications %}
+                                        <tr>
+                                            <th scope="row">{{ q.qual_code }}</th>
+                                            <td>{{ q.title }}</td>
+                                            <td>
 
-                                            {% for d in q.documents.all %}
-                                                <p>
-                                                    {% if not d.task_example %}
+                                                {% for d in q.documents.all %}
+                                                    <p>
                                                         {{ d.title }}
-                                                    {% endif %}
-                                                    {% if d.example %}
-                                                        {% if not d.task_example %}
+                                                        {% if d.example %}
                                                             (<a href="{{d.example.url}}" target="_blank">Скачать образец</a>)
                                                         {% endif %}
-                                                    {% endif %}
-                                                </p>
-                                            {% endfor %}
+                                                    </p>
+                                                {% endfor %}
 
-                                        </td>
-                                        <td>{{ q.period }}</td>
-                                        <td>{{ q.professions|safe }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                                </table>
-                        </div>
+                                            </td>
+                                            <td>{{ q.period }}</td>
+                                            <td>{{ q.professions|safe }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    </table>
+                            </div>
+                            {% endif %}
+
                         </div>
                         </div>
                 </div>
@@ -152,38 +151,46 @@
 
                     <div id="examples_{{ el.profstandard.pk }}" class="collapse" aria-labelledby="headingExamplesOne" data-parent="#qualDocumentsExamples">
                     <div class="card-body">
-                        <table class="table">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
-                                    <th scope="col" class="text-center align-middle"><small>Пример задания</small></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for q in el.qualifications %}
-                                <tr>
-                                    <td>{{ q.qual_code }} {{ q.title }} </th>
-                                    <td>
 
-                                        {% for d in q.documents.all %}
-                                            {% if d.task_example %}
-                                            <p>
-                                                {% if d.example %}
-                                                    <a href="{{d.example.url}}" target="_blank">{{ d.title }}</a>
-                                                {% else %}
-                                                    <a href="#" target="_blank">Здесь будет ссылка на пример задания</a>
+                        {% if el.tasks_html %}
+                            {{ el.tasks_html|safe }}
+                        {% else %}
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col" class="text-center align-middle"><small>Наименование квалификации</small></th>
+                                        <th scope="col" class="text-center align-middle"><small>Пример задания</small></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for q in el.qualifications %}
+                                    <tr>
+                                        <td>{{ q.qual_code }} {{ q.title }} </th>
+                                        <td>
+
+                                            {% for d in q.documents.all %}
+                                                {% if d.task_example %}
+                                                <p>
+                                                    {% if d.example %}
+                                                        <a href="{{d.example.url}}" target="_blank">{{ d.title }}</a>
+                                                    {% else %}
+                                                        <a href="#" target="_blank">Здесь будет ссылка на пример задания</a>
+                                                    {% endif %}
+                                                </p>
                                                 {% endif %}
-                                            </p>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {% endfor %}
 
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                            </table>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                        {% endif %}
+
+
+
                         </div>
-                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>

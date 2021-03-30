@@ -93,7 +93,7 @@ class Post(ContentMixin):
     '''child of contentmixin'''
     category = models.ForeignKey(
         Category, verbose_name='Категория', on_delete=models.CASCADE, blank=True)
-    publish_on_main_page = models.NullBooleanField(u'Опубликовать на главной', default=False)
+    publish_on_main_page = models.BooleanField(u'Опубликовать на главной', null=True, default=False)
     publish_on_news_page = models.BooleanField(
         verbose_name="Опубликовать в ленте новостей", default=False)
     publish_in_basement = models.BooleanField(u'Опубликовать в подвале на главной', default=False)
@@ -423,7 +423,7 @@ class Profile(models.Model):
     org_cok_reestr_link = models.URLField(u'Ссылка на реестр ЦОК', blank=True, null=True)
     add_ap_list = models.BooleanField(u'Добавить ссылку на список пунктов', default=False)
     add_schedule = models.BooleanField(u'Добавить ссылку на график аттестации', default=False)
-    counterjs = models.TextField(u'Код счетчика', blank=True, null=True, default=None, max_length=1500)
+    counterjs = models.TextField(blank=True, null=True, max_length=1500)
     counter_ID = models.CharField(u'ID счетчика Яндекс.Метрики', blank=True, null=True, max_length=20)
     counter_js_goal1 = models.CharField(u'JS код счетчика (1)', max_length=500, null=True, blank=True)
     counter_js_goal2 = models.CharField(u'JS код счетчика (2)', max_length=500, null=True, blank=True)
@@ -657,7 +657,7 @@ class SlideBackgrounds(models.Model):
             'large': {"width": 1920, "height": 1080, "crop": True}
         }
     )
-    activated = models.NullBooleanField(u'Активировать', default=False)
+    activated = models.BooleanField(u'Активировать', null=True, default=False)
 
     class Meta:
         verbose_name = 'Картинка для баннера'

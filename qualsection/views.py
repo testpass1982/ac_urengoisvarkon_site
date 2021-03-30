@@ -11,8 +11,11 @@ def main(request):
     for ps in profstandards:
         profqualifications.append({
             "profstandard": ps,
+            "qualifications_html": ps.ps_html_qual,
+            "tasks_html": ps.ps_html_tasks,
             "qualifications": CokQualification.objects.filter(profstandard=ps, active=True).order_by('number')
         })
+    # import pdb; pdb.set_trace()
 
     cok_exam_places = CokQualExamPlace.objects.all().order_by('number')
     cok_zayavki = {
