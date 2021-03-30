@@ -7,6 +7,7 @@ class CokPlaceInfo(models.Model):
     org_name = models.CharField(u'Полное наименование', max_length=500)
     org_addr = models.CharField(u'Место нахождения ЦОК', max_length=500)
     cok_code = models.CharField(u'Шифр ЦОК', max_length=20, blank=True, null=True)
+    cok_head = models.CharField(u'Руководитель ЦОК', max_length=50, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Место нахождения ЦОК'

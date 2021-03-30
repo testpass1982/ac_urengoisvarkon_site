@@ -42,6 +42,11 @@
                 квалификациям в области сварки (СПКС):</strong>
                     <a target="_blank" href="{{ cok_contacts.spks_site_url }}">
                         {{ cok_contacts.spks_site_url }}</a></li>
+            {% if cok_place.cok_head %}
+            <li class="list-group-item"><strong class="mr-2">
+                Руководитель ЦОК:</strong>{{ cok_place.cok_head }}
+                    </li>
+            {% endif %}
         </ul>
 
         <div class="card border-dark mb-3" style="max-width: 30rem;">

@@ -668,10 +668,11 @@ class SlideBackgrounds(models.Model):
 
 
 class Phone(models.Model):
-    number = models.CharField(u'Номер телефона', max_length=20)
-    title = models.CharField(u'Название телефона (например, бухгалтерия)', max_length=30, null=True, blank=True)
-    region = models.CharField(u'Регион для показа', max_length=30, blank=True, null=True, default='')
-    sort = models.SmallIntegerField(u'Сортировка')
+    pass
+    # number = models.CharField(u'Номер телефона', max_length=20)
+    # title = models.CharField(u'Название телефона (например, бухгалтерия)', max_length=30, null=True, blank=True)
+    # region = models.CharField(u'Регион для показа', max_length=30, blank=True, null=True, default='')
+    # sort = models.SmallIntegerField(u'Сортировка')
 
-    def __str__(self):
-        return self.number
+    # def __str__(self):
+    #     return self.number
