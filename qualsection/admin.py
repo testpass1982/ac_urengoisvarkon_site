@@ -24,6 +24,7 @@ class CokDocumentAdmin(admin.ModelAdmin):
 
 @admin.register(CokProfstandard)
 class AdminCokProfstandard(admin.ModelAdmin):
+    save_on_top = True
     list_display = ['title', 'number']
 
     inlines = [
