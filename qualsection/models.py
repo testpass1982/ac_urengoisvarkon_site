@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 class CokPlaceInfo(models.Model):
